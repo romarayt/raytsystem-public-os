@@ -29,7 +29,7 @@ raytsystem = "raytsystem.cli:app"
 [dependency-groups]
 dev = [
   "httpx2==2.5.0",
-  "mypy>=1.18,<2",
+  "mypy>=1.18,<3",
   "pre-commit>=4.5,<5",
   "pytest>=8.4,<9",
   "pytest-cov>=7,<8",
