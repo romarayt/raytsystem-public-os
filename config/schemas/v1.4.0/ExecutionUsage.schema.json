@@ -1,0 +1,72 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "actual_cost_micros": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Actual Cost Micros"
+    },
+    "cached_tokens": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Cached Tokens",
+      "type": "integer"
+    },
+    "estimated_cost_micros": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Estimated Cost Micros"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "input_tokens": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Input Tokens",
+      "type": "integer"
+    },
+    "output_tokens": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Output Tokens",
+      "type": "integer"
+    },
+    "schema_name": {
+      "const": "ExecutionUsageV1",
+      "default": "ExecutionUsageV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "title": "ExecutionUsage",
+  "type": "object"
+}

@@ -1,0 +1,131 @@
+{
+  "$defs": {
+    "MigrationState": {
+      "enum": [
+        "planned",
+        "running",
+        "applied",
+        "rolled_back",
+        "failed",
+        "stale"
+      ],
+      "title": "MigrationState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "attempt": {
+      "minimum": 1,
+      "title": "Attempt",
+      "type": "integer"
+    },
+    "backup_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Backup Id"
+    },
+    "completed_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Completed At"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "from_version": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "From Version",
+      "type": "string"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "migration_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Migration Id",
+      "type": "string"
+    },
+    "migration_record_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Migration Record Id",
+      "type": "string"
+    },
+    "migration_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Migration Sha256",
+      "type": "string"
+    },
+    "report_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Report Sha256"
+    },
+    "schema_name": {
+      "const": "MigrationRecordV1",
+      "default": "MigrationRecordV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "state": {
+      "$ref": "#/$defs/MigrationState"
+    },
+    "to_version": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "To Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "migration_record_id",
+    "migration_id",
+    "migration_sha256",
+    "from_version",
+    "to_version",
+    "state",
+    "attempt",
+    "started_at"
+  ],
+  "title": "MigrationRecord",
+  "type": "object"
+}

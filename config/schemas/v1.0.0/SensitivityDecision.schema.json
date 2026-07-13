@@ -1,0 +1,131 @@
+{
+  "$defs": {
+    "ComponentRef": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Sha256"
+        },
+        "config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Config Sha256",
+          "type": "string"
+        },
+        "name": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "config_sha256"
+      ],
+      "title": "ComponentRef",
+      "type": "object"
+    },
+    "Sensitivity": {
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted",
+        "secret"
+      ],
+      "title": "Sensitivity",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "decided_at": {
+      "format": "date-time",
+      "title": "Decided At",
+      "type": "string"
+    },
+    "decision_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Decision Id",
+      "type": "string"
+    },
+    "disposition": {
+      "enum": [
+        "allow",
+        "quarantine",
+        "restrict",
+        "redact",
+        "block"
+      ],
+      "title": "Disposition",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "input_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Input Id",
+      "type": "string"
+    },
+    "reason_codes": {
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Reason Codes",
+      "type": "array"
+    },
+    "scanner": {
+      "$ref": "#/$defs/ComponentRef"
+    },
+    "schema_name": {
+      "const": "SensitivityDecisionV1",
+      "default": "SensitivityDecisionV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sensitivity": {
+      "$ref": "#/$defs/Sensitivity"
+    }
+  },
+  "required": [
+    "decision_id",
+    "input_id",
+    "scanner",
+    "sensitivity",
+    "reason_codes",
+    "disposition",
+    "decided_at"
+  ],
+  "title": "SensitivityDecision",
+  "type": "object"
+}

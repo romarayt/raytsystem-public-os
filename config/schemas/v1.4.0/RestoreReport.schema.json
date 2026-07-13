@@ -1,0 +1,95 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "completed_at": {
+      "format": "date-time",
+      "title": "Completed At",
+      "type": "string"
+    },
+    "doctor_passed": {
+      "default": false,
+      "title": "Doctor Passed",
+      "type": "boolean"
+    },
+    "doctor_state": {
+      "default": "not_run",
+      "enum": [
+        "not_run",
+        "passed",
+        "failed"
+      ],
+      "title": "Doctor State",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "projection_rebuild_required": {
+      "default": true,
+      "title": "Projection Rebuild Required",
+      "type": "boolean"
+    },
+    "report_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Report Sha256",
+      "type": "string"
+    },
+    "restore_plan_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Restore Plan Id",
+      "type": "string"
+    },
+    "restore_report_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Restore Report Id",
+      "type": "string"
+    },
+    "restored_hashes": {
+      "additionalProperties": {
+        "pattern": "^[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "propertyNames": {
+        "minLength": 1
+      },
+      "title": "Restored Hashes",
+      "type": "object"
+    },
+    "schema_name": {
+      "const": "RestoreReportV1",
+      "default": "RestoreReportV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "verified",
+        "restored",
+        "failed"
+      ],
+      "title": "State",
+      "type": "string"
+    }
+  },
+  "required": [
+    "restore_report_id",
+    "restore_plan_id",
+    "state",
+    "report_sha256",
+    "completed_at"
+  ],
+  "title": "RestoreReport",
+  "type": "object"
+}

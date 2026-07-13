@@ -1,0 +1,56 @@
+repos:
+  - repo: local
+    hooks:
+      - id: raytsystem-checkpoint-guard
+        name: raytsystem-checkpoint-guard
+        entry: uv run raytsystem guard-checkpoint --json
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: raytsystem-codegraph-post-commit
+        name: raytsystem-codegraph-post-commit
+        entry: uv run raytsystem graph update --json
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [post-commit]
+      - id: raytsystem-codegraph-post-checkout
+        name: raytsystem-codegraph-post-checkout
+        entry: uv run raytsystem graph update --json
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [post-checkout]
+      - id: ruff
+        name: ruff
+        entry: uv run ruff check
+        language: system
+        types_or: [python, pyi]
+      - id: mypy
+        name: mypy
+        entry: uv run mypy
+        language: system
+        pass_filenames: false
+      - id: pytest
+        name: pytest
+        entry: uv run pytest -q
+        language: system
+        pass_filenames: false
+      - id: web-typecheck
+        name: web-typecheck
+        entry: npm --prefix web run typecheck
+        language: system
+        pass_filenames: false
+        files: ^(web/|src/raytsystem/webapp/static/)
+      - id: web-lint
+        name: web-lint
+        entry: npm --prefix web run lint
+        language: system
+        pass_filenames: false
+        files: ^web/
+      - id: web-test
+        name: web-test
+        entry: npm --prefix web run test
+        language: system
+        pass_filenames: false
+        files: ^(web/|src/raytsystem/webapp/static/)

@@ -1,0 +1,9 @@
+{
+  "label": "Справочник (генерируется)",
+  "position": 90,
+  "link": {
+    "type": "generated-index",
+    "title": "Автогенерируемый справочник",
+    "description": "Эти страницы собираются из проверенных публичных контрактов raytsystem командой scripts/docs/gen_reference.py. Не редактируйте их вручную."
+  }
+}

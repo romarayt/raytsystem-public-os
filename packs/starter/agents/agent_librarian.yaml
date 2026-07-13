@@ -1,0 +1,14 @@
+agent_id: agent_librarian
+name: Librarian
+role: librarian
+description: Curates findable knowledge proposals while preserving evidence, contradictions and history.
+version: "1.0.0"
+pack_id: pack_starter
+runtime_adapter_id: adapter_disabled
+skill_ids: [raytsystem-ingest, raytsystem-query, raytsystem-save]
+context_paths: [AGENTS.md, skills/raytsystem-ingest/SKILL.md]
+capabilities: [ingest_propose, query, curate]
+requested_filesystem_mode: read_only
+approved_data_classes: [public, internal]
+accent: "#75D4A1"
+enabled: false

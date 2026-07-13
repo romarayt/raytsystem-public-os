@@ -1,0 +1,191 @@
+{
+  "$defs": {
+    "CodeRelation": {
+      "enum": [
+        "contains",
+        "defines",
+        "imports",
+        "calls",
+        "inherits",
+        "implements",
+        "references",
+        "depends_on",
+        "configured_by",
+        "tests",
+        "explained_by",
+        "implemented_by",
+        "explains",
+        "verifies",
+        "changed",
+        "touches",
+        "operates_on"
+      ],
+      "title": "CodeRelation",
+      "type": "string"
+    },
+    "CodeSourceLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "end_column": {
+          "default": 0,
+          "maximum": 10000000,
+          "minimum": 0,
+          "title": "End Column",
+          "type": "integer"
+        },
+        "end_line": {
+          "maximum": 10000000,
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "CodeSourceLocationV1",
+          "default": "CodeSourceLocationV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "start_column": {
+          "default": 0,
+          "maximum": 10000000,
+          "minimum": 0,
+          "title": "Start Column",
+          "type": "integer"
+        },
+        "start_line": {
+          "maximum": 10000000,
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start_line",
+        "end_line"
+      ],
+      "title": "CodeSourceLocation",
+      "type": "object"
+    },
+    "EdgeConfidence": {
+      "enum": [
+        "EXTRACTED",
+        "INFERRED",
+        "AMBIGUOUS"
+      ],
+      "title": "EdgeConfidence",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "confidence": {
+      "$ref": "#/$defs/EdgeConfidence"
+    },
+    "content_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Content Fingerprint",
+      "type": "string"
+    },
+    "edge_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Edge Id",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "extractor": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Extractor",
+      "type": "string"
+    },
+    "extractor_version": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Extractor Version",
+      "type": "string"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "metadata": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Metadata",
+      "type": "object"
+    },
+    "relation": {
+      "$ref": "#/$defs/CodeRelation"
+    },
+    "schema_name": {
+      "const": "CodeEdgeV1",
+      "default": "CodeEdgeV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Source",
+      "type": "string"
+    },
+    "source_file": {
+      "minLength": 1,
+      "title": "Source File",
+      "type": "string"
+    },
+    "source_location": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CodeSourceLocation"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "target": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Target",
+      "type": "string"
+    }
+  },
+  "required": [
+    "edge_id",
+    "source",
+    "target",
+    "relation",
+    "confidence",
+    "source_file",
+    "extractor",
+    "extractor_version",
+    "content_fingerprint"
+  ],
+  "title": "CodeEdge",
+  "type": "object"
+}

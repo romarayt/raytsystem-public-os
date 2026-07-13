@@ -1,0 +1,429 @@
+{
+  "$defs": {
+    "ExecutionRunStatus": {
+      "enum": [
+        "queued",
+        "preparing",
+        "running",
+        "paused",
+        "cancelling",
+        "cancelled",
+        "succeeded",
+        "review",
+        "blocked",
+        "failed"
+      ],
+      "title": "ExecutionRunStatus",
+      "type": "string"
+    },
+    "ExecutionUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "actual_cost_micros": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Actual Cost Micros"
+        },
+        "cached_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Cached Tokens",
+          "type": "integer"
+        },
+        "estimated_cost_micros": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Estimated Cost Micros"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "input_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "schema_name": {
+          "const": "ExecutionUsageV1",
+          "default": "ExecutionUsageV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "title": "ExecutionUsage",
+      "type": "object"
+    },
+    "TestResult": {
+      "additionalProperties": false,
+      "properties": {
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "ExecutionTestResultV1",
+          "default": "ExecutionTestResultV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "skipped",
+            "not_reported"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "summary": {
+          "default": "",
+          "maxLength": 8192,
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "status"
+      ],
+      "title": "TestResult",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "approval_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Approval Id"
+    },
+    "artifact_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Artifact Ids",
+      "type": "array"
+    },
+    "changed_files": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Changed Files",
+      "type": "array"
+    },
+    "cwd_token": {
+      "minLength": 1,
+      "title": "Cwd Token",
+      "type": "string"
+    },
+    "employee_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Employee Id",
+      "type": "string"
+    },
+    "ended_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ended At"
+    },
+    "error_code": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error Code"
+    },
+    "exit_code": {
+      "anyOf": [
+        {
+          "maximum": 255,
+          "minimum": -255,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Exit Code"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "fencing_token": {
+      "exclusiveMinimum": 0,
+      "title": "Fencing Token",
+      "type": "integer"
+    },
+    "graph_scope_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Graph Scope Id",
+      "type": "string"
+    },
+    "graph_snapshot_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Graph Snapshot Id",
+      "type": "string"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "invocation_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Invocation Id",
+      "type": "string"
+    },
+    "invocation_source": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Invocation Source",
+      "type": "string"
+    },
+    "model": {
+      "anyOf": [
+        {
+          "maxLength": 256,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Model"
+    },
+    "policy_decision_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Policy Decision Id",
+      "type": "string"
+    },
+    "provider": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Provider",
+      "type": "string"
+    },
+    "resumed_from_run_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Resumed From Run Id"
+    },
+    "retry_of_run_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Retry Of Run Id"
+    },
+    "run_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "runtime_adapter_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Runtime Adapter Id",
+      "type": "string"
+    },
+    "safe_command": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Safe Command",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "ExecutionRunV1",
+      "default": "ExecutionRunV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "session_id_after": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Session Id After"
+    },
+    "session_id_before": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Session Id Before"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/ExecutionRunStatus",
+      "default": "queued"
+    },
+    "summary": {
+      "default": "",
+      "maxLength": 32768,
+      "title": "Summary",
+      "type": "string"
+    },
+    "task_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "task_lease_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Task Lease Id",
+      "type": "string"
+    },
+    "tests": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/TestResult"
+      },
+      "title": "Tests",
+      "type": "array"
+    },
+    "usage": {
+      "$ref": "#/$defs/ExecutionUsage"
+    },
+    "workspace_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Workspace Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "invocation_id",
+    "invocation_source",
+    "employee_id",
+    "task_id",
+    "runtime_adapter_id",
+    "provider",
+    "safe_command",
+    "cwd_token",
+    "workspace_id",
+    "graph_snapshot_id",
+    "graph_scope_id",
+    "policy_decision_id",
+    "task_lease_id",
+    "fencing_token",
+    "started_at"
+  ],
+  "title": "ExecutionRun",
+  "type": "object"
+}

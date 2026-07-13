@@ -1,0 +1,122 @@
+{
+  "$defs": {
+    "PolicyOutcome": {
+      "enum": [
+        "allow",
+        "deny",
+        "require_approval",
+        "quarantine",
+        "redact"
+      ],
+      "title": "PolicyOutcome",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Action",
+      "type": "string"
+    },
+    "destination": {
+      "anyOf": [
+        {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Destination"
+    },
+    "evaluated_at": {
+      "format": "date-time",
+      "title": "Evaluated At",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "outcome": {
+      "$ref": "#/$defs/PolicyOutcome"
+    },
+    "payload_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Payload Sha256",
+      "type": "string"
+    },
+    "policy_decision_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Policy Decision Id",
+      "type": "string"
+    },
+    "policy_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Policy Sha256",
+      "type": "string"
+    },
+    "policy_version": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Policy Version",
+      "type": "string"
+    },
+    "reason_codes": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Reason Codes",
+      "type": "array"
+    },
+    "required_approval_scope": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Required Approval Scope",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "PolicyDecisionV1",
+      "default": "PolicyDecisionV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.3.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "target_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Target Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "policy_decision_id",
+    "action",
+    "target_id",
+    "payload_sha256",
+    "policy_version",
+    "policy_sha256",
+    "outcome",
+    "evaluated_at"
+  ],
+  "title": "PolicyDecision",
+  "type": "object"
+}

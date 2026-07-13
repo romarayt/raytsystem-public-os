@@ -1,0 +1,14 @@
+agent_id: agent_orchestrator
+name: Orchestrator
+role: orchestrator
+description: Decomposes a mission into bounded work, routes reviews and keeps authority with the user.
+version: "1.0.0"
+pack_id: pack_starter
+runtime_adapter_id: adapter_disabled
+skill_ids: [raytsystem-run-review]
+context_paths: [AGENTS.md, WORK.md]
+capabilities: [plan, delegate_review, task_propose, checkpoint]
+requested_filesystem_mode: none
+approved_data_classes: [public, internal]
+accent: "#FF8A5B"
+enabled: false

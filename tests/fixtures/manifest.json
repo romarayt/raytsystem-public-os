@@ -1,0 +1,7 @@
+{
+  "files": {
+    "tests/fixtures/analytics.csv": "0684ab5f52df7c1bdfd6a54cc0bed3ebadcfb4034fc52dff5ca55ed2c0e6f89d",
+    "tests/fixtures/native.md": "e71630dd7c7bf4c4cf54337db79d3f0d5b3bd310e68d36ddf7bc980832b89f8b"
+  },
+  "schema_version": "1.0.0"
+}

@@ -1,0 +1,22 @@
+pack_id: pack_core
+name: raytsystem Core Procedures
+version: "1.0.0"
+description: Provenance-first procedures and explicit workspace instruction entry points.
+license_expression: Apache-2.0
+trust_class: official
+agent_ids: []
+skill_ids:
+  - start
+  - graph
+  - raytsystem-ingest
+  - raytsystem-lint
+  - raytsystem-query
+  - raytsystem-research
+  - raytsystem-run-review
+  - raytsystem-save
+  - raytsystem-security-review
+context_paths:
+  - AGENTS.md
+  - WORK.md
+  - CLAUDE.md
+optional: false

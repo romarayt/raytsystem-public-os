@@ -1,0 +1,81 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "evidence_basis": {
+      "const": "synthetic_fixture_only",
+      "default": "synthetic_fixture_only",
+      "title": "Evidence Basis",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "needs_review": {
+      "const": true,
+      "default": true,
+      "title": "Needs Review",
+      "type": "boolean"
+    },
+    "project_id": {
+      "pattern": "^ytp_[a-z0-9_]{2,120}$",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "reasons": {
+      "items": {
+        "maxLength": 4096,
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Reasons",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "YouTubeVerdictV1",
+      "default": "YouTubeVerdictV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state": {
+      "const": "draft",
+      "default": "draft",
+      "title": "State",
+      "type": "string"
+    },
+    "verdict": {
+      "enum": [
+        "green",
+        "yellow",
+        "red"
+      ],
+      "title": "Verdict",
+      "type": "string"
+    },
+    "verdict_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Verdict Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "verdict_id",
+    "project_id",
+    "verdict",
+    "reasons"
+  ],
+  "title": "YouTubeVerdict",
+  "type": "object"
+}

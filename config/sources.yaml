@@ -1,0 +1,17 @@
+version: "1.0.0"
+routes:
+  markdown: native_text
+  text: native_text
+  json: native_json
+  jsonl: native_jsonl
+  csv: native_csv
+  pdf: docling_optional
+network:
+  enabled: false
+  allowed_schemes:
+    - https
+  allowed_ports:
+    - 443
+  block_private_addresses: true
+  revalidate_redirect_targets: true
+  require_peer_ip_pinning: true

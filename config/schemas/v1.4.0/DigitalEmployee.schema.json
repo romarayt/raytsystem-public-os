@@ -1,0 +1,413 @@
+{
+  "$defs": {
+    "EmployeeStatus": {
+      "enum": [
+        "disabled",
+        "idle",
+        "assigned",
+        "running",
+        "paused",
+        "blocked",
+        "error",
+        "terminated"
+      ],
+      "title": "EmployeeStatus",
+      "type": "string"
+    },
+    "FilesystemPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "allow_git_read": {
+          "default": true,
+          "title": "Allow Git Read",
+          "type": "boolean"
+        },
+        "allow_git_write": {
+          "default": false,
+          "title": "Allow Git Write",
+          "type": "boolean"
+        },
+        "allow_staged_write": {
+          "default": true,
+          "title": "Allow Staged Write",
+          "type": "boolean"
+        },
+        "allow_workspace_read": {
+          "default": true,
+          "title": "Allow Workspace Read",
+          "type": "boolean"
+        },
+        "approved_external_root_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Approved External Root Id"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "mode": {
+          "$ref": "#/$defs/WorkspaceMode",
+          "default": "task_worktree"
+        },
+        "schema_name": {
+          "const": "FilesystemPolicyV1",
+          "default": "FilesystemPolicyV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "title": "FilesystemPolicy",
+      "type": "object"
+    },
+    "GraphPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "include_relations": {
+          "default": [
+            "calls",
+            "imports",
+            "tests",
+            "depends_on",
+            "implemented_by"
+          ],
+          "items": {
+            "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+            "type": "string"
+          },
+          "title": "Include Relations",
+          "type": "array"
+        },
+        "max_bytes": {
+          "default": 48000,
+          "maximum": 2000000,
+          "minimum": 1024,
+          "title": "Max Bytes",
+          "type": "integer"
+        },
+        "max_depth": {
+          "default": 2,
+          "maximum": 8,
+          "minimum": 0,
+          "title": "Max Depth",
+          "type": "integer"
+        },
+        "max_edges": {
+          "default": 100,
+          "maximum": 2000,
+          "minimum": 0,
+          "title": "Max Edges",
+          "type": "integer"
+        },
+        "max_nodes": {
+          "default": 40,
+          "maximum": 500,
+          "minimum": 1,
+          "title": "Max Nodes",
+          "type": "integer"
+        },
+        "schema_name": {
+          "const": "GraphPolicyV1",
+          "default": "GraphPolicyV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "title": "GraphPolicy",
+      "type": "object"
+    },
+    "HeartbeatPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "interval_seconds": {
+          "default": 0,
+          "maximum": 2592000,
+          "minimum": 0,
+          "title": "Interval Seconds",
+          "type": "integer"
+        },
+        "manual_enabled": {
+          "default": true,
+          "title": "Manual Enabled",
+          "type": "boolean"
+        },
+        "max_consecutive_failures": {
+          "default": 3,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Max Consecutive Failures",
+          "type": "integer"
+        },
+        "max_duration_seconds": {
+          "default": 3600,
+          "maximum": 86400,
+          "minimum": 1,
+          "title": "Max Duration Seconds",
+          "type": "integer"
+        },
+        "max_idle_seconds": {
+          "default": 900,
+          "maximum": 86400,
+          "minimum": 1,
+          "title": "Max Idle Seconds",
+          "type": "integer"
+        },
+        "max_without_progress": {
+          "default": 3,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Max Without Progress",
+          "type": "integer"
+        },
+        "scheduled_enabled": {
+          "default": false,
+          "title": "Scheduled Enabled",
+          "type": "boolean"
+        },
+        "schema_name": {
+          "const": "HeartbeatPolicyV1",
+          "default": "HeartbeatPolicyV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "wake_on_assignment": {
+          "default": false,
+          "title": "Wake On Assignment",
+          "type": "boolean"
+        },
+        "wake_on_comment": {
+          "default": false,
+          "title": "Wake On Comment",
+          "type": "boolean"
+        }
+      },
+      "title": "HeartbeatPolicy",
+      "type": "object"
+    },
+    "WorkspaceMode": {
+      "enum": [
+        "workspace_root_readonly",
+        "task_worktree",
+        "approved_external_root"
+      ],
+      "title": "WorkspaceMode",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "agent_definition_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Agent Definition Id",
+      "type": "string"
+    },
+    "agent_definition_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Agent Definition Sha256",
+      "type": "string"
+    },
+    "budget_policy_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Budget Policy Id"
+    },
+    "concurrency_limit": {
+      "default": 1,
+      "maximum": 32,
+      "minimum": 1,
+      "title": "Concurrency Limit",
+      "type": "integer"
+    },
+    "configuration_revision": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Configuration Revision",
+      "type": "string"
+    },
+    "current_session_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Current Session Id"
+    },
+    "current_task_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Current Task Id"
+    },
+    "description": {
+      "default": "",
+      "maxLength": 8192,
+      "title": "Description",
+      "type": "string"
+    },
+    "employee_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Employee Id",
+      "type": "string"
+    },
+    "enabled_skill_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Enabled Skill Ids",
+      "type": "array"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "filesystem_policy": {
+      "$ref": "#/$defs/FilesystemPolicy"
+    },
+    "graph_policy": {
+      "$ref": "#/$defs/GraphPolicy"
+    },
+    "heartbeat_policy": {
+      "$ref": "#/$defs/HeartbeatPolicy"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "instruction_bundle": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Instruction Bundle",
+      "type": "array"
+    },
+    "name": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "reporting_manager_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reporting Manager Id"
+    },
+    "role": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Role",
+      "type": "string"
+    },
+    "runtime_adapter_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Runtime Adapter Id",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "DigitalEmployeeV1",
+      "default": "DigitalEmployeeV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/EmployeeStatus",
+      "default": "disabled"
+    }
+  },
+  "required": [
+    "employee_id",
+    "agent_definition_id",
+    "agent_definition_sha256",
+    "name",
+    "role",
+    "runtime_adapter_id",
+    "configuration_revision"
+  ],
+  "title": "DigitalEmployee",
+  "type": "object"
+}

@@ -1,0 +1,154 @@
+{
+  "$defs": {
+    "Alias": {
+      "additionalProperties": false,
+      "properties": {
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "kind": {
+          "default": "name",
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "language": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Language"
+        },
+        "schema_name": {
+          "const": "AliasV1",
+          "default": "AliasV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "value": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "title": "Alias",
+      "type": "object"
+    },
+    "LifecycleStatus": {
+      "enum": [
+        "active",
+        "disputed",
+        "stale",
+        "superseded",
+        "retracted"
+      ],
+      "title": "LifecycleStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "aliases": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Alias"
+      },
+      "title": "Aliases",
+      "type": "array"
+    },
+    "canonical_label": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Canonical Label",
+      "type": "string"
+    },
+    "disambiguators": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Disambiguators",
+      "type": "object"
+    },
+    "entity_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Entity Id",
+      "type": "string"
+    },
+    "entity_type": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Entity Type",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "lifecycle_status": {
+      "$ref": "#/$defs/LifecycleStatus",
+      "default": "active"
+    },
+    "review_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Review Ids",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "EntityV1",
+      "default": "EntityV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "superseded_by": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Superseded By",
+      "type": "array"
+    }
+  },
+  "required": [
+    "entity_id",
+    "entity_type",
+    "canonical_label"
+  ],
+  "title": "Entity",
+  "type": "object"
+}

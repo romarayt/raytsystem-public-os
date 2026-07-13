@@ -1,0 +1,4 @@
+interface:
+  display_name: "raytsystem INGEST"
+  short_description: "Capture and promote evidence safely"
+  default_prompt: "Use $raytsystem-ingest to ingest a workspace source through the deterministic raytsystem kernel."

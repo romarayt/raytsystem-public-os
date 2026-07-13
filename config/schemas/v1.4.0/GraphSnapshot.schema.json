@@ -1,0 +1,403 @@
+{
+  "$defs": {
+    "GraphEdgeView": {
+      "additionalProperties": false,
+      "properties": {
+        "directed": {
+          "default": true,
+          "title": "Directed",
+          "type": "boolean"
+        },
+        "edge_id": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Edge Id",
+          "type": "string"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "kind": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "metadata": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Metadata",
+          "type": "object"
+        },
+        "schema_name": {
+          "const": "GraphEdgeViewV1",
+          "default": "GraphEdgeViewV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Source",
+          "type": "string"
+        },
+        "status": {
+          "default": "active",
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Status",
+          "type": "string"
+        },
+        "target": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "edge_id",
+        "source",
+        "target",
+        "kind"
+      ],
+      "title": "GraphEdgeView",
+      "type": "object"
+    },
+    "GraphLens": {
+      "enum": [
+        "universe",
+        "knowledge",
+        "work",
+        "agent",
+        "evidence",
+        "code"
+      ],
+      "title": "GraphLens",
+      "type": "string"
+    },
+    "GraphNodeView": {
+      "additionalProperties": false,
+      "properties": {
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "importance": {
+          "default": 1,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Importance",
+          "type": "integer"
+        },
+        "kind": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "metadata": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Metadata",
+          "type": "object"
+        },
+        "node_id": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "recorded_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recorded At"
+        },
+        "ring": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Ring",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "GraphNodeViewV1",
+          "default": "GraphNodeViewV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Ref"
+        },
+        "status": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Status",
+          "type": "string"
+        },
+        "subtitle": {
+          "default": "",
+          "maxLength": 4096,
+          "title": "Subtitle",
+          "type": "string"
+        },
+        "x": {
+          "maximum": 100000,
+          "minimum": -100000,
+          "title": "X",
+          "type": "integer"
+        },
+        "y": {
+          "maximum": 100000,
+          "minimum": -100000,
+          "title": "Y",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "node_id",
+        "kind",
+        "label",
+        "status",
+        "ring",
+        "x",
+        "y"
+      ],
+      "title": "GraphNodeView",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "catalog_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Catalog Sha256",
+      "type": "string"
+    },
+    "code_ambiguous_edges": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Code Ambiguous Edges",
+      "type": "integer"
+    },
+    "code_edge_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Code Edge Count",
+      "type": "integer"
+    },
+    "code_file_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Code File Count",
+      "type": "integer"
+    },
+    "code_graph_state": {
+      "default": "missing",
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Code Graph State",
+      "type": "string"
+    },
+    "code_node_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Code Node Count",
+      "type": "integer"
+    },
+    "code_snapshot_fingerprint": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Code Snapshot Fingerprint"
+    },
+    "code_snapshot_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Code Snapshot Id"
+    },
+    "code_snapshot_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Code Snapshot Sha256"
+    },
+    "code_view_edge_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Code View Edge Count",
+      "type": "integer"
+    },
+    "code_view_node_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Code View Node Count",
+      "type": "integer"
+    },
+    "code_view_truncated": {
+      "default": false,
+      "title": "Code View Truncated",
+      "type": "boolean"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/GraphEdgeView"
+      },
+      "title": "Edges",
+      "type": "array"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "graph_snapshot_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Graph Snapshot Id",
+      "type": "string"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "knowledge_generation_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Knowledge Generation Id",
+      "type": "string"
+    },
+    "knowledge_generation_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Knowledge Generation Sha256",
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/GraphNodeView"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "GraphSnapshotV1",
+      "default": "GraphSnapshotV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "supported_lenses": {
+      "items": {
+        "$ref": "#/$defs/GraphLens"
+      },
+      "title": "Supported Lenses",
+      "type": "array"
+    },
+    "task_generation_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Task Generation Id"
+    },
+    "task_generation_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Task Generation Sha256"
+    }
+  },
+  "required": [
+    "graph_snapshot_id",
+    "knowledge_generation_id",
+    "knowledge_generation_sha256",
+    "catalog_sha256",
+    "nodes",
+    "edges",
+    "supported_lenses",
+    "created_at"
+  ],
+  "title": "GraphSnapshot",
+  "type": "object"
+}

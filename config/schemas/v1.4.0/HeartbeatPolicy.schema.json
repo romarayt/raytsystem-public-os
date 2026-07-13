@@ -1,0 +1,83 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "interval_seconds": {
+      "default": 0,
+      "maximum": 2592000,
+      "minimum": 0,
+      "title": "Interval Seconds",
+      "type": "integer"
+    },
+    "manual_enabled": {
+      "default": true,
+      "title": "Manual Enabled",
+      "type": "boolean"
+    },
+    "max_consecutive_failures": {
+      "default": 3,
+      "maximum": 100,
+      "minimum": 1,
+      "title": "Max Consecutive Failures",
+      "type": "integer"
+    },
+    "max_duration_seconds": {
+      "default": 3600,
+      "maximum": 86400,
+      "minimum": 1,
+      "title": "Max Duration Seconds",
+      "type": "integer"
+    },
+    "max_idle_seconds": {
+      "default": 900,
+      "maximum": 86400,
+      "minimum": 1,
+      "title": "Max Idle Seconds",
+      "type": "integer"
+    },
+    "max_without_progress": {
+      "default": 3,
+      "maximum": 100,
+      "minimum": 1,
+      "title": "Max Without Progress",
+      "type": "integer"
+    },
+    "scheduled_enabled": {
+      "default": false,
+      "title": "Scheduled Enabled",
+      "type": "boolean"
+    },
+    "schema_name": {
+      "const": "HeartbeatPolicyV1",
+      "default": "HeartbeatPolicyV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "wake_on_assignment": {
+      "default": false,
+      "title": "Wake On Assignment",
+      "type": "boolean"
+    },
+    "wake_on_comment": {
+      "default": false,
+      "title": "Wake On Comment",
+      "type": "boolean"
+    }
+  },
+  "title": "HeartbeatPolicy",
+  "type": "object"
+}

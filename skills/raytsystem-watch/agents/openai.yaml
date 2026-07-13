@@ -1,0 +1,4 @@
+interface:
+  display_name: "raytsystem Watch"
+  short_description: "Разбирает речь и визуальный ряд видео"
+  default_prompt: "Use $raytsystem-watch to inspect this video with timestamps and provenance."

@@ -1,0 +1,8 @@
+{"case_id":"universe-assembly","question":"How does UniverseService assemble the unified graph snapshot?","expected_paths":["src/raytsystem/universe.py"]}
+{"case_id":"projection-commit","question":"How does CodeGraphProjection atomically promote a derived snapshot?","expected_paths":["src/raytsystem/codegraph/projection.py"]}
+{"case_id":"graph-api","question":"Where are typed code graph API operations validated and exposed?","expected_paths":["src/raytsystem/webapp/app.py","src/raytsystem/webapp/dto.py"]}
+{"case_id":"query-routing","question":"How does QueryService route architecture questions to graph-first retrieval?","expected_paths":["src/raytsystem/querying.py","src/raytsystem/codegraph/querying.py"]}
+{"case_id":"code-lens","question":"How is the Code lens rendered and inspected in the React Universe?","expected_paths":["web/src/features/Universe.tsx","web/src/components/Inspector.tsx"]}
+{"case_id":"path-security","question":"How are code graph paths contained and no-follow reads enforced?","expected_paths":["src/raytsystem/codegraph/security.py","src/raytsystem/security/paths.py"]}
+{"case_id":"graph-contracts","question":"Where are deterministic code graph contracts and Universe bindings defined?","expected_paths":["src/raytsystem/codegraph/contracts.py","src/raytsystem/contracts/agentic.py"]}
+{"case_id":"lifecycle-hooks","question":"Which lifecycle hooks update the graph after commit and checkout?","expected_paths":[".pre-commit-config.yaml"]}

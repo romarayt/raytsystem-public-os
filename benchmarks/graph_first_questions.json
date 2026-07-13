@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0.0",
+  "questions": [
+    {
+      "id": "task_ledger_integrity",
+      "question": "How does the task ledger make task state durable and reject writes against a stale generation?",
+      "required_sources": [
+        "src/raytsystem/storage.py",
+        "src/raytsystem/tasking.py"
+      ],
+      "required_terms": [
+        "TaskService",
+        "expected_generation_id",
+        "generation_id",
+        "publish_immutable"
+      ]
+    },
+    {
+      "id": "code_graph_freshness",
+      "question": "Where is code graph freshness verified before a query and how is query context bounded?",
+      "required_sources": [
+        "src/raytsystem/codegraph/detect.py",
+        "src/raytsystem/codegraph/projection.py",
+        "src/raytsystem/codegraph/querying.py"
+      ],
+      "required_terms": [
+        "CodeGraphProjection",
+        "CodeGraphQueryService",
+        "current_snapshot",
+        "query_max_bytes"
+      ]
+    },
+    {
+      "id": "digital_employee_projection",
+      "question": "How are inert catalog agent definitions projected into policy-bound digital employees with a deterministic configuration revision?",
+      "required_sources": [
+        "src/raytsystem/catalog.py",
+        "src/raytsystem/contracts/execution.py",
+        "src/raytsystem/execution/employees.py"
+      ],
+      "required_terms": [
+        "CatalogService",
+        "DigitalEmployee",
+        "configuration_revision",
+        "employee_from_definition"
+      ]
+    },
+    {
+      "id": "safe_workspace_paths",
+      "question": "Which path helpers prevent traversal, symlink following, and hard-linked file reads or unsafe managed writes?",
+      "required_sources": [
+        "src/raytsystem/io.py",
+        "src/raytsystem/security/paths.py"
+      ],
+      "required_terms": [
+        "PathPolicyError",
+        "UnsafeWritePath",
+        "ensure_safe_directory",
+        "read_regular_file"
+      ]
+    },
+    {
+      "id": "task_workspace_context",
+      "question": "How does workspace preparation bind task revision, employee configuration, Git commit, and current graph context before execution?",
+      "required_sources": [
+        "src/raytsystem/execution/employees.py",
+        "src/raytsystem/execution/workspace.py",
+        "src/raytsystem/tasking.py"
+      ],
+      "required_terms": [
+        "TaskGraphScope",
+        "WorkspaceManager",
+        "configuration_revision",
+        "current_snapshot_with_sha256"
+      ]
+    }
+  ]
+}

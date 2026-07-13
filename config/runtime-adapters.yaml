@@ -1,0 +1,46 @@
+version: "1.0.0"
+adapters:
+  - adapter_id: adapter_fake
+    name: Deterministic fake runtime
+    version: "1.0.0"
+    state: disabled
+    isolation_mode: in_process_no_egress
+    capabilities: [read_workspace, staged_write, review, resume, deterministic]
+    reason: Implementation is present, but repository catalog activation remains explicit.
+  - adapter_id: adapter_disabled
+    name: Catalog only
+    version: "1.0.0"
+    state: disabled
+    isolation_mode: none
+    capabilities: []
+    reason: Runtime execution is intentionally unavailable in the first web control-plane release.
+  - adapter_id: adapter_codex_local
+    name: Codex local connector
+    version: "0.1.0-contract"
+    state: disabled
+    isolation_mode: workspace_sandbox
+    capabilities: [read_workspace, staged_write, review]
+    egress_destination: current_openai_provider
+    reason: Contract only; no reviewed invocation bridge is enabled.
+  - adapter_id: adapter_claude_code
+    name: Claude Code connector
+    version: "0.1.0-contract"
+    state: disabled
+    isolation_mode: external_cli
+    capabilities: [read_workspace, staged_write, review]
+    egress_destination: user_configured_anthropic_provider
+    reason: Contract only; no reviewed invocation bridge is enabled.
+  - adapter_id: adapter_hermes
+    name: Hermes connector
+    version: "0.1.0-contract"
+    state: disabled
+    isolation_mode: external_runtime
+    capabilities: [agent_session, skill_catalog]
+    reason: Contract only; installation and execution are separate decisions.
+  - adapter_id: adapter_openhands
+    name: OpenHands connector
+    version: "0.1.0-contract"
+    state: disabled
+    isolation_mode: container_or_remote_sandbox
+    capabilities: [agent_session, sandboxed_workspace]
+    reason: Contract only; no OpenHands server is configured.

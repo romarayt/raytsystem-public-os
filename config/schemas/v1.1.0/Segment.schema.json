@@ -1,0 +1,495 @@
+{
+  "$defs": {
+    "ImageLocator": {
+      "additionalProperties": false,
+      "properties": {
+        "bbox": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Bbox",
+          "type": "array"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "frame_index": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frame Index"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "kind": {
+          "const": "image",
+          "default": "image",
+          "title": "Kind",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "ImageLocatorV1",
+          "default": "ImageLocatorV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "bbox"
+      ],
+      "title": "ImageLocator",
+      "type": "object"
+    },
+    "JsonLocator": {
+      "additionalProperties": false,
+      "properties": {
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "kind": {
+          "const": "json",
+          "default": "json",
+          "title": "Kind",
+          "type": "string"
+        },
+        "pointer": {
+          "pattern": "^(|/.*)$",
+          "title": "Pointer",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "JsonLocatorV1",
+          "default": "JsonLocatorV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pointer"
+      ],
+      "title": "JsonLocator",
+      "type": "object"
+    },
+    "PdfLocator": {
+      "additionalProperties": false,
+      "properties": {
+        "bbox": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$",
+              "type": "string"
+            },
+            {
+              "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$",
+              "type": "string"
+            },
+            {
+              "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$",
+              "type": "string"
+            },
+            {
+              "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$",
+              "type": "string"
+            }
+          ],
+          "title": "Bbox",
+          "type": "array"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "kind": {
+          "const": "pdf",
+          "default": "pdf",
+          "title": "Kind",
+          "type": "string"
+        },
+        "page_index": {
+          "minimum": 0,
+          "title": "Page Index",
+          "type": "integer"
+        },
+        "schema_name": {
+          "const": "PdfLocatorV1",
+          "default": "PdfLocatorV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "page_index",
+        "bbox"
+      ],
+      "title": "PdfLocator",
+      "type": "object"
+    },
+    "TableLocator": {
+      "additionalProperties": false,
+      "properties": {
+        "column_end": {
+          "minimum": 0,
+          "title": "Column End",
+          "type": "integer"
+        },
+        "column_start": {
+          "minimum": 0,
+          "title": "Column Start",
+          "type": "integer"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "kind": {
+          "const": "table",
+          "default": "table",
+          "title": "Kind",
+          "type": "string"
+        },
+        "row_end": {
+          "minimum": 0,
+          "title": "Row End",
+          "type": "integer"
+        },
+        "row_start": {
+          "minimum": 0,
+          "title": "Row Start",
+          "type": "integer"
+        },
+        "schema_name": {
+          "const": "TableLocatorV1",
+          "default": "TableLocatorV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "table": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Table",
+          "type": "string"
+        }
+      },
+      "required": [
+        "table",
+        "row_start",
+        "row_end",
+        "column_start",
+        "column_end"
+      ],
+      "title": "TableLocator",
+      "type": "object"
+    },
+    "TextLocator": {
+      "additionalProperties": false,
+      "properties": {
+        "char_end": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Char End"
+        },
+        "char_start": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Char Start"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "kind": {
+          "const": "text",
+          "default": "text",
+          "title": "Kind",
+          "type": "string"
+        },
+        "line_end": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Line End"
+        },
+        "line_start": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Line Start"
+        },
+        "schema_name": {
+          "const": "TextLocatorV1",
+          "default": "TextLocatorV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "title": "TextLocator",
+      "type": "object"
+    },
+    "TimeLocator": {
+      "additionalProperties": false,
+      "properties": {
+        "end_ms": {
+          "minimum": 0,
+          "title": "End Ms",
+          "type": "integer"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "kind": {
+          "const": "time",
+          "default": "time",
+          "title": "Kind",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "TimeLocatorV1",
+          "default": "TimeLocatorV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "start_ms": {
+          "minimum": 0,
+          "title": "Start Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start_ms",
+        "end_ms"
+      ],
+      "title": "TimeLocator",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "excerpt_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Excerpt Sha256",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "language": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Language"
+    },
+    "locator": {
+      "discriminator": {
+        "mapping": {
+          "image": "#/$defs/ImageLocator",
+          "json": "#/$defs/JsonLocator",
+          "pdf": "#/$defs/PdfLocator",
+          "table": "#/$defs/TableLocator",
+          "text": "#/$defs/TextLocator",
+          "time": "#/$defs/TimeLocator"
+        },
+        "propertyName": "kind"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/TextLocator"
+        },
+        {
+          "$ref": "#/$defs/PdfLocator"
+        },
+        {
+          "$ref": "#/$defs/TimeLocator"
+        },
+        {
+          "$ref": "#/$defs/ImageLocator"
+        },
+        {
+          "$ref": "#/$defs/JsonLocator"
+        },
+        {
+          "$ref": "#/$defs/TableLocator"
+        }
+      ],
+      "title": "Locator"
+    },
+    "modality": {
+      "default": "text",
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Modality",
+      "type": "string"
+    },
+    "normalization_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Normalization Id",
+      "type": "string"
+    },
+    "ordinal": {
+      "minimum": 0,
+      "title": "Ordinal",
+      "type": "integer"
+    },
+    "schema_name": {
+      "const": "SegmentV1",
+      "default": "SegmentV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "segment_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Segment Id",
+      "type": "string"
+    },
+    "source_revision_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Source Revision Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "segment_id",
+    "source_revision_id",
+    "normalization_id",
+    "ordinal",
+    "locator",
+    "excerpt_sha256"
+  ],
+  "title": "Segment",
+  "type": "object"
+}

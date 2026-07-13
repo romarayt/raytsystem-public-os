@@ -1,0 +1,248 @@
+{
+  "$defs": {
+    "ComponentRef": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Sha256"
+        },
+        "config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Config Sha256",
+          "type": "string"
+        },
+        "name": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "config_sha256"
+      ],
+      "title": "ComponentRef",
+      "type": "object"
+    },
+    "Origin": {
+      "additionalProperties": false,
+      "properties": {
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "kind": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "locator": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Locator"
+        },
+        "locator_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Locator Sha256"
+        },
+        "schema_name": {
+          "const": "OriginV1",
+          "default": "OriginV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "Origin",
+      "type": "object"
+    },
+    "Sensitivity": {
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted",
+        "secret"
+      ],
+      "title": "Sensitivity",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "byte_length": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Byte Length",
+      "type": "integer"
+    },
+    "captured_at": {
+      "format": "date-time",
+      "title": "Captured At",
+      "type": "string"
+    },
+    "content_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Content Sha256",
+      "type": "string"
+    },
+    "derived_from_revision_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Derived From Revision Id"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "fetcher_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ComponentRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "media_type": {
+      "default": "application/octet-stream",
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Media Type",
+      "type": "string"
+    },
+    "origin_snapshot": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Origin"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "published_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Published At"
+    },
+    "raw_path": {
+      "minLength": 1,
+      "title": "Raw Path",
+      "type": "string"
+    },
+    "retention": {
+      "default": "retain",
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Retention",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "SourceRevisionV1",
+      "default": "SourceRevisionV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sensitivity": {
+      "$ref": "#/$defs/Sensitivity",
+      "default": "internal"
+    },
+    "source_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Source Id",
+      "type": "string"
+    },
+    "source_revision_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Source Revision Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_revision_id",
+    "source_id",
+    "content_sha256",
+    "raw_path",
+    "captured_at"
+  ],
+  "title": "SourceRevision",
+  "type": "object"
+}

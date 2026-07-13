@@ -1,0 +1,101 @@
+{
+  "$defs": {
+    "LeaseState": {
+      "enum": [
+        "active",
+        "released",
+        "expired",
+        "revoked"
+      ],
+      "title": "LeaseState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "acquired_at": {
+      "format": "date-time",
+      "title": "Acquired At",
+      "type": "string"
+    },
+    "control_epoch": {
+      "default": "epoch_initial",
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Control Epoch",
+      "type": "string"
+    },
+    "expires_at": {
+      "format": "date-time",
+      "title": "Expires At",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "fencing_token": {
+      "exclusiveMinimum": 0,
+      "title": "Fencing Token",
+      "type": "integer"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "lease_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Lease Id",
+      "type": "string"
+    },
+    "owner_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Owner Id",
+      "type": "string"
+    },
+    "partition_key": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Partition Key",
+      "type": "string"
+    },
+    "renewed_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Renewed At"
+    },
+    "schema_name": {
+      "const": "LeaseV1",
+      "default": "LeaseV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state": {
+      "$ref": "#/$defs/LeaseState",
+      "default": "active"
+    }
+  },
+  "required": [
+    "lease_id",
+    "partition_key",
+    "owner_id",
+    "fencing_token",
+    "acquired_at",
+    "expires_at"
+  ],
+  "title": "Lease",
+  "type": "object"
+}

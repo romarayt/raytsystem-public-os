@@ -1,0 +1,93 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "confirmation_required": {
+      "title": "Confirmation Required",
+      "type": "boolean"
+    },
+    "conflicts": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Conflicts",
+      "type": "array"
+    },
+    "dry_run": {
+      "default": true,
+      "title": "Dry Run",
+      "type": "boolean"
+    },
+    "existing_repository": {
+      "title": "Existing Repository",
+      "type": "boolean"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "files_to_create": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Files To Create",
+      "type": "array"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "init_plan_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Init Plan Id",
+      "type": "string"
+    },
+    "manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Manifest Sha256",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "WorkspaceInitPlanV1",
+      "default": "WorkspaceInitPlanV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "template_id": {
+      "enum": [
+        "software",
+        "content",
+        "research",
+        "youtube"
+      ],
+      "title": "Template Id",
+      "type": "string"
+    },
+    "template_version": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Template Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "init_plan_id",
+    "template_id",
+    "template_version",
+    "files_to_create",
+    "existing_repository",
+    "confirmation_required",
+    "manifest_sha256"
+  ],
+  "title": "WorkspaceInitPlan",
+  "type": "object"
+}

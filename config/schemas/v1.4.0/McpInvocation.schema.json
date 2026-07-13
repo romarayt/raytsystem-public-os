@@ -1,0 +1,122 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "approval_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Approval Id"
+    },
+    "completed_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Completed At"
+    },
+    "connection_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Connection Id",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "input_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Input Sha256",
+      "type": "string"
+    },
+    "invocation_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Invocation Id",
+      "type": "string"
+    },
+    "output_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Output Sha256"
+    },
+    "policy_decision_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Policy Decision Id",
+      "type": "string"
+    },
+    "redacted": {
+      "default": true,
+      "title": "Redacted",
+      "type": "boolean"
+    },
+    "schema_name": {
+      "const": "McpInvocationV1",
+      "default": "McpInvocationV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "planned",
+        "blocked",
+        "running",
+        "succeeded",
+        "failed"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "tool_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Tool Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "invocation_id",
+    "connection_id",
+    "tool_id",
+    "input_sha256",
+    "policy_decision_id",
+    "state",
+    "started_at"
+  ],
+  "title": "McpInvocation",
+  "type": "object"
+}

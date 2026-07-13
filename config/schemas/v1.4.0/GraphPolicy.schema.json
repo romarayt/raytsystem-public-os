@@ -1,0 +1,71 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "include_relations": {
+      "default": [
+        "calls",
+        "imports",
+        "tests",
+        "depends_on",
+        "implemented_by"
+      ],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Include Relations",
+      "type": "array"
+    },
+    "max_bytes": {
+      "default": 48000,
+      "maximum": 2000000,
+      "minimum": 1024,
+      "title": "Max Bytes",
+      "type": "integer"
+    },
+    "max_depth": {
+      "default": 2,
+      "maximum": 8,
+      "minimum": 0,
+      "title": "Max Depth",
+      "type": "integer"
+    },
+    "max_edges": {
+      "default": 100,
+      "maximum": 2000,
+      "minimum": 0,
+      "title": "Max Edges",
+      "type": "integer"
+    },
+    "max_nodes": {
+      "default": 40,
+      "maximum": 500,
+      "minimum": 1,
+      "title": "Max Nodes",
+      "type": "integer"
+    },
+    "schema_name": {
+      "const": "GraphPolicyV1",
+      "default": "GraphPolicyV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "title": "GraphPolicy",
+  "type": "object"
+}

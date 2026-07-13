@@ -1,0 +1,38 @@
+---
+title: "Типы узлов workflow"
+description: "Автогенерируемый список зарегистрированных типов узлов workflow DAG."
+audience:
+  - user
+  - operator
+  - developer
+status: stable
+generated: true
+slug: /reference/workflow-nodes
+---
+
+
+import GeneratedNotice from '@site/src/components/GeneratedNotice';
+
+<GeneratedNotice source="src/raytsystem/contracts/workflows.py" command="scripts/docs/gen_reference.py" />
+
+# Типы узлов workflow
+
+Движок workflow (`workflow_engine_enabled`) поддерживает следующие типы узлов DAG.
+
+| Тип узла | Назначение |
+|---|---|
+| `task` | Ссылка на задачу в task ledger. |
+| `agent` | Шаг с назначенным агентом/цифровым сотрудником. |
+| `deterministic_command` | Зарегистрированная операция по ID. Произвольный shell запрещён. |
+| `review` | Узел ручной проверки результата. |
+| `approval` | Явное разрешение через approval gate. |
+| `condition` | Ветвление по типизированному условию. |
+| `wait` | Ожидание (таймер/событие). |
+| `artifact` | Регистрация артефакта. |
+| `notification` | Отправка уведомления во внутренний inbox. |
+| `subworkflow` | Вложенный workflow. |
+
+:::warning Безопасность
+Узел `deterministic_command` выполняет только зарегистрированные операции по ID. Произвольные shell-команды из UI, задачи или workflow запрещены.
+:::
+

@@ -1,0 +1,79 @@
+---
+title: "Feature flags: полный список"
+description: "Автогенерируемый список feature flags raytsystem и их значений по умолчанию."
+audience:
+  - user
+  - operator
+  - developer
+status: stable
+generated: true
+slug: /reference/feature-flags
+---
+
+
+import GeneratedNotice from '@site/src/components/GeneratedNotice';
+
+<GeneratedNotice source="config/raytsystem.toml, config/platform.yaml" command="scripts/docs/gen_reference.py" />
+
+# Feature flags: полный список
+
+Флаги определяют, какие поверхности raytsystem доступны. Значения ниже — умолчания из конфигурации репозитория. Флаг со значением `false` означает, что функция выключена по умолчанию и не должна считаться доступной.
+
+## Основные флаги — `config/raytsystem.toml` `[features]`
+
+| Флаг | По умолчанию |
+|---|---|
+| `claude_local_enabled` | `false` |
+| `code_graph_enabled` | `true` |
+| `codex_local_enabled` | `false` |
+| `digital_employees_enabled` | `true` |
+| `graph_first_query_enabled` | `true` |
+| `heartbeats_enabled` | `true` |
+| `runtime_execution_enabled` | `false` |
+| `scheduled_heartbeats_enabled` | `false` |
+| `task_workspaces_enabled` | `true` |
+
+## Платформенные флаги — `config/platform.yaml`
+
+| Флаг | По умолчанию |
+|---|---|
+| `a2a_gateway_enabled` | `false` |
+| `a2a_network_exposure_enabled` | `false` |
+| `acp_adapter_enabled` | `false` |
+| `backup_enabled` | `true` |
+| `emergency_controls_enabled` | `true` |
+| `evals_enabled` | `true` |
+| `external_kms_enabled` | `false` |
+| `external_mcp_execution_enabled` | `false` |
+| `external_notifications_enabled` | `false` |
+| `mcp_governance_enabled` | `true` |
+| `notifications_enabled` | `true` |
+| `otel_export_enabled` | `false` |
+| `pack_lifecycle_enabled` | `true` |
+| `policy_simulator_enabled` | `true` |
+| `promptfoo_adapter_enabled` | `false` |
+| `promptfoo_remote_generation_enabled` | `false` |
+| `replay_enabled` | `true` |
+| `restricted_encryption_enabled` | `false` |
+| `telemetry_enabled` | `true` |
+| `workflow_engine_enabled` | `true` |
+
+## Выключено по умолчанию
+
+Эти флаги выключены. Соответствующие функции недоступны без явного включения и, где указано, отдельного approval:
+
+- `a2a_gateway_enabled`
+- `a2a_network_exposure_enabled`
+- `acp_adapter_enabled`
+- `claude_local_enabled`
+- `codex_local_enabled`
+- `external_kms_enabled`
+- `external_mcp_execution_enabled`
+- `external_notifications_enabled`
+- `otel_export_enabled`
+- `promptfoo_adapter_enabled`
+- `promptfoo_remote_generation_enabled`
+- `restricted_encryption_enabled`
+- `runtime_execution_enabled`
+- `scheduled_heartbeats_enabled`
+

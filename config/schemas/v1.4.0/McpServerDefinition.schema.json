@@ -1,0 +1,205 @@
+{
+  "$defs": {
+    "Sensitivity": {
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted",
+        "secret"
+      ],
+      "title": "Sensitivity",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "enabled": {
+      "default": false,
+      "title": "Enabled",
+      "type": "boolean"
+    },
+    "environment_requirements": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Environment Requirements",
+      "type": "array"
+    },
+    "executable": {
+      "anyOf": [
+        {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Executable"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "filesystem_requirements": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Filesystem Requirements",
+      "type": "array"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "license_expression": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "License Expression",
+      "type": "string"
+    },
+    "network_destinations": {
+      "default": [],
+      "items": {
+        "maxLength": 4096,
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Network Destinations",
+      "type": "array"
+    },
+    "package_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Package Sha256",
+      "type": "string"
+    },
+    "prompt_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Prompt Ids",
+      "type": "array"
+    },
+    "publisher": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Publisher",
+      "type": "string"
+    },
+    "resource_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Resource Ids",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "McpServerDefinitionV1",
+      "default": "McpServerDefinitionV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "secret_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Secret Ids",
+      "type": "array"
+    },
+    "sensitivity": {
+      "$ref": "#/$defs/Sensitivity",
+      "default": "internal"
+    },
+    "server_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Server Id",
+      "type": "string"
+    },
+    "source": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Source",
+      "type": "string"
+    },
+    "tool_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Tool Ids",
+      "type": "array"
+    },
+    "transport": {
+      "enum": [
+        "stdio",
+        "http",
+        "sse"
+      ],
+      "title": "Transport",
+      "type": "string"
+    },
+    "trust_class": {
+      "default": "untrusted",
+      "enum": [
+        "untrusted",
+        "community",
+        "verified",
+        "official"
+      ],
+      "title": "Trust Class",
+      "type": "string"
+    },
+    "url": {
+      "anyOf": [
+        {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Url"
+    },
+    "version": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "server_id",
+    "source",
+    "version",
+    "package_sha256",
+    "transport",
+    "publisher",
+    "license_expression"
+  ],
+  "title": "McpServerDefinition",
+  "type": "object"
+}

@@ -1,0 +1,58 @@
+version: "1.0.0"
+promotion:
+  fixture: autonomous
+  real: manual_hash_bound
+external_actions:
+  default: draft_outbox
+  always_require_approval:
+    - send
+    - publish
+    - upload
+    - delete
+    - pay
+    - git_push
+    - pull_request
+model_egress:
+  approved_classes:
+    - public
+    - project_docs
+    - synthetic_fixture
+  approval_required:
+    - private
+    - pii
+    - secret
+sensitivity:
+  restricted_raw_git_tracked: false
+  redact_before_model_egress: true
+agent_surfaces:
+  reviewer_roles:
+    - architecture_reviewer
+    - contracts_reviewer
+    - data_integrity_reviewer
+    - security_reviewer
+    - tests_recovery_reviewer
+  work_hosted:
+    capabilities:
+      - read
+    approved_data_classes:
+      - public
+      - project_docs
+      - synthetic_fixture
+    local_paths: forbidden
+    destination: current_openai_provider
+  codex_local:
+    capabilities:
+      - read
+    approved_data_classes:
+      - public
+      - project_docs
+      - synthetic_fixture
+      - private
+      - pii
+    destination: local_sandbox
+  always_forbidden_for_reviewers:
+    - write
+    - worktree
+    - promotion
+    - external_action
+    - secret

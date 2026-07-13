@@ -1,0 +1,85 @@
+{
+  "$defs": {
+    "Sensitivity": {
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted",
+        "secret"
+      ],
+      "title": "Sensitivity",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "classification_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Classification Id",
+      "type": "string"
+    },
+    "disposition": {
+      "enum": [
+        "allow",
+        "redact",
+        "quarantine",
+        "deny"
+      ],
+      "title": "Disposition",
+      "type": "string"
+    },
+    "egress_class": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Egress Class",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "policy_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Policy Sha256",
+      "type": "string"
+    },
+    "reason_codes": {
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Reason Codes",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "DataClassificationV1",
+      "default": "DataClassificationV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sensitivity": {
+      "$ref": "#/$defs/Sensitivity"
+    }
+  },
+  "required": [
+    "classification_id",
+    "sensitivity",
+    "egress_class",
+    "disposition",
+    "reason_codes",
+    "policy_sha256"
+  ],
+  "title": "DataClassification",
+  "type": "object"
+}

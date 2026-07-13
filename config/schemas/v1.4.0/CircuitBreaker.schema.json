@@ -1,0 +1,126 @@
+{
+  "$defs": {
+    "CircuitBreakerState": {
+      "enum": [
+        "closed",
+        "open",
+        "half_open"
+      ],
+      "title": "CircuitBreakerState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "automatic_recovery_limit": {
+      "default": 0,
+      "maximum": 10,
+      "minimum": 0,
+      "title": "Automatic Recovery Limit",
+      "type": "integer"
+    },
+    "breaker_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Breaker Id",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "observed": {
+      "minimum": 0,
+      "title": "Observed",
+      "type": "integer"
+    },
+    "opened_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Opened At"
+    },
+    "reason": {
+      "anyOf": [
+        {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reason"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema_name": {
+      "const": "CircuitBreakerV1",
+      "default": "CircuitBreakerV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Scope",
+      "type": "string"
+    },
+    "security_breaker": {
+      "default": false,
+      "title": "Security Breaker",
+      "type": "boolean"
+    },
+    "state": {
+      "$ref": "#/$defs/CircuitBreakerState"
+    },
+    "threshold": {
+      "minimum": 1,
+      "title": "Threshold",
+      "type": "integer"
+    },
+    "trigger": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Trigger",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "breaker_id",
+    "scope",
+    "trigger",
+    "state",
+    "threshold",
+    "observed",
+    "revision",
+    "updated_at"
+  ],
+  "title": "CircuitBreaker",
+  "type": "object"
+}

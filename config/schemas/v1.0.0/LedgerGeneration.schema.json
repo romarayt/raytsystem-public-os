@@ -1,0 +1,156 @@
+{
+  "$defs": {
+    "GenerationEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "kind": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "logical_id": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Logical Id",
+          "type": "string"
+        },
+        "object_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Object Sha256",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "GenerationEntryV1",
+          "default": "GenerationEntryV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "tombstone": {
+          "default": false,
+          "title": "Tombstone",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "kind",
+        "logical_id",
+        "object_sha256"
+      ],
+      "title": "GenerationEntry",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "generation_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Generation Id",
+      "type": "string"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "parent_generation_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Generation Id"
+    },
+    "promotion_event_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Promotion Event Id"
+    },
+    "promotion_txn_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Promotion Txn Id"
+    },
+    "records": {
+      "additionalProperties": {
+        "$ref": "#/$defs/GenerationEntry"
+      },
+      "title": "Records",
+      "type": "object"
+    },
+    "schema_name": {
+      "const": "LedgerGenerationV1",
+      "default": "LedgerGenerationV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_registry_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Schema Registry Sha256"
+    },
+    "schema_version": {
+      "default": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "generation_id",
+    "created_at"
+  ],
+  "title": "LedgerGeneration",
+  "type": "object"
+}

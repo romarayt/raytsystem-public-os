@@ -1,0 +1,82 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "ambiguous_edges": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Ambiguous Edges",
+      "type": "integer"
+    },
+    "cache_hits": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Cache Hits",
+      "type": "integer"
+    },
+    "deleted_files": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Deleted Files",
+      "type": "integer"
+    },
+    "duration_ms": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Duration Ms",
+      "type": "integer"
+    },
+    "edge_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Edge Count",
+      "type": "integer"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "node_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Node Count",
+      "type": "integer"
+    },
+    "processed_files": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Processed Files",
+      "type": "integer"
+    },
+    "schema_name": {
+      "const": "CodeGraphMetricsV1",
+      "default": "CodeGraphMetricsV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "skipped_files": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Skipped Files",
+      "type": "integer"
+    },
+    "unresolved_references": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Unresolved References",
+      "type": "integer"
+    }
+  },
+  "title": "CodeGraphMetrics",
+  "type": "object"
+}

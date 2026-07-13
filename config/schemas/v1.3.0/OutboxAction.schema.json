@@ -1,0 +1,146 @@
+{
+  "$defs": {
+    "OutboxState": {
+      "enum": [
+        "draft",
+        "awaiting_approval",
+        "approved",
+        "executing",
+        "succeeded",
+        "failed_retryable",
+        "failed_terminal",
+        "cancelled"
+      ],
+      "title": "OutboxState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "action_type": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Action Type",
+      "type": "string"
+    },
+    "adapter": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Adapter",
+      "type": "string"
+    },
+    "approval_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Approval Ids",
+      "type": "array"
+    },
+    "artifact_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "attempt_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Attempt Count",
+      "type": "integer"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "destination": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Destination",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "external_receipt": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "External Receipt"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "idempotency_key": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "last_attempt_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Last Attempt At"
+    },
+    "outbox_action_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Outbox Action Id",
+      "type": "string"
+    },
+    "payload_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Payload Sha256",
+      "type": "string"
+    },
+    "policy_decision_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Policy Decision Id",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "OutboxActionV1",
+      "default": "OutboxActionV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.3.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state": {
+      "$ref": "#/$defs/OutboxState",
+      "default": "draft"
+    }
+  },
+  "required": [
+    "outbox_action_id",
+    "action_type",
+    "adapter",
+    "destination",
+    "payload_sha256",
+    "artifact_id",
+    "idempotency_key",
+    "policy_decision_id",
+    "created_at"
+  ],
+  "title": "OutboxAction",
+  "type": "object"
+}

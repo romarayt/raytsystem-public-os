@@ -1,0 +1,94 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "added_failures": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Added Failures",
+      "type": "array"
+    },
+    "baseline_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Baseline Id",
+      "type": "string"
+    },
+    "candidate_eval_run_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Candidate Eval Run Id",
+      "type": "string"
+    },
+    "comparison_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Comparison Id",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "regression": {
+      "title": "Regression",
+      "type": "boolean"
+    },
+    "resolved_failures": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Resolved Failures",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "EvalComparisonV1",
+      "default": "EvalComparisonV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "score_deltas": {
+      "patternProperties": {
+        "^[a-z][a-z0-9_:.@/-]{1,255}$": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "title": "Score Deltas",
+      "type": "object"
+    }
+  },
+  "required": [
+    "comparison_id",
+    "baseline_id",
+    "candidate_eval_run_id",
+    "regression",
+    "created_at"
+  ],
+  "title": "EvalComparison",
+  "type": "object"
+}

@@ -1,0 +1,90 @@
+{
+  "$defs": {
+    "Sensitivity": {
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted",
+        "secret"
+      ],
+      "title": "Sensitivity",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "content_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Content Sha256",
+      "type": "string"
+    },
+    "document_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Document Id",
+      "type": "string"
+    },
+    "editable": {
+      "default": false,
+      "title": "Editable",
+      "type": "boolean"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "kind": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Kind",
+      "type": "string"
+    },
+    "label": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Label",
+      "type": "string"
+    },
+    "path": {
+      "minLength": 1,
+      "title": "Path",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "InstructionDocumentV1",
+      "default": "InstructionDocumentV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sensitivity": {
+      "$ref": "#/$defs/Sensitivity"
+    },
+    "size_bytes": {
+      "maximum": 1048576,
+      "minimum": 0,
+      "title": "Size Bytes",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "document_id",
+    "kind",
+    "label",
+    "path",
+    "content_sha256",
+    "size_bytes",
+    "sensitivity"
+  ],
+  "title": "InstructionDocument",
+  "type": "object"
+}

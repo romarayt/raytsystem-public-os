@@ -1,0 +1,76 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "backoff": {
+      "default": "none",
+      "enum": [
+        "none",
+        "linear",
+        "exponential"
+      ],
+      "title": "Backoff",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "initial_delay_ms": {
+      "default": 0,
+      "maximum": 300000,
+      "minimum": 0,
+      "title": "Initial Delay Ms",
+      "type": "integer"
+    },
+    "max_attempts": {
+      "default": 1,
+      "maximum": 20,
+      "minimum": 1,
+      "title": "Max Attempts",
+      "type": "integer"
+    },
+    "maximum_delay_ms": {
+      "default": 0,
+      "maximum": 3600000,
+      "minimum": 0,
+      "title": "Maximum Delay Ms",
+      "type": "integer"
+    },
+    "retry_policy_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Retry Policy Id",
+      "type": "string"
+    },
+    "retryable_error_codes": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Retryable Error Codes",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "WorkflowRetryPolicyV1",
+      "default": "WorkflowRetryPolicyV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "retry_policy_id"
+  ],
+  "title": "WorkflowRetryPolicy",
+  "type": "object"
+}

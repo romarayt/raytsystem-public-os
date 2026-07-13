@@ -1,0 +1,35 @@
+---
+title: "Маршруты интерфейса"
+description: "Автогенерируемый список маршрутов web-интерфейса raytsystem."
+audience:
+  - user
+  - operator
+  - developer
+status: stable
+generated: true
+slug: /reference/routes
+---
+
+
+import GeneratedNotice from '@site/src/components/GeneratedNotice';
+
+<GeneratedNotice source="web/src/presentation.ts, web/src/app/App.tsx" command="scripts/docs/gen_reference.py" />
+
+# Маршруты интерфейса
+
+Web-интерфейс raytsystem состоит из следующих маршрутов. Подробное описание каждого — в разделе [«Интерфейс»](/interface/overview).
+
+| Маршрут | Название | Группа | Назначение |
+|---|---|---|---|
+| `/command-center` | Центр управления | Пространство | Состояние пространства и работа |
+| `/handbook` | База знаний | Пространство | Документация raytsystem внутри интерфейса |
+| `/documents` | Документы | Пространство | Управляемые файлы и заметки workspace |
+| `/tasks` | Задачи | Оркестрация | Операционный журнал без перезаписи истории |
+| `/universe` | Вселенная | Оркестрация | Граф знаний, работы и доказательств |
+| `/runs` | Запуски | Оркестрация | Журнал запусков и зафиксированных операций |
+| `/agents` | Агенты | Реестр | Единый Agent: definition и execution state |
+| `/skills` | Навыки | Реестр | Skill detail и policy-bound локальная правка |
+| `/context` | Контекст | Реестр | Документы инструкций и контекста (read-only) |
+| `/safety` | Безопасность | Доверие | Границы loopback/egress и адаптеры |
+| `/systems` | Системы | Доверие | Платформенные подсистемы и наблюдаемость |
+

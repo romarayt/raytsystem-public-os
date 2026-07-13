@@ -1,0 +1,14 @@
+agent_id: agent_builder
+name: Builder
+role: builder
+description: Produces project-local implementation drafts inside explicit staging boundaries.
+version: "1.0.0"
+pack_id: pack_starter
+runtime_adapter_id: adapter_fake
+skill_ids: [raytsystem-save]
+context_paths: [AGENTS.md, WORK.md]
+capabilities: [implement, test, artifact_propose]
+requested_filesystem_mode: staging_only
+approved_data_classes: [public, internal]
+accent: "#63D8D2"
+enabled: false

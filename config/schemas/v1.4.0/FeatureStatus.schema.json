@@ -1,0 +1,87 @@
+{
+  "$defs": {
+    "FeatureState": {
+      "enum": [
+        "ready",
+        "disabled",
+        "unavailable",
+        "stale",
+        "degraded",
+        "blocked",
+        "approval_required",
+        "error"
+      ],
+      "title": "FeatureState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "approval_required": {
+      "default": false,
+      "title": "Approval Required",
+      "type": "boolean"
+    },
+    "enabled": {
+      "title": "Enabled",
+      "type": "boolean"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "feature_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Feature Id",
+      "type": "string"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "observed_at": {
+      "format": "date-time",
+      "title": "Observed At",
+      "type": "string"
+    },
+    "reason_codes": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Reason Codes",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "FeatureStatusV1",
+      "default": "FeatureStatusV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Snapshot Id",
+      "type": "string"
+    },
+    "state": {
+      "$ref": "#/$defs/FeatureState"
+    }
+  },
+  "required": [
+    "feature_id",
+    "enabled",
+    "state",
+    "snapshot_id",
+    "observed_at"
+  ],
+  "title": "FeatureStatus",
+  "type": "object"
+}

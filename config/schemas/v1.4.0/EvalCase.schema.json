@@ -1,0 +1,321 @@
+{
+  "$defs": {
+    "EvalAssertion": {
+      "additionalProperties": false,
+      "properties": {
+        "assertion_id": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Assertion Id",
+          "type": "string"
+        },
+        "assertion_type": {
+          "$ref": "#/$defs/EvalAssertionType"
+        },
+        "configuration": {
+          "additionalProperties": true,
+          "title": "Configuration",
+          "type": "object"
+        },
+        "deterministic": {
+          "default": true,
+          "title": "Deterministic",
+          "type": "boolean"
+        },
+        "expected": {
+          "default": null,
+          "title": "Expected"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "schema_name": {
+          "const": "EvalAssertionV1",
+          "default": "EvalAssertionV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "target": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Target",
+          "type": "string"
+        },
+        "weight": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "default": "1",
+          "title": "Weight"
+        }
+      },
+      "required": [
+        "assertion_id",
+        "assertion_type",
+        "target"
+      ],
+      "title": "EvalAssertion",
+      "type": "object"
+    },
+    "EvalAssertionType": {
+      "enum": [
+        "exact_match",
+        "contains",
+        "regex",
+        "json_schema",
+        "file_exists",
+        "file_hash",
+        "artifact_type",
+        "test_result",
+        "command_exit_status",
+        "citation_exists",
+        "source_location_exists",
+        "task_transition",
+        "approval_compliance",
+        "forbidden_action_absent",
+        "budget_not_exceeded",
+        "no_secret_leak",
+        "no_protected_path_modification"
+      ],
+      "title": "EvalAssertionType",
+      "type": "string"
+    },
+    "Sensitivity": {
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted",
+        "secret"
+      ],
+      "title": "Sensitivity",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "agent_configuration_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Agent Configuration Sha256",
+      "type": "string"
+    },
+    "allowed_tools": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Allowed Tools",
+      "type": "array"
+    },
+    "assertions": {
+      "items": {
+        "$ref": "#/$defs/EvalAssertion"
+      },
+      "title": "Assertions",
+      "type": "array"
+    },
+    "case_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Case Id",
+      "type": "string"
+    },
+    "cost_budget": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cost Budget"
+    },
+    "expected_artifacts": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Expected Artifacts",
+      "type": "array"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "graph_snapshot_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Graph Snapshot Id"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "instruction_hashes": {
+      "patternProperties": {
+        "^[a-z][a-z0-9_:.@/-]{1,255}$": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "title": "Instruction Hashes",
+      "type": "object"
+    },
+    "judge_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Judge Ids",
+      "type": "array"
+    },
+    "knowledge_generation_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Knowledge Generation Id"
+    },
+    "model": {
+      "anyOf": [
+        {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Model"
+    },
+    "name": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "provenance": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Provenance",
+      "type": "array"
+    },
+    "repository_snapshot_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Repository Snapshot Sha256",
+      "type": "string"
+    },
+    "runtime_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Runtime Id",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "EvalCaseV1",
+      "default": "EvalCaseV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sensitivity": {
+      "$ref": "#/$defs/Sensitivity",
+      "default": "internal"
+    },
+    "skill_hashes": {
+      "patternProperties": {
+        "^[a-z][a-z0-9_:.@/-]{1,255}$": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "title": "Skill Hashes",
+      "type": "object"
+    },
+    "task_fixture": {
+      "minLength": 1,
+      "title": "Task Fixture",
+      "type": "string"
+    },
+    "token_budget": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Token Budget"
+    }
+  },
+  "required": [
+    "case_id",
+    "name",
+    "task_fixture",
+    "repository_snapshot_sha256",
+    "agent_configuration_sha256",
+    "runtime_id",
+    "instruction_hashes",
+    "skill_hashes",
+    "assertions"
+  ],
+  "title": "EvalCase",
+  "type": "object"
+}

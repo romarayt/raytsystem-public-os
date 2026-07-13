@@ -1,0 +1,114 @@
+{
+  "$defs": {
+    "ReplayMode": {
+      "enum": [
+        "replay",
+        "fork"
+      ],
+      "title": "ReplayMode",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "blocked_side_effect_tool_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Blocked Side Effect Tool Ids",
+      "type": "array"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "differences": {
+      "patternProperties": {
+        "^[a-z][a-z0-9_:.@/-]{1,255}$": {}
+      },
+      "title": "Differences",
+      "type": "object"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "mode": {
+      "$ref": "#/$defs/ReplayMode"
+    },
+    "new_run_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "New Run Id",
+      "type": "string"
+    },
+    "original_execution_record_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Original Execution Record Sha256",
+      "type": "string"
+    },
+    "original_run_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Original Run Id",
+      "type": "string"
+    },
+    "plan_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Plan Sha256",
+      "type": "string"
+    },
+    "recorded_result_tool_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Recorded Result Tool Ids",
+      "type": "array"
+    },
+    "replay_plan_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Replay Plan Id",
+      "type": "string"
+    },
+    "required_approval_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Required Approval Ids",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "ReplayPlanV1",
+      "default": "ReplayPlanV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "replay_plan_id",
+    "mode",
+    "original_run_id",
+    "original_execution_record_sha256",
+    "new_run_id",
+    "plan_sha256",
+    "created_at"
+  ],
+  "title": "ReplayPlan",
+  "type": "object"
+}

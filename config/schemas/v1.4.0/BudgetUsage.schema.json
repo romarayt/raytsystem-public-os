@@ -1,0 +1,131 @@
+{
+  "$defs": {
+    "TokenBudget": {
+      "additionalProperties": false,
+      "properties": {
+        "cached_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Cached Tokens",
+          "type": "integer"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "input_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "schema_name": {
+          "const": "TokenBudgetV1",
+          "default": "TokenBudgetV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "title": "TokenBudget",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "actual_cost_micros": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Actual Cost Micros"
+    },
+    "budget_policy_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Budget Policy Id",
+      "type": "string"
+    },
+    "estimated_cost_micros": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Estimated Cost Micros"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "heartbeat_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Heartbeat Count",
+      "type": "integer"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "run_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Run Count",
+      "type": "integer"
+    },
+    "schema_name": {
+      "const": "BudgetUsageV1",
+      "default": "BudgetUsageV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "tokens": {
+      "$ref": "#/$defs/TokenBudget"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "budget_policy_id",
+    "updated_at"
+  ],
+  "title": "BudgetUsage",
+  "type": "object"
+}

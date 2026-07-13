@@ -1,0 +1,121 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "adapter": {
+      "enum": [
+        "webhook",
+        "telegram",
+        "slack",
+        "email"
+      ],
+      "title": "Adapter",
+      "type": "string"
+    },
+    "approval_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Approval Id",
+      "type": "string"
+    },
+    "attempt_count": {
+      "default": 0,
+      "maximum": 20,
+      "minimum": 0,
+      "title": "Attempt Count",
+      "type": "integer"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "destination_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Destination Id",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "idempotency_key": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "notification_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Notification Id",
+      "type": "string"
+    },
+    "outbox_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Outbox Id",
+      "type": "string"
+    },
+    "payload_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Payload Sha256",
+      "type": "string"
+    },
+    "policy_decision_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Policy Decision Id",
+      "type": "string"
+    },
+    "preview_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Preview Sha256",
+      "type": "string"
+    },
+    "redacted": {
+      "const": true,
+      "default": true,
+      "title": "Redacted",
+      "type": "boolean"
+    },
+    "schema_name": {
+      "const": "NotificationOutboxV1",
+      "default": "NotificationOutboxV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "draft",
+        "approved",
+        "sending",
+        "sent",
+        "failed",
+        "dead_letter"
+      ],
+      "title": "State",
+      "type": "string"
+    }
+  },
+  "required": [
+    "outbox_id",
+    "notification_id",
+    "adapter",
+    "destination_id",
+    "payload_sha256",
+    "preview_sha256",
+    "policy_decision_id",
+    "approval_id",
+    "idempotency_key",
+    "state",
+    "created_at"
+  ],
+  "title": "NotificationOutbox",
+  "type": "object"
+}

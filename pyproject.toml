@@ -1,0 +1,89 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "raytsystem"
+version = "0.1.0"
+description = "Local-first, provenance-first knowledge and content operating system."
+readme = "README.md"
+requires-python = ">=3.12,<3.15"
+license = "Apache-2.0"
+authors = [{ name = "Roma Rayt" }]
+dependencies = [
+  "fastapi==0.139.0",
+  "networkx==3.6.1",
+  "pydantic>=2.12,<3",
+  "pypdf==6.14.2",
+  "pyyaml>=6,<7",
+  "tree-sitter==0.25.2",
+  "tree-sitter-javascript==0.25.0",
+  "tree-sitter-typescript==0.23.2",
+  "typer>=0.21,<1",
+  "uvicorn==0.50.2",
+]
+
+[project.scripts]
+raytsystem = "raytsystem.cli:app"
+
+[dependency-groups]
+dev = [
+  "httpx2==2.5.0",
+  "mypy>=1.18,<2",
+  "pre-commit>=4.5,<5",
+  "pytest>=8.4,<9",
+  "pytest-cov>=7,<8",
+  "ruff>=0.14,<0.16",
+  "types-pyyaml>=6.0.12,<7",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/raytsystem"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/src",
+  "/pyproject.toml",
+  "/README.md",
+  "/LICENSE",
+  "/NOTICE",
+  "/AUTHORS.md",
+]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-config --strict-markers"
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests", "benchmarks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+# The documentation tooling and the handbook test embed intentional Russian
+# (Cyrillic) strings used verbatim; the ambiguous-unicode checks are noise there.
+"scripts/docs/*" = ["RUF001", "RUF002", "RUF003"]
+"tests/test_webapp_handbook.py" = ["RUF001", "RUF002", "RUF003"]
+# The onboarding-prompt generator embeds an intentional Russian (Cyrillic)
+# variant used verbatim; the ambiguous-unicode checks are noise there.
+"src/raytsystem/bootstrap/service.py" = ["RUF001", "RUF002", "RUF003"]
+# The workspace template embeds bilingual (Cyrillic) skill trigger phrases used
+# verbatim in generated .claude/.agents skills.
+"src/raytsystem/templates/service.py" = ["RUF001", "RUF002", "RUF003"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["raytsystem"]
+
+[tool.coverage.run]
+branch = true
+source = ["raytsystem"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true

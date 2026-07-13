@@ -1,0 +1,1179 @@
+---
+title: "CLI: полный справочник"
+description: "Автогенерируемое дерево команд raytsystem с аргументами и признаком изменения."
+audience:
+  - user
+  - operator
+  - developer
+status: stable
+generated: true
+slug: /reference/cli
+---
+
+
+import GeneratedNotice from '@site/src/components/GeneratedNotice';
+
+<GeneratedNotice source="src/raytsystem/cli.py, src/raytsystem/platform_cli.py" command="scripts/docs/gen_reference.py" />
+
+# CLI: полный справочник
+
+Всего листовых команд: **83**. Каждая команда показана с аргументами и опциями. Столбец «Меняет состояние» отмечает команды, которые пишут в проект или запускают действия; «Approval» — команды, которым требуется явное разрешение.
+
+:::note
+Точные значения опций смотрите через `uv run raytsystem <команда> --help`. Команды с пустым описанием — служебные обёртки групп.
+:::
+
+## `raytsystem agent preflight` {#agent-preflight}
+
+Emit a deterministic, redacted surface/skill preflight without mutating state.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem agent preflight --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `skill` | опция | да | `None` |
+| `surface` | опция | нет | `codex_local` |
+| `permission_mode` | опция | нет | `workspace-write-managed` |
+| `tool` | опция | нет | `None` |
+| `egress_destination` | опция | нет | `current_openai_provider` |
+| `write_available` | опция | нет | `False` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem agent subagent-check` {#agent-subagent-check}
+
+Evaluate a hash-bound reviewer request; payload text is never emitted.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem agent subagent-check --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `payload` | опция | да | `None` |
+| `role` | опция | да | `None` |
+| `data_class` | опция | да | `None` |
+| `capability` | опция | нет | `None` |
+| `surface` | опция | нет | `work_hosted` |
+| `destination` | опция | нет | `current_openai_provider` |
+| `includes_local_paths` | опция | нет | `False` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem backup` {#backup}
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem backup --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `destination` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem benchmark-search` {#benchmark-search}
+
+Run the deterministic retrieval harness; QMD stays unavailable until approved.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem benchmark-search --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `cases` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `backend` | опция | нет | `fts5` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem bootstrap` {#bootstrap}
+
+Plan (or, later, apply) a safe raytsystem integration into an existing repo.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem bootstrap --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `target` | опция | да | `None` |
+| `source_type` | опция | нет | `auto` |
+| `template` | опция | нет | `auto` |
+| `mode` | опция | нет | `managed` |
+| `dry_run` | опция | нет | `True` |
+| `confirm` | опция | нет | `` |
+| `context_language` | опция | нет | `en` |
+| `root` | опция | нет | `None` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem doctor` {#doctor}
+
+Check environment and canonical pointers without mutating the project.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem doctor --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem emergency activate` {#emergency-activate}
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem emergency activate --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `action` | опция | да | `None` |
+| `reason` | опция | да | `None` |
+| `idempotency_key` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem emergency close-breaker` {#emergency-close-breaker}
+
+Manually close a circuit breaker; the only path for security breakers.
+
+- Меняет состояние: **да**
+- Требует approval: **да**
+- Запуск: `uv run raytsystem emergency close-breaker --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `breaker_id` | опция | да | `None` |
+| `approval_id` | опция | да | `None` |
+| `reason` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem emergency recover` {#emergency-recover}
+
+Manually recover emergency actions; always requires a fresh approval.
+
+- Меняет состояние: **да**
+- Требует approval: **да**
+- Запуск: `uv run raytsystem emergency recover --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `action` | опция | да | `None` |
+| `reason` | опция | да | `None` |
+| `approval_id` | опция | да | `None` |
+| `idempotency_key` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem emergency status` {#emergency-status}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem emergency status --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem eval baseline` {#eval-baseline}
+
+Accept an immutable, hash-bound baseline; requires an explicit approval.
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem eval baseline --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `suite_file` | опция | да | `None` |
+| `eval_run_id` | опция | да | `None` |
+| `accepted_by` | опция | нет | `user_local_cli` |
+| `approval_id` | опция | нет | `` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem eval compare` {#eval-compare}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem eval compare --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `baseline_id` | опция | да | `None` |
+| `candidate_eval_run_id` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem eval list` {#eval-list}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem eval list --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem eval reject` {#eval-reject}
+
+Record an explicit regression rejection as an eval finding.
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem eval reject --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `comparison_id` | опция | да | `None` |
+| `reason` | опция | да | `None` |
+| `actor_id` | опция | нет | `user_local_cli` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem eval self-test` {#eval-self-test}
+
+Run the native deterministic evaluator without a model or provider.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem eval self-test --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem export` {#export}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem export --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `destination` | опция | да | `None` |
+| `kind` | опция | нет | `public_release_export` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem graph benchmark` {#graph-benchmark}
+
+Compare bounded graph-first context with deterministic local file search.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem graph benchmark --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `cases` | опция | нет | `benchmarks/codegraph/questions.jsonl` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem graph explain` {#graph-explain}
+
+Explain one node with its bounded neighborhood.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem graph explain --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `node` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `depth` | опция | нет | `1` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem graph impact` {#graph-impact}
+
+Trace bounded reverse dependencies for a proposed change.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem graph impact --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `node` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `depth` | опция | нет | `3` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem graph neighbors` {#graph-neighbors}
+
+Return incoming, outgoing or bidirectional neighbors.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem graph neighbors --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `node` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `depth` | опция | нет | `1` |
+| `direction` | опция | нет | `both` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem graph path` {#graph-path}
+
+Return the deterministic shortest path between two code nodes.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem graph path --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `source` | опция | да | `None` |
+| `target` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem graph query` {#graph-query}
+
+Find seed nodes and return a bounded graph-first context slice.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem graph query --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `question` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `depth` | опция | нет | `2` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem graph rebuild` {#graph-rebuild}
+
+Atomically rebuild the complete disposable code graph.
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem graph rebuild --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem graph status` {#graph-status}
+
+Report code-graph freshness without mutating the projection.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem graph status --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `verify` | опция | нет | `True` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem graph update` {#graph-update}
+
+Incrementally update changed and deleted code-graph inputs.
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem graph update --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem guard-checkpoint` {#guard-checkpoint}
+
+Apply the same protected-path, secret and LINT gates used by the commit hook.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem guard-checkpoint --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem ingest` {#ingest}
+
+Capture, normalize, propose, validate and promote one source.
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem ingest --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `source` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `fixture` | опция | нет | `False` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem init` {#init}
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem init --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `template` | опция | нет | `software` |
+| `dry_run` | опция | нет | `True` |
+| `confirm_existing` | опция | нет | `False` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem lint` {#lint}
+
+Run deterministic integrity lint; semantic findings remain proposal-only.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem lint --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `semantic` | опция | нет | `False` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem mcp approve` {#mcp-approve}
+
+- Меняет состояние: **да**
+- Требует approval: **да**
+- Запуск: `uv run raytsystem mcp approve --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `revision_id` | опция | да | `None` |
+| `approval_id` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem mcp list` {#mcp-list}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem mcp list --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem mcp transition` {#mcp-transition}
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem mcp transition --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `revision_id` | опция | да | `None` |
+| `state` | опция | да | `None` |
+| `reason` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem mcp validate` {#mcp-validate}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem mcp validate --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `revision_id` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem migrate` {#migrate}
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem migrate --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `dry_run` | опция | нет | `True` |
+| `backup_id` | опция | нет | `None` |
+| `confirm` | опция | нет | `False` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem migrate-brand` {#migrate-brand}
+
+Safely migrate a workspace created under the retired namespace.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem migrate-brand --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `confirm` | опция | нет | `False` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem notifications list` {#notifications-list}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem notifications list --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem notifications transition` {#notifications-transition}
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem notifications transition --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `notification_id` | опция | да | `None` |
+| `state` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem onboarding prompt` {#onboarding-prompt}
+
+Emit a ready-to-paste install prompt for Claude Code or Codex.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem onboarding prompt --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `agent` | опция | да | `None` |
+| `target` | опция | да | `None` |
+| `mode` | опция | нет | `managed` |
+| `context_language` | опция | нет | `en` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem package activate` {#package-activate}
+
+- Меняет состояние: **да**
+- Требует approval: **да**
+- Запуск: `uv run raytsystem package activate --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `revision_id` | опция | да | `None` |
+| `approval_id` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem package approve` {#package-approve}
+
+Approve a validated revision; every eval run must exist and have passed.
+
+- Меняет состояние: **да**
+- Требует approval: **да**
+- Запуск: `uv run raytsystem package approve --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `revision_id` | опция | да | `None` |
+| `approval_id` | опция | да | `None` |
+| `eval_run` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem package discover` {#package-discover}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem package discover --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `source` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem package inspect` {#package-inspect}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem package inspect --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `source` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem package install` {#package-install}
+
+Install into staging; installation never activates a revision.
+
+- Меняет состояние: **да**
+- Требует approval: **да**
+- Запуск: `uv run raytsystem package install --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `revision_id` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem package rollback` {#package-rollback}
+
+Roll back by promoting a prior installed revision as a new active head.
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem package rollback --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `package_id` | опция | да | `None` |
+| `to_revision_id` | опция | да | `None` |
+| `reason` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem package update` {#package-update}
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem package update --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `source` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem package validate` {#package-validate}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem package validate --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `revision_id` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem platform-status` {#platform-status}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem platform-status --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem policy simulate` {#policy-simulate}
+
+Evaluate the exact execution policy without starting any work.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem policy simulate --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `plan` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem prepare` {#prepare}
+
+Stop after deterministic proposal staging; do not promote.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem prepare --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `source` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `fixture` | опция | нет | `False` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem promote` {#promote}
+
+Promote a validated run under fixture or approval policy.
+
+- Меняет состояние: **да**
+- Требует approval: **да**
+- Запуск: `uv run raytsystem promote --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `run_id` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `fixture` | опция | нет | `False` |
+| `approval` | опция | нет | `None` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem proposal export` {#proposal-export}
+
+Export a local proposal bundle to the gitignored draft zone.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem proposal export --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `run_id` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem proposal import` {#proposal-import}
+
+Import and validate a model-neutral ProposalResponse file.
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem proposal import --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `run_id` | опция | да | `None` |
+| `response` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem protocols status` {#protocols-status}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem protocols status --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem query` {#query}
+
+Route architecture to code graph and factual questions to verified knowledge.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem query --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `query_text` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `limit` | опция | нет | `10` |
+| `scope` | опция | нет | `auto` |
+| `depth` | опция | нет | `2` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem rebuild-index` {#rebuild-index}
+
+Rebuild FTS5, graph, index.md and hot.md from ledger/CURRENT.
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem rebuild-index --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem replay compare` {#replay-compare}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem replay compare --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `left_run_id` | опция | да | `None` |
+| `right_run_id` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem replay fork` {#replay-fork}
+
+Plan a fork; every changed field is recorded as a structured diff.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem replay fork --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `original_run_id` | опция | да | `None` |
+| `new_run_id` | опция | да | `None` |
+| `changes` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem replay list` {#replay-list}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem replay list --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem replay plan` {#replay-plan}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem replay plan --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `original_run_id` | опция | да | `None` |
+| `new_run_id` | опция | да | `None` |
+| `recorded_result` | опция | нет | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem restore` {#restore}
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem restore --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `bundle` | опция | да | `None` |
+| `destination` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `dry_run` | опция | нет | `True` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem save` {#save}
+
+Create typed SAVE staging and a draft preview; never promote or publish.
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem save --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `text` | опция | да | `None` |
+| `evidence` | опция | нет | `None` |
+| `title` | опция | нет | `Saved synthesis` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem schemas export` {#schemas-export}
+
+Export exact Pydantic JSON Schemas and a content-hashed registry.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem schemas export --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem secrets-status` {#secrets-status}
+
+Report the honest encryption provider state; never claims absent capability.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem secrets-status --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem start` {#start}
+
+Start the raytsystem interface — short alias for `ui`.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem start --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `host` | опция | нет | `127.0.0.1` |
+| `port` | опция | нет | `8765` |
+| `open_browser` | опция | нет | `True` |
+
+## `raytsystem status` {#status}
+
+Report project state without creating databases or indexes.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem status --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem task create` {#task-create}
+
+Create one idempotent task in the separate operational ledger.
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem task create --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `title` | опция | да | `None` |
+| `idempotency_key` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `description` | опция | нет | `` |
+| `priority` | опция | нет | `normal` |
+| `expected_generation_id` | опция | нет | `None` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem task list` {#task-list}
+
+Read the operational task board without touching canonical knowledge.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem task list --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem task transition` {#task-transition}
+
+Request one legal task state transition.
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem task transition --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `task_id` | опция | да | `None` |
+| `target` | опция | да | `None` |
+| `idempotency_key` | опция | да | `None` |
+| `expected_generation_id` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `blocked_reason` | опция | нет | `None` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem tool invoke` {#tool-invoke}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem tool invoke --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `tool_id` | опция | да | `None` |
+| `input_path` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem tool list` {#tool-list}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem tool list --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem tool serve-mcp` {#tool-serve-mcp}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem tool serve-mcp --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+
+## `raytsystem tool watch` {#tool-watch}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem tool watch --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `source` | опция | да | `None` |
+| `source_kind` | опция | нет | `auto` |
+| `mode` | опция | нет | `summary` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem trace detail` {#trace-detail}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem trace detail --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `trace_id` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem trace export-fingerprint` {#trace-export-fingerprint}
+
+Print the destination-binding identity an OTLP export approval must cover.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem trace export-fingerprint --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem trace export-otlp` {#trace-export-otlp}
+
+Write redacted OTLP/JSON to a local file; needs otel_export_enabled + approval.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem trace export-otlp --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `destination` | опция | да | `None` |
+| `approval_id` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem trace list` {#trace-list}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem trace list --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem ui` {#ui}
+
+Start the same-origin raytsystem interface on the local loopback only.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem ui --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `host` | опция | нет | `127.0.0.1` |
+| `port` | опция | нет | `8765` |
+| `open_browser` | опция | нет | `True` |
+
+## `raytsystem uninstall` {#uninstall}
+
+Remove raytsystem installer-created files; never touches user or source data.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem uninstall --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `target` | опция | да | `None` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem upgrade` {#upgrade}
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem upgrade --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `dry_run` | опция | нет | `True` |
+| `confirm` | опция | нет | `False` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem validate` {#validate}
+
+Validate a staged proposal and its complete evidence closure.
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem validate --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `run_id` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem workflow approve` {#workflow-approve}
+
+- Меняет состояние: **да**
+- Требует approval: **да**
+- Запуск: `uv run raytsystem workflow approve --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `workflow_run_id` | опция | да | `None` |
+| `node_id` | опция | да | `None` |
+| `approval_id` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem workflow cancel` {#workflow-cancel}
+
+- Меняет состояние: **да**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem workflow cancel --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `workflow_run_id` | опция | да | `None` |
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+
+## `raytsystem workflow list` {#workflow-list}
+
+- Меняет состояние: **нет**
+- Требует approval: **нет**
+- Запуск: `uv run raytsystem workflow list --help`
+
+| Параметр | Тип | Обязательный | По умолчанию |
+|---|---|---|---|
+| `root` | опция | нет | `(local path)` |
+| `json_output` | опция | нет | `False` |
+

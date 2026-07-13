@@ -1,0 +1,264 @@
+{
+  "$defs": {
+    "ComponentRef": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Sha256"
+        },
+        "config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Config Sha256",
+          "type": "string"
+        },
+        "name": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "config_sha256"
+      ],
+      "title": "ComponentRef",
+      "type": "object"
+    },
+    "ProducerKind": {
+      "enum": [
+        "kernel",
+        "human",
+        "model",
+        "skill",
+        "adapter"
+      ],
+      "title": "ProducerKind",
+      "type": "string"
+    },
+    "ProducerRef": {
+      "additionalProperties": false,
+      "properties": {
+        "component": {
+          "$ref": "#/$defs/ComponentRef"
+        },
+        "destination": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Destination"
+        },
+        "kind": {
+          "$ref": "#/$defs/ProducerKind"
+        }
+      },
+      "required": [
+        "kind",
+        "component"
+      ],
+      "title": "ProducerRef",
+      "type": "object"
+    },
+    "RecordRef": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "object_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Object Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "object_sha256"
+      ],
+      "title": "RecordRef",
+      "type": "object"
+    },
+    "ReviewFinding": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/RecordRef"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "message": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "ReviewFindingV1",
+          "default": "ReviewFindingV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "info",
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ],
+          "title": "Severity",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "message"
+      ],
+      "title": "ReviewFinding",
+      "type": "object"
+    },
+    "ReviewVerdict": {
+      "enum": [
+        "pass",
+        "warn",
+        "fail",
+        "needs_human"
+      ],
+      "title": "ReviewVerdict",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "findings": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ReviewFinding"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "review_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Review Id",
+      "type": "string"
+    },
+    "review_kind": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Review Kind",
+      "type": "string"
+    },
+    "reviewer": {
+      "$ref": "#/$defs/ProducerRef"
+    },
+    "rubric_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RecordRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "schema_name": {
+      "const": "ReviewV1",
+      "default": "ReviewV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "target": {
+      "$ref": "#/$defs/RecordRef"
+    },
+    "verdict": {
+      "$ref": "#/$defs/ReviewVerdict"
+    }
+  },
+  "required": [
+    "review_id",
+    "target",
+    "review_kind",
+    "reviewer",
+    "verdict",
+    "created_at"
+  ],
+  "title": "Review",
+  "type": "object"
+}

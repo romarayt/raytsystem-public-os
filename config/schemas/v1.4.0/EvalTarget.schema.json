@@ -1,0 +1,74 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "component_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Component Id",
+      "type": "string"
+    },
+    "component_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Component Sha256",
+      "type": "string"
+    },
+    "component_version": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Component Version",
+      "type": "string"
+    },
+    "configuration_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Configuration Sha256",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "agent",
+        "skill",
+        "prompt",
+        "retrieval",
+        "workflow",
+        "runtime"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "EvalTargetV1",
+      "default": "EvalTargetV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "target_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Target Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "target_id",
+    "kind",
+    "component_id",
+    "component_version",
+    "component_sha256",
+    "configuration_sha256"
+  ],
+  "title": "EvalTarget",
+  "type": "object"
+}

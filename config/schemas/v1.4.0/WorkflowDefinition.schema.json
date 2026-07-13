@@ -1,0 +1,68 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "current_revision_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Current Revision Id"
+    },
+    "description": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Description",
+      "type": "string"
+    },
+    "enabled": {
+      "default": false,
+      "title": "Enabled",
+      "type": "boolean"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "WorkflowDefinitionV1",
+      "default": "WorkflowDefinitionV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "workflow_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Workflow Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "workflow_id",
+    "name",
+    "description"
+  ],
+  "title": "WorkflowDefinition",
+  "type": "object"
+}

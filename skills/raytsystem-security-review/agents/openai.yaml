@@ -1,0 +1,4 @@
+interface:
+  display_name: "raytsystem Security Review"
+  short_description: "Audit raytsystem policy and containment"
+  default_prompt: "Use $raytsystem-security-review to inspect an raytsystem change for security and recovery failures."

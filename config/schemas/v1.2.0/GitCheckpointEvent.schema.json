@@ -1,0 +1,60 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "checkpoint_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Checkpoint Id",
+      "type": "string"
+    },
+    "commit_sha": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Commit Sha",
+      "type": "string"
+    },
+    "event_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Event Id",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "generation_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Generation Id",
+      "type": "string"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "recorded_at": {
+      "format": "date-time",
+      "title": "Recorded At",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "GitCheckpointEventV1",
+      "default": "GitCheckpointEventV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.2.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "checkpoint_id",
+    "event_id",
+    "generation_id",
+    "commit_sha",
+    "recorded_at"
+  ],
+  "title": "GitCheckpointEvent",
+  "type": "object"
+}

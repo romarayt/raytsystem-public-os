@@ -1,0 +1,130 @@
+{
+  "$defs": {
+    "EmergencyAction": {
+      "enum": [
+        "pause_all_employees",
+        "cancel_active_runs",
+        "disable_runtime_execution",
+        "disable_network_adapters",
+        "disable_external_providers",
+        "freeze_task_checkout",
+        "revoke_runtime_sessions",
+        "revoke_pending_approvals",
+        "emergency_budget_stop"
+      ],
+      "title": "EmergencyAction",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "activated_at": {
+      "format": "date-time",
+      "title": "Activated At",
+      "type": "string"
+    },
+    "activated_by": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Activated By",
+      "type": "string"
+    },
+    "active_actions": {
+      "items": {
+        "$ref": "#/$defs/EmergencyAction"
+      },
+      "title": "Active Actions",
+      "type": "array"
+    },
+    "approval_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Approval Id"
+    },
+    "emergency_state_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Emergency State Id",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "reason": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Reason",
+      "type": "string"
+    },
+    "recovered_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Recovered At"
+    },
+    "recovered_by": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Recovered By"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema_name": {
+      "const": "EmergencyStateV1",
+      "default": "EmergencyStateV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "security_lock": {
+      "default": true,
+      "title": "Security Lock",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "emergency_state_id",
+    "active_actions",
+    "reason",
+    "activated_by",
+    "revision",
+    "activated_at"
+  ],
+  "title": "EmergencyState",
+  "type": "object"
+}

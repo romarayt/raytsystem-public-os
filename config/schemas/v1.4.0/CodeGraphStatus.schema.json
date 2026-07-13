@@ -1,0 +1,148 @@
+{
+  "$defs": {
+    "CodeGraphState": {
+      "enum": [
+        "missing",
+        "current",
+        "unchecked",
+        "stale",
+        "building",
+        "error"
+      ],
+      "title": "CodeGraphState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "ambiguous_edges": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Ambiguous Edges",
+      "type": "integer"
+    },
+    "changed_files": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Changed Files",
+      "type": "integer"
+    },
+    "changed_paths": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 500,
+      "title": "Changed Paths",
+      "type": "array"
+    },
+    "deleted_files": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Deleted Files",
+      "type": "integer"
+    },
+    "deleted_paths": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 500,
+      "title": "Deleted Paths",
+      "type": "array"
+    },
+    "edge_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Edge Count",
+      "type": "integer"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "file_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "File Count",
+      "type": "integer"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "node_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Node Count",
+      "type": "integer"
+    },
+    "paths_truncated": {
+      "default": false,
+      "title": "Paths Truncated",
+      "type": "boolean"
+    },
+    "reason": {
+      "anyOf": [
+        {
+          "maxLength": 512,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reason"
+    },
+    "schema_name": {
+      "const": "CodeGraphStatusV1",
+      "default": "CodeGraphStatusV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_fingerprint": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Snapshot Fingerprint"
+    },
+    "snapshot_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Snapshot Id"
+    },
+    "state": {
+      "$ref": "#/$defs/CodeGraphState"
+    }
+  },
+  "required": [
+    "state"
+  ],
+  "title": "CodeGraphStatus",
+  "type": "object"
+}

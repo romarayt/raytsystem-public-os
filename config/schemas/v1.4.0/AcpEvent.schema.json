@@ -1,0 +1,106 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "acp_session_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Acp Session Id",
+      "type": "string"
+    },
+    "approval_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Approval Id"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "event_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Event Id",
+      "type": "string"
+    },
+    "event_type": {
+      "enum": [
+        "message",
+        "tool_call",
+        "permission_request",
+        "terminal_output",
+        "file_change",
+        "cancelled",
+        "completed",
+        "error"
+      ],
+      "title": "Event Type",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "payload_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Payload Sha256",
+      "type": "string"
+    },
+    "policy_decision_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Policy Decision Id"
+    },
+    "redacted": {
+      "default": true,
+      "title": "Redacted",
+      "type": "boolean"
+    },
+    "schema_name": {
+      "const": "AcpEventV1",
+      "default": "AcpEventV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sequence": {
+      "minimum": 1,
+      "title": "Sequence",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "event_id",
+    "acp_session_id",
+    "sequence",
+    "event_type",
+    "payload_sha256",
+    "created_at"
+  ],
+  "title": "AcpEvent",
+  "type": "object"
+}

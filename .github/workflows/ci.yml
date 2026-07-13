@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  python:
+    name: Python 3.12 — tests, lint, types, hooks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@d0d8abe699bfb85fec6de9f7adb5ae17292296ff # v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+      - name: Install locked Python dependencies
+        run: uv sync --dev --locked
+      - name: Test
+        run: uv run pytest
+      - name: Ruff lint
+        run: uv run ruff check .
+      - name: Ruff format
+        run: uv run ruff format --check .
+      - name: Mypy
+        run: uv run mypy
+      - name: Pre-commit
+        env:
+          SKIP: web-typecheck,web-lint,web-test
+        run: uv run pre-commit run --all-files
+
+  frontend:
+    name: Frontend — types, lint, browser tests, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install frontend dependencies
+        run: npm --prefix web ci
+      - name: Install Chromium
+        run: npm --prefix web run browser:install
+      - name: Typecheck
+        run: npm --prefix web run typecheck
+      - name: Lint
+        run: npm --prefix web run lint
+      - name: Unit and layout tests
+        run: npm --prefix web run test
+      - name: Build
+        run: npm --prefix web run build
+
+  public-hygiene:
+    name: Public tree — secrets, paths, artifacts, images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+      - name: Public path and image policy
+        run: python3 scripts/public_hygiene.py
+      - name: Secret scan of Git history
+        uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

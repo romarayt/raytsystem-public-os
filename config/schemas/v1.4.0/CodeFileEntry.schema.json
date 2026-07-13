@@ -1,0 +1,74 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "content_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Content Sha256",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "extractor": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Extractor",
+      "type": "string"
+    },
+    "extractor_version": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Extractor Version",
+      "type": "string"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "language": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Language",
+      "type": "string"
+    },
+    "mtime_ns": {
+      "minimum": 0,
+      "title": "Mtime Ns",
+      "type": "integer"
+    },
+    "path": {
+      "minLength": 1,
+      "title": "Path",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "CodeFileEntryV1",
+      "default": "CodeFileEntryV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "size_bytes": {
+      "maximum": 16777216,
+      "minimum": 0,
+      "title": "Size Bytes",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "path",
+    "content_sha256",
+    "size_bytes",
+    "mtime_ns",
+    "language",
+    "extractor",
+    "extractor_version"
+  ],
+  "title": "CodeFileEntry",
+  "type": "object"
+}

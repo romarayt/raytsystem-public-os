@@ -1,0 +1,148 @@
+{
+  "$defs": {
+    "RecordRef": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "object_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Object Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "object_sha256"
+      ],
+      "title": "RecordRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "cohort": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Cohort",
+      "type": "object"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "feedback_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Feedback Id",
+      "type": "string"
+    },
+    "feedback_type": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Feedback Type",
+      "type": "string"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "importing_run_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Importing Run Id",
+      "type": "string"
+    },
+    "observed_at": {
+      "format": "date-time",
+      "title": "Observed At",
+      "type": "string"
+    },
+    "recorded_at": {
+      "format": "date-time",
+      "title": "Recorded At",
+      "type": "string"
+    },
+    "sample_size": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Sample Size"
+    },
+    "schema_name": {
+      "const": "FeedbackV1",
+      "default": "FeedbackV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Scope",
+      "type": "object"
+    },
+    "source_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/RecordRef"
+      },
+      "title": "Source Refs",
+      "type": "array"
+    },
+    "target": {
+      "$ref": "#/$defs/RecordRef"
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Unit"
+    },
+    "value": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Value",
+      "type": "string"
+    }
+  },
+  "required": [
+    "feedback_id",
+    "target",
+    "feedback_type",
+    "value",
+    "observed_at",
+    "recorded_at",
+    "importing_run_id"
+  ],
+  "title": "Feedback",
+  "type": "object"
+}
