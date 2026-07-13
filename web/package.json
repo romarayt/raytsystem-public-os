@@ -26,7 +26,7 @@
     "@fontsource-variable/bricolage-grotesque": "5.2.10",
     "@fontsource-variable/ibm-plex-sans": "5.2.8",
     "@fontsource/ibm-plex-mono": "5.2.7",
-    "@milkdown/kit": "7.21.2",
+    "@milkdown/kit": "7.21.3",
     "@tanstack/react-query": "5.101.2",
     "codemirror": "6.0.2",
     "graphology": "0.26.0",
@@ -51,7 +51,7 @@
     "jsdom": "29.1.1",
     "playwright": "1.61.1",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.63.0",
+    "typescript-eslint": "8.64.0",
     "vite": "8.1.4",
     "vitest": "4.1.10"
   }
