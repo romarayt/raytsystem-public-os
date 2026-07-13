@@ -1,0 +1,39 @@
+name: Feature request
+description: Propose a user problem or improvement for raytsystem.
+title: "[Feature]: "
+labels: [enhancement, needs-triage]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Who has this problem, and what are they unable to do today?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe the behavior and how success can be verified.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Primary area
+      options: [CLI, Web interface, Documents, Knowledge Universe, Tasks or runs, Agents or skills, Security or approvals, Documentation, Other]
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Boundaries
+      options:
+        - label: This request does not contain secrets or private corpus data.
+          required: true
+        - label: I understand roadmap items are not delivery promises.
+          required: true

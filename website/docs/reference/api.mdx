@@ -1,0 +1,87 @@
+---
+title: "HTTP API: Agents и Skills"
+description: "Автогенерируемый контракт unified Agent read model и безопасного Skill authoring."
+audience:
+  - user
+  - operator
+  - developer
+status: stable
+generated: true
+slug: /reference/api
+---
+
+
+import GeneratedNotice from '@site/src/components/GeneratedNotice';
+
+<GeneratedNotice source="src/raytsystem/webapp/app.py, src/raytsystem/webapp/dto.py, src/raytsystem/skill_authoring.py" command="scripts/docs/gen_reference.py" />
+
+# HTTP API: Agents и Skills
+
+Все маршруты ниже same-origin и требуют cookie `raytsystem_session`. `POST` дополнительно требует `Content-Type: application/json`, совпадающий `X-CSRF-Token`, допустимый `Origin` и `Idempotency-Key`. Security middleware ограничивает весь JSON body 64 КиБ. Frontend передаёт ID, но не filesystem path.
+
+| Метод | Путь | Режим | Назначение |
+|---|---|---|---|
+| `GET` | `/api/v1/agents` | read | Единый Agent list; definition + nullable execution state. |
+| `GET` | `/api/v1/agents/{agent_id}` | read | Безопасная Agent detail projection, привязанная к catalog hash. |
+| `GET` | `/api/v1/skills` | read | Skill list с edit/fork policy и related Agent. |
+| `GET` | `/api/v1/skills/{skill_id}` | read | Skill detail и разрешённое inert Markdown content. |
+| `POST` | `/api/v1/skills/{skill_id}/save/preview` | preview | Валидация, normalization, diff и affected Agent без записи. |
+| `POST` | `/api/v1/skills/{skill_id}/save` | write | CAS-save editable local skill, revision и audit event. |
+| `POST` | `/api/v1/skills/{skill_id}/fork/preview` | preview | Проверка unique local ID, destination и diff без записи. |
+| `POST` | `/api/v1/skills/{skill_id}/fork` | write | Создание отдельного `pack_local` skill; source не меняется. |
+
+## Read contracts
+
+`GET /api/v1/agents` возвращает одну запись на стабильный Agent ID с `definition`, nullable `execution`, readiness и безопасным runtime summary. Detail требует query `expected` с catalog SHA-256 и возвращает Overview/Instruction/Skills/Runtime/Access/History.
+
+`GET /api/v1/skills` возвращает definitions, safe relative source path, `editable`, `read_only_reason`, `forkable` и related Agent. Skill detail требует query `expected` с catalog SHA-256. Запрет disclosure возвращает HTTP 200 metadata-only: `content` равен `null`, а `source.content_restricted` равен `true`. `permission_boundary` отдельно возвращает declared permission IDs и typed sections с собственными availability/items; `not_modeled` не означает разрешение. Tools/workflows имеют availability `not_modeled`; history возвращает только current authoring revision, если она есть.
+
+## Save request
+
+| Поле | Тип | Обязательно | Ограничение |
+|---|---|---|---|
+| `request_version` | `1.0` | нет | default `1.0` |
+| `content` | string | да | min 1; max 65536 |
+| `expected_catalog_sha256` | string | да | pattern `^[0-9a-f]{64}$` |
+| `expected_source_sha256` | string | да | pattern `^[0-9a-f]{64}$` |
+
+Один body используется для `/save/preview` и `/save`. Preview не пишет: он возвращает normalized content, validation, diff, proposed hash и affected Agent. Save повторно проверяет CAS, устанавливает файл через guarded no-replace и durable recovery journal, регистрирует revision/audit и возвращает новые source/catalog hashes. Effective `test_status` всегда `pending`.
+
+## Fork preview request
+
+| Поле | Тип | Обязательно | Ограничение |
+|---|---|---|---|
+| `request_version` | `1.0` | нет | default `1.0` |
+| `new_skill_id` | string \| null | нет | pattern `^[a-z][a-z0-9_-]{1,63}$`; default `null` |
+| `expected_catalog_sha256` | string | да | pattern `^[0-9a-f]{64}$` |
+| `expected_source_sha256` | string | да | pattern `^[0-9a-f]{64}$` |
+
+## Fork confirmation request
+
+| Поле | Тип | Обязательно | Ограничение |
+|---|---|---|---|
+| `request_version` | `1.0` | нет | default `1.0` |
+| `new_skill_id` | string | да | pattern `^[a-z][a-z0-9_-]{1,63}$` |
+| `expected_catalog_sha256` | string | да | pattern `^[0-9a-f]{64}$` |
+| `expected_source_sha256` | string | да | pattern `^[0-9a-f]{64}$` |
+
+Preview может не передавать `new_skill_id`: сервер предложит уникальный ID. Confirmation обязан повторить этот ID и те же expected hashes. Source не меняется; destination создаётся как `pack_local`, trust `user`, test status `pending`.
+
+## Typed authoring errors
+
+| HTTP | Code |
+|---:|---|
+| `403` | `skill_read_only` |
+| `404` | `skill_not_found` |
+| `409` | `skill_edit_conflict` |
+| `409` | `skill_idempotency_conflict` |
+| `422` | `skill_validation_failed` |
+| `422` | `unsafe_skill_path` |
+| `500` | `skill_persistence_failed` |
+
+Security middleware errors (`session_required`, `origin_rejected`, `csrf_rejected`, `idempotency_required`, `payload_too_large`) возникают до authoring service. `skill_edit_conflict` ничего не перезаписывает и возвращает current/proposed content и diff, только если disclosure policy их разрешает. Automatic merge не выполняется.
+
+## Security boundary
+
+Authoring не принимает arbitrary path, не следует symlink, не меняет official/pinned source, не запускает skill/tools/workflows и не касается canonical knowledge, task или execution state. Agent read API не раскрывает egress destination: наружу выходит только boolean `egress_declared`. Подробности: [Skills (интерфейс)](/interface/skills) и [Безопасность](/security/overview).
+

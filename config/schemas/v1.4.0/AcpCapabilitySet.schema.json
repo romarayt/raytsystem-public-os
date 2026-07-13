@@ -1,0 +1,61 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "capabilities": {
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Capabilities",
+      "type": "array"
+    },
+    "capability_set_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Capability Set Id",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "negotiated_extensions": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Negotiated Extensions",
+      "type": "array"
+    },
+    "protocol_version": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Protocol Version",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "AcpCapabilitySetV1",
+      "default": "AcpCapabilitySetV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "capability_set_id",
+    "protocol_version",
+    "capabilities"
+  ],
+  "title": "AcpCapabilitySet",
+  "type": "object"
+}

@@ -1,0 +1,28 @@
+{
+  "schema_name": "QualificationTreeManifestV1",
+  "tree_id": "m5a_candidate_tree_v1",
+  "base_git_sha": "948a0fd33235839baa3249dded7eeb882959b192",
+  "hash_algorithm": "sha256",
+  "files": {
+    "README.md": "65b4225d473a13c9176df4de02acf43a03571865278bc8e063c3177ed50a6c0d",
+    "docs/04-security-scope.md": "a7e6bc8d5e3895a8614f7d313ac68a7bac1ccfd125cd462bd78e7df9ff839971",
+    "docs/05-user-pilot-request.md": "7aed8f193d3a2ec152d076d18150fac3342d5569182b7c4f34661bba9063af6f",
+    "docs/DEPENDENCIES.md": "757346c9839605dfd3910c4a739cd03404523bd38882168df41d83a1dca155b8",
+    "docs/THIRD_PARTY_NOTICES.md": "3aafe184554e91dd76703d18fddb1c3b6bf5fa5ba73ea7a5ee7b9e5c6d7a8f64",
+    "evals/m5a/synthetic-qualification-v1.json": "2a1d933f15cd485416a5b81a1b195e84cfd09ffb0ca29c134b436999714ca8c0",
+    "ops/decisions/ADR-014-synthetic-qualification-and-pilot-boundary.md": "5358caff79372b5beffbbaa8b2dc04e951b863609c37f60802189c7fea1911b4",
+    "src/raytsystem/extractors.py": "ece07aeebb692ee0a300e121a8447f797453b51440057a9a1e715f5337b5d09d",
+    "src/raytsystem/fetchers.py": "2defdf56e417f2b0dbb03281f60a73ea36fbb14521875261e326cd40add5dd81",
+    "src/raytsystem/linting.py": "ab3134a1135bd39b5e1a663459170bd2bd4a3e5e4edec4fb36658560a60f8e98",
+    "src/raytsystem/security/sensitivity.py": "7786af3e7a5c7396bc2aa587df0f551f00a3a4f5630bf480191011469f7281dc",
+    "tests/test_adapters.py": "036dbe954bb261e59aa5775b42667508d7239ab704891ff8619e5272e9de391d",
+    "tests/test_m5a_qualification.py": "8a058ab8d23c6c6d84836af2cfca8b6dcfb1df9afb8370f028d09663474f38b0"
+  },
+  "excluded_reporting_outputs": [
+    "docs/STATUS.md",
+    "evals/m5a/results/synthetic-20260711T105905Z.json",
+    "evals/m5a/qualification-tree-v1.json",
+    "ops/runs/m5a_qualification_*/manifest.json"
+  ],
+  "exclusion_reason": "Reporting outputs bind this tree and would create a recursive content hash if included."
+}

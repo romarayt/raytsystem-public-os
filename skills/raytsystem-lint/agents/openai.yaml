@@ -1,0 +1,4 @@
+interface:
+  display_name: "raytsystem LINT"
+  short_description: "Check canonical and projection integrity"
+  default_prompt: "Use $raytsystem-lint to run a deterministic integrity review without changing canonical state."

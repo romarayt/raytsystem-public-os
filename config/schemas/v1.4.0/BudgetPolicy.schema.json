@@ -1,0 +1,145 @@
+{
+  "$defs": {
+    "TokenBudget": {
+      "additionalProperties": false,
+      "properties": {
+        "cached_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Cached Tokens",
+          "type": "integer"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "input_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "schema_name": {
+          "const": "TokenBudgetV1",
+          "default": "TokenBudgetV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "title": "TokenBudget",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "active_run_action": {
+      "default": "cancel",
+      "enum": [
+        "finish_current",
+        "cancel"
+      ],
+      "title": "Active Run Action",
+      "type": "string"
+    },
+    "budget_policy_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Budget Policy Id",
+      "type": "string"
+    },
+    "cost_limit_micros": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cost Limit Micros"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "heartbeat_limit": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Heartbeat Limit",
+      "type": "integer"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "run_limit": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Run Limit",
+      "type": "integer"
+    },
+    "schema_name": {
+      "const": "BudgetPolicyV1",
+      "default": "BudgetPolicyV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Scope Id",
+      "type": "string"
+    },
+    "scope_kind": {
+      "enum": [
+        "employee",
+        "task",
+        "project",
+        "run",
+        "workspace"
+      ],
+      "title": "Scope Kind",
+      "type": "string"
+    },
+    "token_limit": {
+      "$ref": "#/$defs/TokenBudget"
+    }
+  },
+  "required": [
+    "budget_policy_id",
+    "scope_kind",
+    "scope_id",
+    "created_at"
+  ],
+  "title": "BudgetPolicy",
+  "type": "object"
+}

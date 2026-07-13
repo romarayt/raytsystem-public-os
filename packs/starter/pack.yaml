@@ -1,0 +1,17 @@
+pack_id: pack_starter
+name: Universal Starter Agents
+version: "1.0.0"
+description: Five inert, provider-neutral agent definitions for planning, research, building, review and knowledge stewardship.
+license_expression: Apache-2.0
+trust_class: official
+agent_ids:
+  - agent_orchestrator
+  - agent_researcher
+  - agent_builder
+  - agent_reviewer
+  - agent_librarian
+skill_ids: []
+context_paths:
+  - AGENTS.md
+  - WORK.md
+optional: false

@@ -1,0 +1,688 @@
+{
+  "$defs": {
+    "CodeCommunity": {
+      "additionalProperties": false,
+      "properties": {
+        "cohesion_ppm": {
+          "default": 0,
+          "maximum": 1000000,
+          "minimum": 0,
+          "title": "Cohesion Ppm",
+          "type": "integer"
+        },
+        "community_id": {
+          "maximum": 1000000,
+          "minimum": 0,
+          "title": "Community Id",
+          "type": "integer"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "node_ids": {
+          "items": {
+            "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+            "type": "string"
+          },
+          "title": "Node Ids",
+          "type": "array"
+        },
+        "schema_name": {
+          "const": "CodeCommunityV1",
+          "default": "CodeCommunityV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "community_id",
+        "label",
+        "node_ids"
+      ],
+      "title": "CodeCommunity",
+      "type": "object"
+    },
+    "CodeEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "$ref": "#/$defs/EdgeConfidence"
+        },
+        "content_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Fingerprint",
+          "type": "string"
+        },
+        "edge_id": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Edge Id",
+          "type": "string"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "extractor": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Extractor",
+          "type": "string"
+        },
+        "extractor_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Extractor Version",
+          "type": "string"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "metadata": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Metadata",
+          "type": "object"
+        },
+        "relation": {
+          "$ref": "#/$defs/CodeRelation"
+        },
+        "schema_name": {
+          "const": "CodeEdgeV1",
+          "default": "CodeEdgeV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Source",
+          "type": "string"
+        },
+        "source_file": {
+          "minLength": 1,
+          "title": "Source File",
+          "type": "string"
+        },
+        "source_location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CodeSourceLocation"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "target": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "edge_id",
+        "source",
+        "target",
+        "relation",
+        "confidence",
+        "source_file",
+        "extractor",
+        "extractor_version",
+        "content_fingerprint"
+      ],
+      "title": "CodeEdge",
+      "type": "object"
+    },
+    "CodeFileEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "content_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "extractor": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Extractor",
+          "type": "string"
+        },
+        "extractor_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Extractor Version",
+          "type": "string"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "language": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Language",
+          "type": "string"
+        },
+        "mtime_ns": {
+          "minimum": 0,
+          "title": "Mtime Ns",
+          "type": "integer"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "CodeFileEntryV1",
+          "default": "CodeFileEntryV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "size_bytes": {
+          "maximum": 16777216,
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "path",
+        "content_sha256",
+        "size_bytes",
+        "mtime_ns",
+        "language",
+        "extractor",
+        "extractor_version"
+      ],
+      "title": "CodeFileEntry",
+      "type": "object"
+    },
+    "CodeGraphMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "ambiguous_edges": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Ambiguous Edges",
+          "type": "integer"
+        },
+        "cache_hits": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Cache Hits",
+          "type": "integer"
+        },
+        "deleted_files": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Deleted Files",
+          "type": "integer"
+        },
+        "duration_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "edge_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Edge Count",
+          "type": "integer"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "node_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Node Count",
+          "type": "integer"
+        },
+        "processed_files": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Processed Files",
+          "type": "integer"
+        },
+        "schema_name": {
+          "const": "CodeGraphMetricsV1",
+          "default": "CodeGraphMetricsV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "skipped_files": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Skipped Files",
+          "type": "integer"
+        },
+        "unresolved_references": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Unresolved References",
+          "type": "integer"
+        }
+      },
+      "title": "CodeGraphMetrics",
+      "type": "object"
+    },
+    "CodeNode": {
+      "additionalProperties": false,
+      "properties": {
+        "community_id": {
+          "anyOf": [
+            {
+              "maximum": 1000000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Community Id"
+        },
+        "content_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Fingerprint",
+          "type": "string"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "extractor": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Extractor",
+          "type": "string"
+        },
+        "extractor_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Extractor Version",
+          "type": "string"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "is_bridge": {
+          "default": false,
+          "title": "Is Bridge",
+          "type": "boolean"
+        },
+        "is_god": {
+          "default": false,
+          "title": "Is God",
+          "type": "boolean"
+        },
+        "kind": {
+          "$ref": "#/$defs/CodeNodeKind"
+        },
+        "label": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CodeSourceLocation"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "metadata": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Metadata",
+          "type": "object"
+        },
+        "node_id": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "path": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "qualified_name": {
+          "default": "",
+          "maxLength": 1024,
+          "title": "Qualified Name",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "CodeNodeV1",
+          "default": "CodeNodeV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_id",
+        "kind",
+        "label",
+        "content_fingerprint",
+        "extractor",
+        "extractor_version"
+      ],
+      "title": "CodeNode",
+      "type": "object"
+    },
+    "CodeNodeKind": {
+      "enum": [
+        "repository",
+        "directory",
+        "file",
+        "module",
+        "package",
+        "class",
+        "function",
+        "method",
+        "api_endpoint",
+        "database_table",
+        "database_schema",
+        "configuration",
+        "test",
+        "adr",
+        "rationale",
+        "dependency"
+      ],
+      "title": "CodeNodeKind",
+      "type": "string"
+    },
+    "CodeRelation": {
+      "enum": [
+        "contains",
+        "defines",
+        "imports",
+        "calls",
+        "inherits",
+        "implements",
+        "references",
+        "depends_on",
+        "configured_by",
+        "tests",
+        "explained_by",
+        "implemented_by",
+        "explains",
+        "verifies",
+        "changed",
+        "touches",
+        "operates_on"
+      ],
+      "title": "CodeRelation",
+      "type": "string"
+    },
+    "CodeSourceLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "end_column": {
+          "default": 0,
+          "maximum": 10000000,
+          "minimum": 0,
+          "title": "End Column",
+          "type": "integer"
+        },
+        "end_line": {
+          "maximum": 10000000,
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "CodeSourceLocationV1",
+          "default": "CodeSourceLocationV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "start_column": {
+          "default": 0,
+          "maximum": 10000000,
+          "minimum": 0,
+          "title": "Start Column",
+          "type": "integer"
+        },
+        "start_line": {
+          "maximum": 10000000,
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start_line",
+        "end_line"
+      ],
+      "title": "CodeSourceLocation",
+      "type": "object"
+    },
+    "EdgeConfidence": {
+      "enum": [
+        "EXTRACTED",
+        "INFERRED",
+        "AMBIGUOUS"
+      ],
+      "title": "EdgeConfidence",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "communities": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/CodeCommunity"
+      },
+      "title": "Communities",
+      "type": "array"
+    },
+    "config_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Config Fingerprint",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "dirty": {
+      "default": false,
+      "title": "Dirty",
+      "type": "boolean"
+    },
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/CodeEdge"
+      },
+      "title": "Edges",
+      "type": "array"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "extractor_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Extractor Fingerprint",
+      "type": "string"
+    },
+    "files": {
+      "items": {
+        "$ref": "#/$defs/CodeFileEntry"
+      },
+      "title": "Files",
+      "type": "array"
+    },
+    "git_branch": {
+      "anyOf": [
+        {
+          "maxLength": 256,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Git Branch"
+    },
+    "git_head": {
+      "anyOf": [
+        {
+          "maxLength": 128,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Git Head"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "logical_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Logical Fingerprint",
+      "type": "string"
+    },
+    "manifest_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Manifest Fingerprint",
+      "type": "string"
+    },
+    "metrics": {
+      "$ref": "#/$defs/CodeGraphMetrics"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/CodeNode"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "CodeGraphSnapshotV1",
+      "default": "CodeGraphSnapshotV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Snapshot Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "snapshot_id",
+    "logical_fingerprint",
+    "manifest_fingerprint",
+    "config_fingerprint",
+    "extractor_fingerprint",
+    "files",
+    "nodes",
+    "edges",
+    "created_at"
+  ],
+  "title": "CodeGraphSnapshot",
+  "type": "object"
+}

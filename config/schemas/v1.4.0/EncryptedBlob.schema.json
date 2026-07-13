@@ -1,0 +1,106 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "algorithm": {
+      "const": "aes-256-gcm",
+      "title": "Algorithm",
+      "type": "string"
+    },
+    "algorithm_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Algorithm Version",
+      "type": "string"
+    },
+    "associated_data_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Associated Data Sha256",
+      "type": "string"
+    },
+    "authentication_tag": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Authentication Tag",
+      "type": "string"
+    },
+    "blob_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Blob Id",
+      "type": "string"
+    },
+    "ciphertext": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Ciphertext",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "encrypted_data_key": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Encrypted Data Key",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "key_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Key Id",
+      "type": "string"
+    },
+    "key_provider_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Key Provider Id",
+      "type": "string"
+    },
+    "nonce": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Nonce",
+      "type": "string"
+    },
+    "plaintext_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Plaintext Sha256",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "EncryptedBlobV1",
+      "default": "EncryptedBlobV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "blob_id",
+    "key_provider_id",
+    "key_id",
+    "algorithm",
+    "encrypted_data_key",
+    "nonce",
+    "ciphertext",
+    "authentication_tag",
+    "plaintext_sha256",
+    "associated_data_sha256",
+    "created_at"
+  ],
+  "title": "EncryptedBlob",
+  "type": "object"
+}

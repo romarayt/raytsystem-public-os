@@ -1,0 +1,211 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "agent_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Agent Ids",
+      "type": "array"
+    },
+    "content_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Content Sha256",
+      "type": "string"
+    },
+    "dependencies": {
+      "patternProperties": {
+        "^[a-z][a-z0-9_:.@/-]{1,255}$": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "title": "Dependencies",
+      "type": "object"
+    },
+    "eval_suite_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Eval Suite Ids",
+      "type": "array"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "fixture_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Fixture Ids",
+      "type": "array"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "license_expression": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "License Expression",
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "package_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Package Id",
+      "type": "string"
+    },
+    "permissions": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Permissions",
+      "type": "array"
+    },
+    "publisher": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Publisher",
+      "type": "string"
+    },
+    "raytsystem_compatibility": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Raytsystem Compatibility",
+      "type": "string"
+    },
+    "runtime_requirements": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Runtime Requirements",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "PackageManifestV1",
+      "default": "PackageManifestV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "signature": {
+      "anyOf": [
+        {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Signature"
+    },
+    "skill_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Skill Ids",
+      "type": "array"
+    },
+    "source_commit": {
+      "anyOf": [
+        {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Commit"
+    },
+    "source_url": {
+      "anyOf": [
+        {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Url"
+    },
+    "template_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Template Ids",
+      "type": "array"
+    },
+    "tool_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Tool Ids",
+      "type": "array"
+    },
+    "version": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Version",
+      "type": "string"
+    },
+    "workflow_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Workflow Ids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "package_id",
+    "name",
+    "version",
+    "publisher",
+    "content_sha256",
+    "license_expression",
+    "raytsystem_compatibility"
+  ],
+  "title": "PackageManifest",
+  "type": "object"
+}

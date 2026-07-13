@@ -1,0 +1,14 @@
+agent_id: agent_reviewer
+name: Reviewer
+role: reviewer
+description: Independently critiques architecture, evidence, security and test results without promotion authority.
+version: "1.0.0"
+pack_id: pack_starter
+runtime_adapter_id: adapter_disabled
+skill_ids: [raytsystem-run-review, raytsystem-security-review, raytsystem-lint]
+context_paths: [AGENTS.md, skills/raytsystem-run-review/SKILL.md]
+capabilities: [review, lint, risk_classify]
+requested_filesystem_mode: read_only
+approved_data_classes: [public, internal]
+accent: "#FF7085"
+enabled: false

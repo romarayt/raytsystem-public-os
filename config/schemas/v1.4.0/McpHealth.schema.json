@@ -1,0 +1,69 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "checked_at": {
+      "format": "date-time",
+      "title": "Checked At",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "health_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Health Id",
+      "type": "string"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "reason_codes": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Reason Codes",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "McpHealthV1",
+      "default": "McpHealthV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "server_revision_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Server Revision Id",
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "unknown",
+        "healthy",
+        "degraded",
+        "unhealthy",
+        "disabled"
+      ],
+      "title": "State",
+      "type": "string"
+    }
+  },
+  "required": [
+    "health_id",
+    "server_revision_id",
+    "state",
+    "checked_at"
+  ],
+  "title": "McpHealth",
+  "type": "object"
+}

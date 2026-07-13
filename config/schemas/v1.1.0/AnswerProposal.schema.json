@@ -1,0 +1,279 @@
+{
+  "$defs": {
+    "AnswerSection": {
+      "additionalProperties": false,
+      "properties": {
+        "citation_ids": {
+          "default": [],
+          "items": {
+            "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+            "type": "string"
+          },
+          "title": "Citation Ids",
+          "type": "array"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "AnswerSectionV1",
+          "default": "AnswerSectionV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "AnswerSection",
+      "type": "object"
+    },
+    "ComponentRef": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Sha256"
+        },
+        "config_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Config Sha256",
+          "type": "string"
+        },
+        "name": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "config_sha256"
+      ],
+      "title": "ComponentRef",
+      "type": "object"
+    },
+    "ProducerKind": {
+      "enum": [
+        "kernel",
+        "human",
+        "model",
+        "skill",
+        "adapter"
+      ],
+      "title": "ProducerKind",
+      "type": "string"
+    },
+    "ProducerRef": {
+      "additionalProperties": false,
+      "properties": {
+        "component": {
+          "$ref": "#/$defs/ComponentRef"
+        },
+        "destination": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Destination"
+        },
+        "kind": {
+          "$ref": "#/$defs/ProducerKind"
+        }
+      },
+      "required": [
+        "kind",
+        "component"
+      ],
+      "title": "ProducerRef",
+      "type": "object"
+    },
+    "RecordRef": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "object_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Object Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "object_sha256"
+      ],
+      "title": "RecordRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "answer_proposal_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Answer Proposal Id",
+      "type": "string"
+    },
+    "citation_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Citation Ids",
+      "type": "array"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "facts": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/AnswerSection"
+      },
+      "title": "Facts",
+      "type": "array"
+    },
+    "gaps": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/AnswerSection"
+      },
+      "title": "Gaps",
+      "type": "array"
+    },
+    "generation_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Generation Id",
+      "type": "string"
+    },
+    "generation_ref": {
+      "$ref": "#/$defs/RecordRef"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "inferences": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/AnswerSection"
+      },
+      "title": "Inferences",
+      "type": "array"
+    },
+    "intent": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Intent",
+      "type": "string"
+    },
+    "producer": {
+      "$ref": "#/$defs/ProducerRef"
+    },
+    "query_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Query Sha256",
+      "type": "string"
+    },
+    "query_text": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Query Text",
+      "type": "string"
+    },
+    "rendered_answer": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Rendered Answer",
+      "type": "string"
+    },
+    "run_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "AnswerProposalV1",
+      "default": "AnswerProposalV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "answer_proposal_id",
+    "run_id",
+    "generation_id",
+    "generation_ref",
+    "query_sha256",
+    "query_text",
+    "intent",
+    "rendered_answer",
+    "producer",
+    "created_at"
+  ],
+  "title": "AnswerProposal",
+  "type": "object"
+}

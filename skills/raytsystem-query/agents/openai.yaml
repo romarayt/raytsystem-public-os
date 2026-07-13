@@ -1,0 +1,4 @@
+interface:
+  display_name: "raytsystem QUERY"
+  short_description: "Answer from verified active evidence"
+  default_prompt: "Use $raytsystem-query to answer a question from the active generation with verified citations."

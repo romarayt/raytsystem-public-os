@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Система Райта">
+  <rect width="64" height="64" rx="16" fill="#090A0D"/>
+  <path d="M11 16v9l18 7-18 7v9l29-12v-8L11 16Z" fill="#DC8C45"/>
+  <path d="M36 45h17v7H36z" fill="#DC8C45"/>
+</svg>

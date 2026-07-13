@@ -1,0 +1,54 @@
+version: "1.0.0"
+store: ops/platform.sqlite
+
+features:
+  evals_enabled: true
+  promptfoo_adapter_enabled: false
+  telemetry_enabled: true
+  otel_export_enabled: false
+  replay_enabled: true
+  policy_simulator_enabled: true
+  emergency_controls_enabled: true
+  mcp_governance_enabled: true
+  acp_adapter_enabled: false
+  a2a_gateway_enabled: false
+  pack_lifecycle_enabled: true
+  workflow_engine_enabled: true
+  notifications_enabled: true
+  external_notifications_enabled: false
+  restricted_encryption_enabled: false
+  backup_enabled: true
+
+  # Separate exposure/provider gates remain fail-closed even if a parent feature changes.
+  promptfoo_remote_generation_enabled: false
+  external_mcp_execution_enabled: false
+  a2a_network_exposure_enabled: false
+  external_kms_enabled: false
+
+policy:
+  network_default: none
+  workspace_default: staging_only
+  external_actions_default: approval_required
+  mcp_tool_default: catalog_only
+  a2a_bind: loopback
+  max_span_attributes: 32
+  max_span_attribute_bytes: 16384
+  max_a2a_artifact_bytes: 1048576
+  max_notification_bytes: 16384
+  # External outbox: an empty allowlist refuses every external destination.
+  notification_destinations: []
+  notification_retry_limit: 3
+
+circuit_breakers:
+  repeated_error: 5
+  no_progress_heartbeats: 10
+  max_run_duration_seconds: 7200
+  max_heartbeat_count: 1000
+  token_spike: 200000
+  max_changed_files: 500
+  protected_path: 1
+  forbidden_egress: 1
+  policy_violations: 3
+  runaway_subtasks: 100
+  failed_approvals: 5
+  retry_loop: 20

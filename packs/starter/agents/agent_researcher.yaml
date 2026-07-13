@@ -1,0 +1,14 @@
+agent_id: agent_researcher
+name: Researcher
+role: researcher
+description: Collects primary evidence and returns structured, source-bound research proposals.
+version: "1.0.0"
+pack_id: pack_starter
+runtime_adapter_id: adapter_disabled
+skill_ids: [raytsystem-research, raytsystem-query]
+context_paths: [AGENTS.md, skills/raytsystem-research/SKILL.md]
+capabilities: [research, query, evidence_propose]
+requested_filesystem_mode: read_only
+approved_data_classes: [public, internal]
+accent: "#A99CF8"
+enabled: false

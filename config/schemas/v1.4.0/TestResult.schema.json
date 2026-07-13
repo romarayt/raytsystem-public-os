@@ -1,0 +1,54 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "ExecutionTestResultV1",
+      "default": "ExecutionTestResultV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed",
+        "skipped",
+        "not_reported"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "summary": {
+      "default": "",
+      "maxLength": 8192,
+      "title": "Summary",
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "status"
+  ],
+  "title": "TestResult",
+  "type": "object"
+}

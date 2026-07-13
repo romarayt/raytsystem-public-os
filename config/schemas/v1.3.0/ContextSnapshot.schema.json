@@ -1,0 +1,76 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "agent_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "context_snapshot_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Context Snapshot Id",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "instruction_hashes": {
+      "patternProperties": {
+        "^[a-z][a-z0-9_:.@/-]{1,255}$": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "title": "Instruction Hashes",
+      "type": "object"
+    },
+    "policy_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Policy Sha256",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "ContextSnapshotV1",
+      "default": "ContextSnapshotV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.3.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "skill_hashes": {
+      "patternProperties": {
+        "^[a-z][a-z0-9_:.@/-]{1,255}$": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "title": "Skill Hashes",
+      "type": "object"
+    }
+  },
+  "required": [
+    "context_snapshot_id",
+    "agent_id",
+    "instruction_hashes",
+    "skill_hashes",
+    "policy_sha256",
+    "created_at"
+  ],
+  "title": "ContextSnapshot",
+  "type": "object"
+}

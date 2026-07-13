@@ -1,0 +1,110 @@
+{
+  "entries": {
+    "AnswerProposal": {
+      "path": "AnswerProposal.schema.json",
+      "sha256": "639560005cd41d9fbaf048cf90ad16d2af0d2d91b4b16fe24e64e00ea783fb47"
+    },
+    "ApprovalRecord": {
+      "path": "ApprovalRecord.schema.json",
+      "sha256": "011177fd142d6a8cf20a0d1561de13d159628f3e1f53c7bee617fb1224e5d554"
+    },
+    "Artifact": {
+      "path": "Artifact.schema.json",
+      "sha256": "c1e59ffe997bde4dc2dcf67c12f988bf6489cb41a2f8a199499f7341166fba7a"
+    },
+    "Claim": {
+      "path": "Claim.schema.json",
+      "sha256": "ce1fe49000e257692f4a34762e7d16e7db2cfb76dbdcb805893c38ff812f4fc4"
+    },
+    "Entity": {
+      "path": "Entity.schema.json",
+      "sha256": "79a1c66f336386355647dd61ac3b2be6f1ea4b63e27070aeb0bc4a2e09e0f871"
+    },
+    "EvidencePack": {
+      "path": "EvidencePack.schema.json",
+      "sha256": "41c531b66ef6881d4ce5820c5b1b724e7d38ac813dc68e67f834f335ac52d8fa"
+    },
+    "Feedback": {
+      "path": "Feedback.schema.json",
+      "sha256": "1a1e85a25f81399b06195edc770aad416fb19bc5778b423eee9c940f3bd8d3b2"
+    },
+    "GenerationEntry": {
+      "path": "GenerationEntry.schema.json",
+      "sha256": "d5a318e3a0bc335beabe5409877af0c54a42d76c5fcde8ad2f240635a6b5d28b"
+    },
+    "GitCheckpointEvent": {
+      "path": "GitCheckpointEvent.schema.json",
+      "sha256": "d33d509551969065294f1f46f043e5cc9740f192d5143215cc67925c21a58496"
+    },
+    "Lease": {
+      "path": "Lease.schema.json",
+      "sha256": "7f1c1e9c9dd3bec928b7945427b5c71e5fef0473168a15415ef512f1d7d00dc9"
+    },
+    "LedgerGeneration": {
+      "path": "LedgerGeneration.schema.json",
+      "sha256": "677c5490504c160a5b33dd56fc7e276e09efff2f3fd730342db0d9d5fb4145b4"
+    },
+    "Normalization": {
+      "path": "Normalization.schema.json",
+      "sha256": "13d6851379a817692c7b8866ccf2fe1d1e653ec808c5ec779970839e2cdae8ed"
+    },
+    "OutboxAction": {
+      "path": "OutboxAction.schema.json",
+      "sha256": "3f39bf31f791c554b22d1a97cccddc6c22e458c58afc353cd10577400fd7718a"
+    },
+    "PolicyDecision": {
+      "path": "PolicyDecision.schema.json",
+      "sha256": "c9b2a7c31d4a94aeaffe7c919b3e3c7747cc73b9e1eb3fd046a3158fcb32cf36"
+    },
+    "PromotionEvent": {
+      "path": "PromotionEvent.schema.json",
+      "sha256": "5ff4eb5b924cff47fd55769c085e84a436eda4a489695eae8491e3e719afc6ac"
+    },
+    "PromotionTxn": {
+      "path": "PromotionTxn.schema.json",
+      "sha256": "b1826bf4c96f33903d1d73b7a3e592cd4a94adf6ac0d273a16e0f5136effb0db"
+    },
+    "ProposalRequest": {
+      "path": "ProposalRequest.schema.json",
+      "sha256": "1240be57f923fd18a38ff6d614b0830c85cc2584e54ee10d61ad1f0f089290b7"
+    },
+    "ProposalResponse": {
+      "path": "ProposalResponse.schema.json",
+      "sha256": "743b5d7c94fd0e5536965d0b64fd8b6d830c55911432bdae09ff15381e5491f8"
+    },
+    "QueryCitation": {
+      "path": "QueryCitation.schema.json",
+      "sha256": "a075e685a319ee680e73689ef6702741777d9b10a38ff054c46b1821d0d6621c"
+    },
+    "Relation": {
+      "path": "Relation.schema.json",
+      "sha256": "a91d7c2166fc1d8db2a722516de5294951f56cf6958c22e1b6f15718ad93ac82"
+    },
+    "Review": {
+      "path": "Review.schema.json",
+      "sha256": "fb7a95e58ea524429576875e5c95d480e98603ba71478bb74d82d193e2c6714c"
+    },
+    "Run": {
+      "path": "Run.schema.json",
+      "sha256": "c9edae4b4dbfa8a7db8b3d6b1e0ee52747b1cbd2364e48f3212138fa34c676d9"
+    },
+    "Segment": {
+      "path": "Segment.schema.json",
+      "sha256": "a590445f91d8a10d8fe51ef6f4a4d5ba0b8364db605e080d5f80806cd3c20984"
+    },
+    "SensitivityDecision": {
+      "path": "SensitivityDecision.schema.json",
+      "sha256": "50f6cdba45ff1f24d96beead65ae060051ed72eabf19cecaaa5e7678357d616c"
+    },
+    "Source": {
+      "path": "Source.schema.json",
+      "sha256": "874df629cc2459e9f4870b18f4e73131cb97d7544a81c385899675c3d59a54ff"
+    },
+    "SourceRevision": {
+      "path": "SourceRevision.schema.json",
+      "sha256": "b9c23c0250c3e337b0ed2e6437f0a827a4aea4f049dbf370b6131d43fe394ced"
+    }
+  },
+  "registry_sha256": "f3e83b85a596b0ab963966e07231edd5ce5c37b9c158527462508ca10a5334dc",
+  "schema_version": "1.1.0"
+}

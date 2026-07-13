@@ -1,0 +1,121 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "generation_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Generation Fingerprint",
+      "type": "string"
+    },
+    "graph_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Graph Fingerprint",
+      "type": "string"
+    },
+    "graph_scope_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Graph Scope Id",
+      "type": "string"
+    },
+    "graph_snapshot_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Graph Snapshot Id",
+      "type": "string"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "include_relations": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Include Relations",
+      "type": "array"
+    },
+    "max_bytes": {
+      "default": 48000,
+      "maximum": 2000000,
+      "minimum": 1024,
+      "title": "Max Bytes",
+      "type": "integer"
+    },
+    "max_depth": {
+      "default": 2,
+      "maximum": 8,
+      "minimum": 0,
+      "title": "Max Depth",
+      "type": "integer"
+    },
+    "max_edges": {
+      "default": 100,
+      "maximum": 2000,
+      "minimum": 0,
+      "title": "Max Edges",
+      "type": "integer"
+    },
+    "max_nodes": {
+      "default": 40,
+      "maximum": 500,
+      "minimum": 1,
+      "title": "Max Nodes",
+      "type": "integer"
+    },
+    "roots": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Roots",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "TaskGraphScopeV1",
+      "default": "TaskGraphScopeV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seed_node_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Seed Node Ids",
+      "type": "array"
+    },
+    "task_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "graph_scope_id",
+    "task_id",
+    "graph_snapshot_id",
+    "graph_fingerprint",
+    "generation_fingerprint",
+    "created_at"
+  ],
+  "title": "TaskGraphScope",
+  "type": "object"
+}

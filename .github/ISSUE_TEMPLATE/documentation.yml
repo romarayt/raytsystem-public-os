@@ -1,0 +1,30 @@
+name: Documentation issue
+description: Report missing, incorrect, or unclear raytsystem documentation.
+title: "[Docs]: "
+labels: [documentation, needs-triage]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page or section
+      description: Paste the public documentation URL or repository-relative path.
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What is wrong or missing?
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Suggested correction
+      description: Include exact tested commands when relevant.
+  - type: checkboxes
+    id: safe
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: I removed secrets, private data, absolute paths, and corpus content.
+          required: true

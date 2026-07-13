@@ -1,0 +1,88 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "checks": {
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "title": "Checks",
+      "type": "object"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "findings": {
+      "default": [],
+      "items": {
+        "maxLength": 4096,
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "human_review_required": {
+      "const": true,
+      "default": true,
+      "title": "Human Review Required",
+      "type": "boolean"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "project_id": {
+      "pattern": "^ytp_[a-z0-9_]{2,120}$",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "review_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Review Id",
+      "type": "string"
+    },
+    "review_kind": {
+      "const": "deterministic_validation",
+      "default": "deterministic_validation",
+      "title": "Review Kind",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "YouTubePackageReviewV1",
+      "default": "YouTubePackageReviewV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state": {
+      "const": "draft",
+      "default": "draft",
+      "title": "State",
+      "type": "string"
+    },
+    "verdict": {
+      "enum": [
+        "pass",
+        "warn",
+        "fail"
+      ],
+      "title": "Verdict",
+      "type": "string"
+    }
+  },
+  "required": [
+    "review_id",
+    "project_id",
+    "verdict",
+    "checks"
+  ],
+  "title": "YouTubePackageReview",
+  "type": "object"
+}

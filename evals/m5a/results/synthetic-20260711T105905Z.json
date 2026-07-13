@@ -1,0 +1,187 @@
+{
+  "schema_name": "SyntheticQualificationResultV1",
+  "result_id": "m5a_synthetic_20260711t105905z",
+  "created_at": "2026-07-11T10:59:05Z",
+  "terminal_target": "READY_FOR_USER_PILOT",
+  "production_ready": false,
+  "dataset": {
+    "path": "evals/m5a/synthetic-qualification-v1.json",
+    "sha256": "2a1d933f15cd485416a5b81a1b195e84cfd09ffb0ca29c134b436999714ca8c0",
+    "case_count": 38,
+    "adversarial_category_count": 14,
+    "kind_counts": {
+      "adversarial": 19,
+      "golden": 10,
+      "recovery": 9
+    }
+  },
+  "qualification_tree": {
+    "path": "evals/m5a/qualification-tree-v1.json",
+    "sha256": "ba244f18c8a263efe2b7f2800ad671f1b6df9a1859b2f65d4a665c02840b037b",
+    "file_count": 13,
+    "base_git_sha": "948a0fd33235839baa3249dded7eeb882959b192"
+  },
+  "git": {
+    "base_sha": "948a0fd33235839baa3249dded7eeb882959b192",
+    "branch": "codex/raytsystem-bootstrap",
+    "dirty_during_qualification": true,
+    "pushed": false
+  },
+  "runtime": {
+    "python": "3.12.12",
+    "sqlite": "3.50.4",
+    "schema_version": "1.2.0",
+    "schema_registry_sha256": "4fb242b805379ac32d816cb773b90ad99b456a8595486c213c081dab9f0029a0",
+    "schema_registry_file_sha256": "c65c7cecef96603fd493471f5f73c014a5ed5cb508d7583073a5c4fd5edc4f90",
+    "policy_sha256": "a19116d0fb9d9afedee68f1cafe6d105498724b1ae354d9dfc5cdb9611374000",
+    "uv_lock_sha256": "2e4b05719915f6c0669358946097072040b26d8b36f688e4a80c7413a890fb7e"
+  },
+  "commands": {
+    "doctor": "pass_healthy",
+    "status": "pass_active_generation",
+    "ruff_format": "pass",
+    "ruff": "pass",
+    "mypy": "pass_33_source_files",
+    "pytest": "252 passed",
+    "coverage_percent_exact": "81.765835",
+    "coverage_percent_display": 82,
+    "rebuild_index": "pass",
+    "query": "pass_one_verified_citation",
+    "lint": "pass_zero_findings",
+    "youtube": "pass_25_checks_and_11_stage_noop"
+  },
+  "gate_results": {
+    "G0": {
+      "status": "PASS_SYNTHETIC",
+      "case_count": 2,
+      "evidence": "bootstrap plus deterministic redacted current preflight"
+    },
+    "G1": {
+      "status": "PASS_SYNTHETIC",
+      "case_count": 2,
+      "evidence": "ADR-001 through ADR-014, exact contracts and approval state machine"
+    },
+    "G2": {
+      "status": "PASS_SYNTHETIC",
+      "case_count": 2,
+      "evidence": "doctor, CLI bridge, uv lock, routing, Ruff, mypy and pytest"
+    },
+    "G3": {
+      "status": "PASS_SYNTHETIC",
+      "case_count": 3,
+      "evidence": "raw, evidence, inherited generation and YouTube fact closure"
+    },
+    "G4": {
+      "status": "PASS_SYNTHETIC",
+      "case_count": 4,
+      "evidence": "INGEST, operation join, SAVE and YouTube no-op"
+    },
+    "G5": {
+      "status": "PASS_SYNTHETIC",
+      "case_count": 4,
+      "evidence": "offline adapters plus integrated INGEST/QUERY/LINT/SAVE/YouTube lifecycle"
+    },
+    "G6": {
+      "status": "PASS_SYNTHETIC",
+      "case_count": 12,
+      "evidence": "injection, sensitivity, paths, links, quotas, approvals, corruption and writers"
+    },
+    "G7": {
+      "status": "PASS_SYNTHETIC",
+      "case_count": 9,
+      "evidence": "SIGKILL, ENOSPC, WAL/pointer, fences, rebases, ephemeral-loss and derived recovery"
+    },
+    "G8": {
+      "status": "PENDING_USER_PILOT",
+      "synthetic_harness": "pass",
+      "reason": "real quality has no human-labeled representative baseline"
+    },
+    "G9": {
+      "status": "PENDING_USER_PILOT",
+      "reason": "user diff, dependency, risk and compensating-rollback review has not occurred"
+    },
+    "G10": {
+      "status": "PENDING_USER_PILOT",
+      "reason": "no approved real manual promotions or repeated dry runs have occurred"
+    }
+  },
+  "synthetic_metrics": {
+    "retrieval": {
+      "label": "synthetic_one_case",
+      "backend": "fts5",
+      "case_count": 1,
+      "recall_at_5": "1.000000",
+      "recall_at_10": "1.000000",
+      "mrr_at_10": "1.000000",
+      "latency": "baseline_pending"
+    },
+    "citations": {
+      "label": "deterministic_hard_gate_not_quality_estimate",
+      "root_query_verified_citation_count": 1,
+      "unresolved_source_reference_count": 0
+    },
+    "youtube": {
+      "label": "synthetic_contract_consistency_only",
+      "deterministic_checks_passed": 25,
+      "deterministic_checks_total": 25,
+      "stage_count": 11,
+      "noop_reused_stage_count": 11,
+      "human_review_required": true
+    },
+    "claim_precision_recall": "baseline_pending",
+    "answer_faithfulness": "baseline_pending",
+    "conflict_precision_recall": "baseline_pending",
+    "real_youtube_quality": "baseline_pending",
+    "model_cost_tokens": "not_applicable_no_model_calls"
+  },
+  "root_evidence": {
+    "active_generation_id": "gen_1e84f93a5644a30f7c6faf6309570ae4dcd1aef90ae141113af50cb67da4f5bc",
+    "generation_sha256": "4cf02a3d0eee161acca4eee185041a2cb090f8ad4cf87b1d95fa4dd71c6a0eb5",
+    "document_count": 6,
+    "graph_nodes": 4,
+    "graph_edges": 3,
+    "logical_index_sha256": "a48bf78fcaa11ca0bf587264da4ee56d7cfe3e92efd21b05076023d44e01e61c",
+    "projection_sha256": "9de438181db82af360547c0328d1d26dfc8ae24260e0d990fa811d5552af4571",
+    "lint_report_sha256": "aa4c9106903e0f2d0f83cee852d008a6dafba09ef0f9094723379dfc2075ffa7",
+    "lint_finding_count": 0,
+    "youtube_run_id": "ytrun_66bd30b915d62b9362974270dfdc12e045ecdc6c14fe60152defc703331f1606",
+    "youtube_manifest_sha256": "003934c1372464718629582cfc43cf0be91d85f019426eb7be02920d993a3a6c",
+    "youtube_master_sha256": "24a6cede885feb5ab047fc94565c4dd7a533573d83a2a267e242f5b2a6b1a49d"
+  },
+  "sensitivity_scope": {
+    "scanner_name": "raytsystem_secret_patterns",
+    "scanner_version": "1.2.0",
+    "scanner_artifact_sha256": "a4983ddacf57929e602feb824cb6b165515a46a485680b89f7fc4142b1efaedd",
+    "declared_zero_leak_scope": [
+      "m5a_candidate_file_manifest",
+      "knowledge_views",
+      "events_and_run_manifests",
+      "staging_and_draft_artifacts",
+      "retained_qualification_reports"
+    ],
+    "scanner_detectable_plaintext_leaks": 0,
+    "scope_document": "docs/04-security-scope.md",
+    "retained_report_paths": [
+      "evals/m5a/qualification-tree-v1.json",
+      "evals/m5a/results/synthetic-20260711T105905Z.json",
+      "ops/runs/m5a_qualification_20260711T111638Z/manifest.json"
+    ],
+    "limitations": [
+      "high_confidence_patterns_are_not_universal_DLP",
+      "semantic_PII_and_non_E164_local_phones_are_not_detected",
+      "OCR_ASR_archive_and_obfuscated_content_are_not_covered",
+      "restricted_quarantine_is_not_application_encrypted_without_an_approved_key_provider"
+    ]
+  },
+  "disabled_surfaces": {
+    "live_https_fetcher": "FAIL_CLOSED_UNAVAILABLE",
+    "yt_dlp_fetcher": "FAIL_CLOSED_UNAVAILABLE",
+    "archive_extraction": "FAIL_CLOSED_UNAVAILABLE",
+    "webhooks": "M6_NOT_IMPLEMENTED",
+    "qmd_model_assets": "UNAPPROVED_UNAVAILABLE",
+    "ocr_asr_model_assets": "UNAPPROVED_UNAVAILABLE",
+    "scheduled_runs": "M6_NOT_AUTHORIZED"
+  },
+  "external_side_effects": [],
+  "pilot_request": "docs/05-user-pilot-request.md"
+}

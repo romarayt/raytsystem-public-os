@@ -1,0 +1,4 @@
+interface:
+  display_name: "raytsystem RESEARCH"
+  short_description: "Research into evidence proposals only"
+  default_prompt: "Use $raytsystem-research to gather bounded sources and return evidence proposals for raytsystem."

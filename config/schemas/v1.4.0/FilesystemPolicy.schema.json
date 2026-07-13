@@ -1,0 +1,76 @@
+{
+  "$defs": {
+    "WorkspaceMode": {
+      "enum": [
+        "workspace_root_readonly",
+        "task_worktree",
+        "approved_external_root"
+      ],
+      "title": "WorkspaceMode",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "allow_git_read": {
+      "default": true,
+      "title": "Allow Git Read",
+      "type": "boolean"
+    },
+    "allow_git_write": {
+      "default": false,
+      "title": "Allow Git Write",
+      "type": "boolean"
+    },
+    "allow_staged_write": {
+      "default": true,
+      "title": "Allow Staged Write",
+      "type": "boolean"
+    },
+    "allow_workspace_read": {
+      "default": true,
+      "title": "Allow Workspace Read",
+      "type": "boolean"
+    },
+    "approved_external_root_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Approved External Root Id"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "mode": {
+      "$ref": "#/$defs/WorkspaceMode",
+      "default": "task_worktree"
+    },
+    "schema_name": {
+      "const": "FilesystemPolicyV1",
+      "default": "FilesystemPolicyV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "title": "FilesystemPolicy",
+  "type": "object"
+}

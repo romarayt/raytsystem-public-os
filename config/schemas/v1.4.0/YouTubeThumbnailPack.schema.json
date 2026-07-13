@@ -1,0 +1,184 @@
+{
+  "$defs": {
+    "YouTubeLineKind": {
+      "enum": [
+        "factual",
+        "inference",
+        "editorial"
+      ],
+      "title": "YouTubeLineKind",
+      "type": "string"
+    },
+    "YouTubePromise": {
+      "enum": [
+        "benefit",
+        "revelation",
+        "result",
+        "pain",
+        "list",
+        "mechanism",
+        "intrigue"
+      ],
+      "title": "YouTubePromise",
+      "type": "string"
+    },
+    "YouTubeThumbnailConcept": {
+      "additionalProperties": false,
+      "properties": {
+        "animation_accent": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Animation Accent",
+          "type": "string"
+        },
+        "background": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Background",
+          "type": "string"
+        },
+        "colors": {
+          "items": {
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 2,
+          "title": "Colors",
+          "type": "array"
+        },
+        "composition": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Composition",
+          "type": "string"
+        },
+        "concept_id": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Concept Id",
+          "type": "string"
+        },
+        "face": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Face",
+          "type": "string"
+        },
+        "fact_ids": {
+          "default": [],
+          "items": {
+            "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+            "type": "string"
+          },
+          "title": "Fact Ids",
+          "type": "array"
+        },
+        "line_kind": {
+          "$ref": "#/$defs/YouTubeLineKind"
+        },
+        "promise": {
+          "$ref": "#/$defs/YouTubePromise"
+        },
+        "risk_score": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Risk Score",
+          "type": "integer"
+        },
+        "subject_main": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Subject Main",
+          "type": "string"
+        },
+        "text_overlay": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Text Overlay",
+          "type": "string"
+        }
+      },
+      "required": [
+        "concept_id",
+        "subject_main",
+        "text_overlay",
+        "composition",
+        "colors",
+        "face",
+        "background",
+        "animation_accent",
+        "promise",
+        "risk_score",
+        "line_kind"
+      ],
+      "title": "YouTubeThumbnailConcept",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "best_concept_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Best Concept Id",
+      "type": "string"
+    },
+    "concepts": {
+      "items": {
+        "$ref": "#/$defs/YouTubeThumbnailConcept"
+      },
+      "maxItems": 10,
+      "minItems": 10,
+      "title": "Concepts",
+      "type": "array"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "needs_review": {
+      "default": true,
+      "title": "Needs Review",
+      "type": "boolean"
+    },
+    "project_id": {
+      "pattern": "^ytp_[a-z0-9_]{2,120}$",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "YouTubeThumbnailPackV1",
+      "default": "YouTubeThumbnailPackV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state": {
+      "const": "draft",
+      "default": "draft",
+      "title": "State",
+      "type": "string"
+    },
+    "thumbnail_pack_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Thumbnail Pack Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "thumbnail_pack_id",
+    "project_id",
+    "concepts",
+    "best_concept_id"
+  ],
+  "title": "YouTubeThumbnailPack",
+  "type": "object"
+}

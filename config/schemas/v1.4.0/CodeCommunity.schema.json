@@ -1,0 +1,60 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "cohesion_ppm": {
+      "default": 0,
+      "maximum": 1000000,
+      "minimum": 0,
+      "title": "Cohesion Ppm",
+      "type": "integer"
+    },
+    "community_id": {
+      "maximum": 1000000,
+      "minimum": 0,
+      "title": "Community Id",
+      "type": "integer"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "label": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Label",
+      "type": "string"
+    },
+    "node_ids": {
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Node Ids",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "CodeCommunityV1",
+      "default": "CodeCommunityV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "community_id",
+    "label",
+    "node_ids"
+  ],
+  "title": "CodeCommunity",
+  "type": "object"
+}

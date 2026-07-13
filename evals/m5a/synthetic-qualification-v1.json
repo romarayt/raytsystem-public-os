@@ -1,0 +1,552 @@
+{
+  "schema_name": "SyntheticQualificationSuiteV1",
+  "suite_id": "m5a_synthetic_v1",
+  "suite_version": "1.0.0",
+  "scope": "synthetic_fixture_only",
+  "created_at": "2026-07-11T10:45:00Z",
+  "fixture_sha256": {
+    "tests/fixtures/analytics.csv": "0684ab5f52df7c1bdfd6a54cc0bed3ebadcfb4034fc52dff5ca55ed2c0e6f89d",
+    "tests/fixtures/captured.youtube.json": "45ebddcff737e9924cdf74ee3d336684db4151821dea1e8ccb648e67623c40b0",
+    "tests/fixtures/native.md": "e71630dd7c7bf4c4cf54337db79d3f0d5b3bd310e68d36ddf7bc980832b89f8b",
+    "tests/fixtures/search-benchmark.jsonl": "cd6b2b5fff1bb5f654610357b81e04bca6f96bec47feaeffb04204b52abef857",
+    "tests/fixtures/youtube/brief.json": "23d26b288f191e45029310ba7a531f78977bfd48853786b0806ee32fe7efd88d",
+    "tests/fixtures/youtube/evidence.txt": "4617829f525ff8f42d2df95fcf06670e9f3b7302be9015f813de61ca6f82b88d",
+    "tests/fixtures/youtube/research.json": "5d0c3665813f189e8eb8f4f02d4f898d99c114dba7fce5b82b38a0501412032c"
+  },
+  "required_adversarial_categories": {
+    "archive_traversal_and_decompression": ["g6_remote_archive_fail_closed", "g6_pdf_containment_and_quotas"],
+    "broken_wikilinks": ["g6_lint_broken_links"],
+    "concurrent_writers": ["g6_concurrent_writers", "g7_concurrent_rebase"],
+    "corrupted_manifest_or_index": ["g6_corrupt_state"],
+    "decompression_or_size_quota": ["g6_pdf_containment_and_quotas"],
+    "duplicate_operation_or_webhook": ["g4_unique_operation_join"],
+    "fake_system_message": ["g6_prompt_injection_data_control"],
+    "hidden_or_visible_prompt_injection": ["g6_prompt_injection_data_control", "g6_query_injection_is_inert"],
+    "malicious_url_or_exfiltration_instruction": ["g6_query_injection_is_inert", "g6_remote_archive_fail_closed"],
+    "partial_write_or_killed_process": ["g7_enospc_staging", "g7_sigkill", "g7_named_fault_matrix"],
+    "path_traversal": ["g6_path_traversal"],
+    "secret_or_pii_egress": ["g6_secret_scanning", "g6_hosted_pii_default_deny"],
+    "ssrf_redirect_or_dns_rebinding": ["g6_remote_archive_fail_closed"],
+    "symlink_or_hardlink_escape": ["g6_link_containment"]
+  },
+  "cases": [
+    {
+      "case_id": "g0_bootstrap_preflight",
+      "gate": "G0",
+      "kind": "golden",
+      "coverage_mode": "metadata_evidence",
+      "requirement": "Surface, permissions, egress, Git state and tools are captured before work.",
+      "tests": ["tests/test_cli.py::test_doctor_reports_machine_readable_health"],
+      "artifacts": ["ops/runs/bootstrap_20260710T183635Z/manifest.json"],
+      "fixtures": []
+    },
+    {
+      "case_id": "g0_agent_preflight",
+      "gate": "G0",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "Agent preflight is deterministic, redacted and checkpoints a no-write surface.",
+      "tests": ["tests/test_m3_agent_policy.py::test_preflight_is_deterministic_redacted_and_no_write_is_a_checkpoint"],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g1_contract_registry",
+      "gate": "G1",
+      "kind": "golden",
+      "coverage_mode": "executed",
+      "requirement": "Every contract has an exact schema and historical registries remain resolvable.",
+      "tests": [
+        "tests/test_contracts.py::test_every_registered_contract_has_an_exported_schema",
+        "tests/test_contracts.py::test_every_generation_keeps_a_resolvable_immutable_schema_registry"
+      ],
+      "artifacts": ["ops/decisions/ADR-001-local-first-canonical-state.md", "ops/decisions/ADR-013-typed-youtube-dag-and-master-projection.md", "ops/decisions/ADR-014-synthetic-qualification-and-pilot-boundary.md"],
+      "fixtures": []
+    },
+    {
+      "case_id": "g1_approval_and_state_machine",
+      "gate": "G1",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "Approvals bind exact actions and promotion transitions reject illegal state.",
+      "tests": [
+        "tests/test_contracts.py::test_approval_is_bound_to_exact_action_and_hash",
+        "tests/test_contracts.py::test_promotion_state_transitions_are_strict"
+      ],
+      "artifacts": ["ops/decisions/ADR-010-external-approval-and-phase-separated-recovery.md"],
+      "fixtures": []
+    },
+    {
+      "case_id": "g2_cli_and_setup",
+      "gate": "G2",
+      "kind": "golden",
+      "coverage_mode": "executed",
+      "requirement": "Documented CLI bridge, health checks and local toolchain operate without an API key.",
+      "tests": [
+        "tests/test_cli.py::test_prepare_export_validate_promote_bridge",
+        "tests/test_cli.py::test_m2_cli_rebuild_query_lint_and_save"
+      ],
+      "artifacts": ["README.md", "uv.lock"],
+      "fixtures": ["tests/fixtures/native.md"]
+    },
+    {
+      "case_id": "g2_surface_routing",
+      "gate": "G2",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "AGENTS and WORK route through validated repo skills and ignore payload-selected workflows.",
+      "tests": [
+        "tests/test_m3_routing.py::test_agents_and_work_are_small_exact_surface_routers",
+        "tests/test_m3_routing.py::test_operation_routing_uses_declared_operation_not_untrusted_payload"
+      ],
+      "artifacts": ["AGENTS.md", "WORK.md"],
+      "fixtures": []
+    },
+    {
+      "case_id": "g3_raw_and_revision_integrity",
+      "gate": "G3",
+      "kind": "golden",
+      "coverage_mode": "executed",
+      "requirement": "Exact raw bytes are immutable and changed bytes create a distinct source revision.",
+      "tests": [
+        "tests/test_ingestion.py::test_native_markdown_ingest_promotes_cited_claim_and_is_idempotent",
+        "tests/test_ingestion.py::test_changed_bytes_create_new_revision_but_preserve_logical_source",
+        "tests/test_ingestion.py::test_raw_hash_gate_blocks_mutated_evidence_before_promotion"
+      ],
+      "artifacts": [],
+      "fixtures": ["tests/fixtures/native.md"]
+    },
+    {
+      "case_id": "g3_evidence_closure",
+      "gate": "G3",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "Promoted and inherited claims resolve exact evidence; corruption blocks pointer change.",
+      "tests": [
+        "tests/test_ingestion.py::test_promoted_claim_resolves_to_exact_segment",
+        "tests/test_ingestion.py::test_missing_inherited_evidence_blocks_next_generation",
+        "tests/test_ingestion.py::test_inherited_object_corruption_is_rejected_before_pointer_change"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g3_youtube_fact_closure",
+      "gate": "G3",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "YouTube factual output resolves exact spans, canonical objects and numeric fact tokens.",
+      "tests": [
+        "tests/test_m4_youtube.py::test_manifest_and_stage_record_tampering_are_hard_failures",
+        "tests/test_m4_youtube.py::test_exact_numeric_tokens_reject_3_as_30_and_unreferenced_numbers",
+        "tests/test_m4_youtube.py::test_orphan_fact_reference_is_a_hard_failure"
+      ],
+      "artifacts": ["ops/runs/m4_qualification_20260711T103903Z/manifest.json"],
+      "fixtures": ["tests/fixtures/youtube/evidence.txt", "tests/fixtures/youtube/research.json"]
+    },
+    {
+      "case_id": "g4_ingest_noop",
+      "gate": "G4",
+      "kind": "golden",
+      "coverage_mode": "executed",
+      "requirement": "An identical ingest returns the same run/generation and creates no new canonical state.",
+      "tests": [
+        "tests/test_ingestion.py::test_native_markdown_ingest_promotes_cited_claim_and_is_idempotent",
+        "tests/test_ingestion.py::test_canonical_idempotency_survives_control_db_recreation"
+      ],
+      "artifacts": [],
+      "fixtures": ["tests/fixtures/native.md"]
+    },
+    {
+      "case_id": "g4_unique_operation_join",
+      "gate": "G4",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "Duplicate operation requests join one durable run rather than duplicate effects.",
+      "tests": [
+        "tests/test_control.py::test_operation_key_is_unique_and_joins_existing_run",
+        "tests/test_ingestion.py::test_concurrent_identical_ingest_has_one_preparation_writer"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g4_save_noop",
+      "gate": "G4",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "Concurrent and repeated SAVE calls converge to one draft artifact only.",
+      "tests": ["tests/test_m2_lint_save.py::test_save_is_idempotent_concurrent_typed_staging_only_and_inert"],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g4_youtube_noop",
+      "gate": "G4",
+      "kind": "golden",
+      "coverage_mode": "executed",
+      "requirement": "An identical YouTube build reuses every hash-closed stage and writes nothing.",
+      "tests": ["tests/test_m4_youtube.py::test_synthetic_full_cycle_is_typed_draft_only_and_idempotent"],
+      "artifacts": [],
+      "fixtures": ["tests/fixtures/youtube/brief.json", "tests/fixtures/youtube/research.json"]
+    },
+    {
+      "case_id": "g5_input_adapter_matrix",
+      "gate": "G5",
+      "kind": "golden",
+      "coverage_mode": "executed",
+      "requirement": "Offline Markdown, captured HTML, JSON, PDF, analytics, image and captured YouTube adapters produce typed locators.",
+      "tests": [
+        "tests/test_m5a_qualification.py::test_captured_html_is_offline_inert_and_exact_raw",
+        "tests/test_adapters.py::test_native_json_uses_json_pointer_locators",
+        "tests/test_adapters.py::test_tiny_pdf_uses_page_locator_without_models",
+        "tests/test_adapters.py::test_csv_analytics_uses_table_locators",
+        "tests/test_adapters.py::test_png_input_creates_full_image_metadata_locator",
+        "tests/test_adapters.py::test_captured_youtube_bundle_uses_time_locators"
+      ],
+      "artifacts": [],
+      "fixtures": ["tests/fixtures/analytics.csv", "tests/fixtures/captured.youtube.json", "tests/fixtures/native.md"]
+    },
+    {
+      "case_id": "g5_query_lint_save",
+      "gate": "G5",
+      "kind": "golden",
+      "coverage_mode": "executed",
+      "requirement": "QUERY emits verified citations, LINT is deterministic and SAVE remains a typed draft.",
+      "tests": [
+        "tests/test_m2_search_query.py::test_query_returns_only_verified_cited_facts_and_explicit_gaps",
+        "tests/test_m2_lint_save.py::test_lint_baseline_is_clean_and_planted_defects_are_complete_stable_and_redacted",
+        "tests/test_m2_lint_save.py::test_save_is_idempotent_concurrent_typed_staging_only_and_inert"
+      ],
+      "artifacts": [],
+      "fixtures": ["tests/fixtures/search-benchmark.jsonl"]
+    },
+    {
+      "case_id": "g5_cross_feature_lifecycle",
+      "gate": "G5",
+      "kind": "golden",
+      "coverage_mode": "executed",
+      "requirement": "INGEST, QUERY, LINT, SAVE and YouTube compose without changing canonical state after promotion.",
+      "tests": ["tests/test_m5a_qualification.py::test_cross_feature_synthetic_lifecycle_is_inert_and_idempotent"],
+      "artifacts": [],
+      "fixtures": ["tests/fixtures/native.md", "tests/fixtures/youtube/brief.json", "tests/fixtures/youtube/research.json"]
+    },
+    {
+      "case_id": "g5_youtube_package",
+      "gate": "G5",
+      "kind": "golden",
+      "coverage_mode": "executed",
+      "requirement": "The typed YouTube DAG produces one coherent DRAFT package and generated master projection.",
+      "tests": [
+        "tests/test_m4_youtube.py::test_synthetic_full_cycle_is_typed_draft_only_and_idempotent",
+        "tests/test_m4_youtube.py::test_claimed_exact_pairing_must_match_structured_promises"
+      ],
+      "artifacts": [],
+      "fixtures": ["tests/fixtures/youtube/brief.json", "tests/fixtures/youtube/research.json"]
+    },
+    {
+      "case_id": "g6_prompt_injection_data_control",
+      "gate": "G6",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "Imported system-like instructions remain inert data and cannot select tools or write effects.",
+      "tests": [
+        "tests/test_ingestion.py::test_prompt_injection_is_preserved_as_data_and_causes_no_side_effect",
+        "tests/test_adapters.py::test_pdf_prompt_injection_is_preserved_as_inert_evidence",
+        "tests/test_adapters.py::test_transcript_and_imported_chat_system_messages_are_inert_data",
+        "tests/test_m5a_qualification.py::test_captured_html_is_offline_inert_and_exact_raw",
+        "tests/test_m3_agent_policy.py::test_prompt_injection_changes_only_payload_hash_not_policy_capabilities",
+        "tests/test_m4_youtube.py::test_untrusted_brief_is_rendered_as_inert_data"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g6_query_injection_is_inert",
+      "gate": "G6",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "Indexed exfiltration instructions and query syntax cause no network, process or SQL side effect.",
+      "tests": [
+        "tests/test_m2_search_query.py::test_query_treats_indexed_instructions_as_inert_and_uses_no_process_or_network",
+        "tests/test_m2_search_query.py::test_fts_query_syntax_is_literalized_without_sql_side_effects"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g6_secret_scanning",
+      "gate": "G6",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "Raw, decoded, proposal, promoted, draft and Git paths rescan secrets and fail closed.",
+      "tests": [
+        "tests/test_sensitivity.py::test_common_secret_shapes_are_quarantined",
+        "tests/test_sensitivity.py::test_secret_revealed_by_json_unescape_is_quarantined",
+        "tests/test_sensitivity.py::test_promotion_rescans_claim_accepted_by_older_scanner",
+        "tests/test_git_checkpoint.py::test_checkpoint_rejects_forbidden_or_secret_like_path",
+        "tests/test_m5a_qualification.py::test_high_confidence_pii_is_quarantined_and_scope_is_explicit"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g6_hosted_pii_default_deny",
+      "gate": "G6",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "Explicit private/PII classes cannot be transferred to hosted reviewers; secrets are never forwarded.",
+      "tests": [
+        "tests/test_m3_agent_policy.py::test_work_hosted_subagent_policy_is_minimal_and_default_deny",
+        "tests/test_m3_agent_policy.py::test_local_reviewer_can_read_private_data_but_never_write_or_receive_secrets"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g6_path_traversal",
+      "gate": "G6",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "Absolute, parent, Windows, NUL and project-ID traversal cannot escape the workspace.",
+      "tests": [
+        "tests/test_path_policy.py::test_path_escape_shapes_are_rejected",
+        "tests/test_m4_youtube.py::test_traversal_project_id_cannot_change_an_outside_sentinel",
+        "tests/test_write_policy.py::test_absolute_control_db_config_is_rejected"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g6_link_containment",
+      "gate": "G6",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "Symlink and hardlink inputs, indexes, manifests, generated pages and draft targets fail closed.",
+      "tests": [
+        "tests/test_path_policy.py::test_symlink_parent_and_final_component_are_rejected",
+        "tests/test_m2_lint_save.py::test_lint_never_dereferences_linked_knowledge_pages",
+        "tests/test_m2_search_query.py::test_index_rebuild_rejects_unsafe_link_targets_without_touching_their_referent",
+        "tests/test_m4_youtube.py::test_manifest_symlink_is_rejected_without_following"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g6_remote_archive_fail_closed",
+      "gate": "G6",
+      "kind": "adversarial",
+      "coverage_mode": "fail_closed_unavailable",
+      "requirement": "Unapproved remote/SSRF and archive surfaces perform no network, extraction or canonical write.",
+      "tests": ["tests/test_m5a_qualification.py::test_unavailable_remote_and_archive_surfaces_fail_closed_without_io"],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g6_pdf_containment_and_quotas",
+      "gate": "G6",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "PDF decompression secrets, parser downgrade and oversized local inputs are rejected within quotas.",
+      "tests": [
+        "tests/test_adapters.py::test_secret_revealed_only_after_pdf_decompression_is_quarantined",
+        "tests/test_adapters.py::test_pdf_parser_failure_never_triggers_weaker_retry",
+        "tests/test_adapters.py::test_pdf_worker_timeout_fails_closed",
+        "tests/test_adapters.py::test_pdf_worker_output_quota_fails_closed",
+        "tests/test_path_policy.py::test_non_regular_and_oversized_inputs_are_rejected"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g6_real_promotion_default_deny",
+      "gate": "G6",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "Real candidates require externally verified exact hash-bound approval rechecked inside the fence.",
+      "tests": [
+        "tests/test_ingestion.py::test_real_candidate_requires_exact_hash_bound_approval",
+        "tests/test_ingestion.py::test_workspace_created_approval_is_rejected_without_external_verifier",
+        "tests/test_ingestion.py::test_approval_expiry_is_rechecked_inside_fenced_commit"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g6_corrupt_state",
+      "gate": "G6",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "Corrupt stage manifests, canonical citations, logical indexes and SQLite fail closed or rebuild safely.",
+      "tests": [
+        "tests/test_m4_youtube.py::test_resume_rejects_checkpoint_hash_drift_before_any_rewrite",
+        "tests/test_m2_lint_save.py::test_query_blocks_factual_output_when_citation_chain_is_corrupt",
+        "tests/test_m2_search_query.py::test_index_logical_tamper_is_detected_and_rebuilt_from_canonical_records",
+        "tests/test_m2_search_query.py::test_corrupt_sqlite_is_rebuilt_without_returning_stale_results"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g6_lint_broken_links",
+      "gate": "G6",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "Broken wikilinks, orphans, duplicate IDs, projection drift and secrets are complete and redacted findings.",
+      "tests": [
+        "tests/test_m2_lint_save.py::test_lint_baseline_is_clean_and_planted_defects_are_complete_stable_and_redacted",
+        "tests/test_m5a_qualification.py::test_self_referential_wikilink_is_reported"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g6_concurrent_writers",
+      "gate": "G6",
+      "kind": "adversarial",
+      "coverage_mode": "executed",
+      "requirement": "One project/partition writer owns each commit and stale writers cannot promote.",
+      "tests": [
+        "tests/test_m4_youtube.py::test_project_writer_lock_rejects_a_second_writer",
+        "tests/test_control.py::test_stale_lease_cannot_enter_promotion_guard"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g7_enospc_staging",
+      "gate": "G7",
+      "kind": "recovery",
+      "coverage_mode": "executed",
+      "requirement": "An ENOSPC-like staging write failure leaves genesis active and resumes to one canonical commit.",
+      "tests": ["tests/test_m5a_qualification.py::test_enospc_like_staging_failure_resumes_without_partial_canonical_commit"],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g7_sigkill",
+      "gate": "G7",
+      "kind": "recovery",
+      "coverage_mode": "executed",
+      "requirement": "A real SIGKILL before or after pointer swap converges to one generation.",
+      "tests": ["tests/test_process_crash.py::test_sigkill_resume_converges_to_one_generation"],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g7_named_fault_matrix",
+      "gate": "G7",
+      "kind": "recovery",
+      "coverage_mode": "executed",
+      "requirement": "Every named durable boundary resumes from its first incomplete gate without duplicate commit.",
+      "tests": ["tests/test_recovery.py::test_named_fault_boundaries_resume_idempotently"],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g7_pointer_wal_recovery",
+      "gate": "G7",
+      "kind": "recovery",
+      "coverage_mode": "executed",
+      "requirement": "Pre/post-pointer WAL recovery is observable all-or-nothing and needs no second commit.",
+      "tests": [
+        "tests/test_recovery.py::test_resume_before_pointer_swap_commits_once",
+        "tests/test_recovery.py::test_resume_after_pointer_swap_reconciles_without_second_commit",
+        "tests/test_recovery.py::test_resume_after_pointer_swap_without_staging_uses_durable_wal"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g7_lease_and_fence",
+      "gate": "G7",
+      "kind": "recovery",
+      "coverage_mode": "executed",
+      "requirement": "Lease renewal retains a monotonic fence and expired/stale ownership cannot commit.",
+      "tests": [
+        "tests/test_control.py::test_fencing_token_increases_and_stale_owner_is_rejected",
+        "tests/test_control.py::test_lease_renewal_preserves_fence_and_extends_expiry",
+        "tests/test_control.py::test_promotion_guard_renews_lease_before_releasing_writer_lock"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g7_concurrent_rebase",
+      "gate": "G7",
+      "kind": "recovery",
+      "coverage_mode": "executed",
+      "requirement": "Concurrent parent changes rebase safely, preserve both claims and invalidate stale authority.",
+      "tests": [
+        "tests/test_recovery.py::test_two_prepared_runs_rebase_and_preserve_both_claims",
+        "tests/test_recovery.py::test_wal_loser_aborts_old_attempt_and_rebases_after_concurrent_promotion",
+        "tests/test_ingestion.py::test_concurrent_rebase_invalidates_previously_valid_approval"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g7_recovery_without_ephemeral_inputs",
+      "gate": "G7",
+      "kind": "recovery",
+      "coverage_mode": "executed",
+      "requirement": "Committed recovery completes without staging/inbox and reconciles event, views and checkpoint exactly once.",
+      "tests": [
+        "tests/test_recovery.py::test_post_swap_recovery_needs_neither_staging_nor_inbox",
+        "tests/test_recovery.py::test_succeeded_operation_still_finishes_wal_and_manifest",
+        "tests/test_git_checkpoint.py::test_checkpoint_recovers_completed_record_when_ref_is_missing"
+      ],
+      "artifacts": [],
+      "fixtures": []
+    },
+    {
+      "case_id": "g7_youtube_resume",
+      "gate": "G7",
+      "kind": "recovery",
+      "coverage_mode": "executed",
+      "requirement": "The YouTube DAG resumes after every stage, closes manifest hashes and invalidates only descendants.",
+      "tests": [
+        "tests/test_m4_youtube.py::test_resume_after_every_stage_reuses_committed_stage",
+        "tests/test_m4_youtube.py::test_fact_mutation_invalidates_only_research_descendants",
+        "tests/test_m4_youtube.py::test_resume_rejects_checkpoint_hash_drift_before_any_rewrite"
+      ],
+      "artifacts": [],
+      "fixtures": ["tests/fixtures/youtube/brief.json", "tests/fixtures/youtube/research.json"]
+    },
+    {
+      "case_id": "g7_derived_index_recovery",
+      "gate": "G7",
+      "kind": "recovery",
+      "coverage_mode": "executed",
+      "requirement": "Crashes during derived-index rebuild preserve the last good index and canonical state.",
+      "tests": [
+        "tests/test_m2_search_query.py::test_index_rebuild_crash_never_replaces_the_last_good_index",
+        "tests/test_m2_search_query.py::test_fts5_rebuild_search_is_generation_bound_and_semantically_reproducible"
+      ],
+      "artifacts": [],
+      "fixtures": ["tests/fixtures/search-benchmark.jsonl"]
+    }
+  ],
+  "pending_gates": {
+    "G8_REAL_QUALITY": {
+      "status": "PENDING_USER_PILOT",
+      "reason": "No human-labeled representative corpus, Russian query set or real YouTube briefs exist."
+    },
+    "G9_HUMAN_REVIEW": {
+      "status": "PENDING_USER_PILOT",
+      "reason": "Agent or subagent critique never substitutes for the user's diff/dependency/risk review."
+    },
+    "G10_PILOT": {
+      "status": "PENDING_USER_PILOT",
+      "reason": "No approved real manual promotions or repeated pilot dry runs have occurred."
+    }
+  },
+  "limitations": [
+    "Live HTTPS and yt-dlp Fetchers remain fail-closed unavailable; captured HTML and captured YouTube bytes are the M5a web/media inputs.",
+    "Captured HTML does not execute or browser-render external CSS/JavaScript; text hidden only by external styling may remain inert extracted data.",
+    "Archive extraction is unavailable, so archive/SSRF attack surfaces are qualified by default-deny rather than a live adapter.",
+    "PII requires an explicit data classification; automatic PII detection has no human-calibrated baseline.",
+    "SIGKILL tests demonstrate process-crash recovery, not physical power-loss durability.",
+    "QMD, OCR, ASR, model weights and additional hosted destinations remain unapproved and unmeasured."
+  ]
+}

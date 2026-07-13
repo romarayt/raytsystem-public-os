@@ -1,0 +1,61 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.venv/
+.obsidian/
+.playwright-cli/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+!uv.lock
+
+# Rebuildable local state and indexes
+.raytsystem/
+.qmd/
+
+# Untrusted intake and restricted exact bytes are never Git-tracked.
+inbox/*
+!inbox/.gitkeep
+_raw/blobs/
+_raw/restricted/
+
+# Run-local transaction material; manifests and reports are selectively force-added.
+ops/locks/
+ops/staging/
+ops/control.sqlite
+ops/control.sqlite-shm
+ops/control.sqlite-wal
+ops/platform.sqlite
+ops/platform.sqlite-shm
+ops/platform.sqlite-wal
+ops/approvals/incoming/
+ops/backups/
+ops/encrypted/
+
+# Draft/outbox content may contain unpublished material.
+artifacts/drafts/
+artifacts/outbox/
+
+# Local raytsystem operational state and frontend build caches.
+ops/task-ledger/
+ops/document-revisions/
+ops/runs/
+web/node_modules/
+web/coverage/
+web/.vite/
+web/.vitest-attachments/
+web/src/test/__screenshots__/layout.browser.test.tsx/
+web/src/test/__screenshots__/githubScreenshots.browser.test.tsx/
+website/.docusaurus/
+website/build/
+
+# Personal operational material excluded from the public release.
+# These stay on the author's machine but must never ship in the open-source tree.
+CHATGPT_WORK_PROMPT.md
+ops/donors/

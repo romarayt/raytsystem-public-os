@@ -1,0 +1,4 @@
+interface:
+  display_name: "raytsystem Run Review"
+  short_description: "Review one run without writing state"
+  default_prompt: "Use $raytsystem-run-review to independently review an raytsystem run and return structured findings."

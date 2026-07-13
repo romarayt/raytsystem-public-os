@@ -1,0 +1,25 @@
+---
+title: "Версии и контракты"
+description: "Автогенерируемые сведения о версии контрактов и реестре схем."
+audience:
+  - user
+  - operator
+  - developer
+status: stable
+generated: true
+slug: /reference/version
+---
+
+
+import GeneratedNotice from '@site/src/components/GeneratedNotice';
+
+<GeneratedNotice source="src/raytsystem/contracts/base.py, config/schemas/" command="scripts/docs/gen_reference.py" />
+
+# Версии и контракты
+
+- Текущая версия контрактов: **1.4.0**
+- Число схем в текущем реестре: **150**
+- Исторические реестры (неизменяемы): v1.0.0, v1.1.0, v1.2.0, v1.3.0
+
+Все исторические реестры схем остаются байт-идентичными. Экспорт схем: `uv run raytsystem schemas export`.
+

@@ -1,0 +1,167 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "approval_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Approval Id"
+    },
+    "budget_policy_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Budget Policy Ids",
+      "type": "array"
+    },
+    "context_snapshot_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Context Snapshot Sha256",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "employee_configuration_revision": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Employee Configuration Revision",
+      "type": "string"
+    },
+    "employee_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Employee Id",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "graph_scope_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Graph Scope Id",
+      "type": "string"
+    },
+    "graph_snapshot_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Graph Snapshot Id",
+      "type": "string"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "idempotency_key": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "invocation_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Invocation Id",
+      "type": "string"
+    },
+    "policy_decision_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Policy Decision Id",
+      "type": "string"
+    },
+    "policy_decision_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Policy Decision Sha256",
+      "type": "string"
+    },
+    "runtime_adapter_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Runtime Adapter Id",
+      "type": "string"
+    },
+    "runtime_adapter_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Runtime Adapter Sha256",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "ExecutionInvocationV1",
+      "default": "ExecutionInvocationV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source": {
+      "enum": [
+        "manual",
+        "assignment",
+        "comment",
+        "approval",
+        "retry",
+        "resume"
+      ],
+      "title": "Source",
+      "type": "string"
+    },
+    "task_generation_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Task Generation Id",
+      "type": "string"
+    },
+    "task_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "task_revision": {
+      "minimum": 1,
+      "title": "Task Revision",
+      "type": "integer"
+    },
+    "workspace_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Workspace Id",
+      "type": "string"
+    },
+    "workspace_manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Workspace Manifest Sha256",
+      "type": "string"
+    }
+  },
+  "required": [
+    "invocation_id",
+    "source",
+    "task_id",
+    "task_generation_id",
+    "task_revision",
+    "employee_id",
+    "employee_configuration_revision",
+    "runtime_adapter_id",
+    "runtime_adapter_sha256",
+    "workspace_id",
+    "workspace_manifest_sha256",
+    "graph_scope_id",
+    "graph_snapshot_id",
+    "context_snapshot_sha256",
+    "policy_decision_id",
+    "policy_decision_sha256",
+    "idempotency_key",
+    "created_at"
+  ],
+  "title": "ExecutionInvocation",
+  "type": "object"
+}

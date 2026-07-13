@@ -1,0 +1,4 @@
+interface:
+  display_name: "raytsystem SAVE"
+  short_description: "Stage cited synthesis as a draft"
+  default_prompt: "Use $raytsystem-save to create a typed cited draft without promotion or publication."

@@ -1,0 +1,98 @@
+schema_version = "1.4.0"
+environment = "development"
+default_promotion_mode = "manual"
+control_db = "ops/control.sqlite"
+index_db = ".raytsystem/index.sqlite"
+
+[documents]
+index_db = ".raytsystem/documents.sqlite"
+max_files = 100000
+max_file_bytes = 5242880
+max_total_bytes = 536870912
+search_page_size = 50
+allow_maintainer_docs_write = true
+
+[[documents.roots]]
+id = "manual"
+path = "knowledge/manual"
+mode = "read_write"
+kind = "notes"
+
+[[documents.roots]]
+id = "maintainer-docs"
+path = "docs"
+mode = "read_write"
+kind = "documentation"
+
+[[documents.roots]]
+id = "public-docs"
+path = "website/docs"
+mode = "read_write"
+kind = "documentation"
+
+[code_graph]
+path = ".raytsystem/graph"
+roots = ["src", "web/src", "tests", "config", "ops/decisions", "docs"]
+files = ["AGENTS.md", "README.md", "pyproject.toml", "web/package.json", ".pre-commit-config.yaml"]
+max_files = 5000
+max_file_bytes = 2097152
+max_total_bytes = 134217728
+max_nodes = 50000
+max_edges = 200000
+universe_max_nodes = 2500
+universe_max_edges = 12000
+query_max_nodes = 24
+query_max_edges = 36
+query_max_bytes = 48000
+parser_timeout_seconds = 20
+
+[features]
+code_graph_enabled = true
+graph_first_query_enabled = true
+digital_employees_enabled = true
+task_workspaces_enabled = true
+runtime_execution_enabled = false
+codex_local_enabled = false
+claude_local_enabled = false
+heartbeats_enabled = true
+scheduled_heartbeats_enabled = false
+
+[execution]
+workspaces_root = ".raytsystem/workspaces"
+lease_ttl_seconds = 60
+lease_renewal_seconds = 20
+max_run_seconds = 3600
+cancel_grace_seconds = 5
+max_output_bytes = 4194304
+max_transcript_events = 10000
+max_context_bytes = 48000
+max_concurrent_runs = 2
+
+[paths]
+raw = "_raw"
+normalized = "normalized"
+ledger = "ledger"
+knowledge = "knowledge"
+runs = "ops/runs"
+staging = "ops/staging"
+locks = "ops/locks"
+
+[fixtures]
+root = "tests/fixtures"
+manifest = "tests/fixtures/manifest.json"
+require_manifest = true
+
+[git]
+checkpoint_on_promotion = true
+
+[limits]
+max_input_bytes = 26214400
+max_url_chars = 4096
+max_header_bytes = 65536
+max_redirects = 5
+fetch_timeout_seconds = 30
+connect_timeout_seconds = 5
+read_timeout_seconds = 15
+max_dns_answers = 16
+lease_ttl_seconds = 60
+hot_page_max_items = 50

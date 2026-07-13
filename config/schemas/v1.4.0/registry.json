@@ -1,0 +1,606 @@
+{
+  "entries": {
+    "A2AAgentCard": {
+      "path": "A2AAgentCard.schema.json",
+      "sha256": "1450042ed8019dcab42a8891ac87aa6b689968588e38ef4d12a20c0030f1d343"
+    },
+    "A2ATaskRequest": {
+      "path": "A2ATaskRequest.schema.json",
+      "sha256": "d3799656d41b4344b9c24839186233ea732ccafd7e1bfbe25235a28feb4d8091"
+    },
+    "A2ATaskStatus": {
+      "path": "A2ATaskStatus.schema.json",
+      "sha256": "31b44ec6038ef031db070fa24fb199d29f1a93ba61e509c19661c6bb8b85ed02"
+    },
+    "AcpCapabilitySet": {
+      "path": "AcpCapabilitySet.schema.json",
+      "sha256": "a2f24758f5ac9712aaeefbf7056452197ac765fb3f9106c7632cba4ec87d62f3"
+    },
+    "AcpEvent": {
+      "path": "AcpEvent.schema.json",
+      "sha256": "fa61cdf7d1ec18c6e6ee69818b0151a5773fa6f3817c0fb8433b351dcc3ed11c"
+    },
+    "AcpSession": {
+      "path": "AcpSession.schema.json",
+      "sha256": "b3506e5b3e2ce057853877d171bbee4b8113da3c060de39d3b8eafa0530d1315"
+    },
+    "AgentDefinition": {
+      "path": "AgentDefinition.schema.json",
+      "sha256": "1ded9be9d5981163920c0688cc9f2150d204eafc98be5daec3d28e092b59f82f"
+    },
+    "AgentInvocation": {
+      "path": "AgentInvocation.schema.json",
+      "sha256": "222fb3f6dd8384fd2ad535ca44f70806b82d830875c402191882ea83b7fe941c"
+    },
+    "AgentTask": {
+      "path": "AgentTask.schema.json",
+      "sha256": "efa4e0cb808800bc6323b69b2bf4c0ccd56955b5834fa3329851f7fd37703f64"
+    },
+    "AnswerProposal": {
+      "path": "AnswerProposal.schema.json",
+      "sha256": "91d342a2adcf8b035dfb1697fbea08e54d772d55e58eda1fa0644538b082618b"
+    },
+    "ApprovalRecord": {
+      "path": "ApprovalRecord.schema.json",
+      "sha256": "d8f763b165cb7a0bfe42766ef33075b5bfe71e509e9057df1e4340abaa59ef32"
+    },
+    "Artifact": {
+      "path": "Artifact.schema.json",
+      "sha256": "17aee79f5a5c9c53aef0c6f0f33240240e26b7a2c6cdb053fafca5132e49c1f3"
+    },
+    "AuditEvent": {
+      "path": "AuditEvent.schema.json",
+      "sha256": "2ad8876d45b7dc2bca4d71ed749db709ee7a2e4d64f83037ca9e62d2e1bc854b"
+    },
+    "BackupManifest": {
+      "path": "BackupManifest.schema.json",
+      "sha256": "1875cd522e99e9ed8dd26951c9b78e80dbdb195dd1a9ca25bedaf6328e41bee4"
+    },
+    "BudgetPolicy": {
+      "path": "BudgetPolicy.schema.json",
+      "sha256": "fe1e9af62097fd5855bdaf2b2f8a23dfdc519824661f7bcb3398f324d9a815ad"
+    },
+    "BudgetUsage": {
+      "path": "BudgetUsage.schema.json",
+      "sha256": "0c80eaed473c42913eb2b37f804ef14bdd3b1d3baeb23950d0b3a4e099f8d698"
+    },
+    "CircuitBreaker": {
+      "path": "CircuitBreaker.schema.json",
+      "sha256": "d16518ef41ffde34fe1dcefa9db4b548dab2450bb5465eac7083f1ac5ff60e12"
+    },
+    "Claim": {
+      "path": "Claim.schema.json",
+      "sha256": "fd1e93a370c68af2292970d1cfd837c29d0951a5224110b820e42671a9c3cdf4"
+    },
+    "CodeCommunity": {
+      "path": "CodeCommunity.schema.json",
+      "sha256": "f1e7f9cfba23a94adffca9ee12760217b5feb25ca59121c6ec2920850304d4b1"
+    },
+    "CodeEdge": {
+      "path": "CodeEdge.schema.json",
+      "sha256": "a8a9eee36755c29b151977a045993744754d4ea8c0dd699260e109f465a693f7"
+    },
+    "CodeFileEntry": {
+      "path": "CodeFileEntry.schema.json",
+      "sha256": "0bdb36a0506eda8044c97b3e908aab6fb1cc7f19c81f3ac335ac79c5101d4209"
+    },
+    "CodeGraphManifest": {
+      "path": "CodeGraphManifest.schema.json",
+      "sha256": "1386beb169dd132b94016a2560097ad83f9afcac765129464b904104a1a1700d"
+    },
+    "CodeGraphMetrics": {
+      "path": "CodeGraphMetrics.schema.json",
+      "sha256": "052abc1a0340faf3988434bd44f8e60176bf020d85e9aab1a64c8731aa812c65"
+    },
+    "CodeGraphQueryEdge": {
+      "path": "CodeGraphQueryEdge.schema.json",
+      "sha256": "1f68ace3c297b591ce18f0c285a1994eedff156f9e9470b40504e45441a797d6"
+    },
+    "CodeGraphQueryNode": {
+      "path": "CodeGraphQueryNode.schema.json",
+      "sha256": "ceb5ab0b3a13807845eda17a48c630bba908e8b160ca1976c0effe98cf0d0590"
+    },
+    "CodeGraphQueryResult": {
+      "path": "CodeGraphQueryResult.schema.json",
+      "sha256": "6ff915c8201489b5c8332889d86adffe6d5f3752d8a2ed3cd1379d9f400a89ce"
+    },
+    "CodeGraphSnapshot": {
+      "path": "CodeGraphSnapshot.schema.json",
+      "sha256": "62905810773245f6957058fab9898479653307e6710243c056a992535fefdb4d"
+    },
+    "CodeGraphStatus": {
+      "path": "CodeGraphStatus.schema.json",
+      "sha256": "23520dd692c0b94d1a7fa8a023f8a2b52ea23da31c922983b46096c8abd66105"
+    },
+    "CodeNode": {
+      "path": "CodeNode.schema.json",
+      "sha256": "f4c754a2e43cebbc8dd9ed95ae0ad4d66f4613e0b3ada79b5258cbd85e3c7d70"
+    },
+    "CodeSourceLocation": {
+      "path": "CodeSourceLocation.schema.json",
+      "sha256": "11c214390b7cf769b034e8340c602cbe61c8ba849c8b31dc7d4eaf1669a3a420"
+    },
+    "ContextSnapshot": {
+      "path": "ContextSnapshot.schema.json",
+      "sha256": "e8a057037d8c140837ddd48c295b35871d33350c9b128f7c24dd74c60e70ffac"
+    },
+    "DataClassification": {
+      "path": "DataClassification.schema.json",
+      "sha256": "b7404524d5099c334e9f2dc5412dec329394a95523604cb1cdf21945cdf9f234"
+    },
+    "DigitalEmployee": {
+      "path": "DigitalEmployee.schema.json",
+      "sha256": "12ce416e76ad0f4de68be4d359186234425c0113e00cd3251176cdf0ff8f99f4"
+    },
+    "EmergencyState": {
+      "path": "EmergencyState.schema.json",
+      "sha256": "e6b555c2a73906f787cf6e27b2bfef26555ccb6d3d30745a38e4b00b782e88b5"
+    },
+    "EncryptedBlob": {
+      "path": "EncryptedBlob.schema.json",
+      "sha256": "bc85bbfb8e9db0fafb3ceec697d9a91dc42a9e8448b076249a7b1dcc72ddc4b8"
+    },
+    "Entity": {
+      "path": "Entity.schema.json",
+      "sha256": "4d6d9371d848fd3ee1bef63e5326b1874ee510318a8e4d9946f46ce1fca22f7b"
+    },
+    "EvalAssertion": {
+      "path": "EvalAssertion.schema.json",
+      "sha256": "9ab7a1a265d9f9f0d8c050afaa0c7516f9d86d893a2fb8313046b85cf0a7c7d3"
+    },
+    "EvalBaseline": {
+      "path": "EvalBaseline.schema.json",
+      "sha256": "8f7929ad14ec4bda3de17bf276eb8011831e9475489207cbf6cbe1dfa2927e7d"
+    },
+    "EvalCase": {
+      "path": "EvalCase.schema.json",
+      "sha256": "89838dd827728b0fdf9be77e87ee9b271e96f92588f470dfdb9075e44a23a97b"
+    },
+    "EvalComparison": {
+      "path": "EvalComparison.schema.json",
+      "sha256": "ee6cb16efab25ca9a859863c740e69973c9d52310bdf2fd1e7394d5489d985fd"
+    },
+    "EvalDataset": {
+      "path": "EvalDataset.schema.json",
+      "sha256": "4343d9187408b0cda3cc6ab93e84b4f3aa2b273ecf252825b2aa876c5ac0ed09"
+    },
+    "EvalFinding": {
+      "path": "EvalFinding.schema.json",
+      "sha256": "b503960b04471de76342aa21bc7dc49d968fd4ed20b6eb1125ee824a7ee2ed14"
+    },
+    "EvalJudge": {
+      "path": "EvalJudge.schema.json",
+      "sha256": "4f4d6171e6b0f7fa695779ee4ed26cffef1618259b51b2c18a7a9bc5208f0f82"
+    },
+    "EvalResult": {
+      "path": "EvalResult.schema.json",
+      "sha256": "d63f6bca6068306ed8e1dcb5ab431b45778d98d3e0f3a01f252c3a9e80bc5f81"
+    },
+    "EvalRun": {
+      "path": "EvalRun.schema.json",
+      "sha256": "d1e6465bf117bfdbbbcef0626ce3d387afc037a5df822fc10db5531a941990de"
+    },
+    "EvalScore": {
+      "path": "EvalScore.schema.json",
+      "sha256": "29a727b229260cbed5e81380840ffd869a2c10c33f5ec37b1f0c6ceefb594d1d"
+    },
+    "EvalSuite": {
+      "path": "EvalSuite.schema.json",
+      "sha256": "782d1448765a97674552bfc292fe6bc9022e26d27940b297edc61057249399e0"
+    },
+    "EvalTarget": {
+      "path": "EvalTarget.schema.json",
+      "sha256": "3e99587843101dc203894f03fc7890fa70c24ff8d1301d15cb7c79962b4b3697"
+    },
+    "EvidencePack": {
+      "path": "EvidencePack.schema.json",
+      "sha256": "92ae1b49fd456dba1abae9989e45506d214bffe09c457f271a0ac70a5a948927"
+    },
+    "ExecutionApproval": {
+      "path": "ExecutionApproval.schema.json",
+      "sha256": "835f123ac1cfcdb27213b5003edab42a750d4bd167f790f9e7ab07335db01745"
+    },
+    "ExecutionComment": {
+      "path": "ExecutionComment.schema.json",
+      "sha256": "2431ff6b35e3ce18bfe944dd6ac8d3e4ace40b00ea34d7e61f66422305451181"
+    },
+    "ExecutionInvocation": {
+      "path": "ExecutionInvocation.schema.json",
+      "sha256": "133404d80fd829e85f4c3a9b20e170d1b6a2b11dfce4173209d6491b340f659e"
+    },
+    "ExecutionPlan": {
+      "path": "ExecutionPlan.schema.json",
+      "sha256": "69934abe3688a708efd096956090958138184db4b48cbe6214c7b113b523adbb"
+    },
+    "ExecutionRecord": {
+      "path": "ExecutionRecord.schema.json",
+      "sha256": "e34e470197eb577bb6acee5b50815bdf16949935106c4dfa50ec27c65845e138"
+    },
+    "ExecutionRun": {
+      "path": "ExecutionRun.schema.json",
+      "sha256": "5d00587b4782c80c7abcd2da6a1e21db8d163e6b6cea96cf2ba84fb94f12dad4"
+    },
+    "ExecutionSession": {
+      "path": "ExecutionSession.schema.json",
+      "sha256": "af822e52c809396f3d862659bf2a981bb57624dd982a5cf1ba40c773e30436c9"
+    },
+    "ExecutionUsage": {
+      "path": "ExecutionUsage.schema.json",
+      "sha256": "fca7884a9c55dfe78f10475fecb5d69c1801892f6ac3b60472512f84f6301a66"
+    },
+    "FeatureStatus": {
+      "path": "FeatureStatus.schema.json",
+      "sha256": "790aef0cd65f7eae3ce3f1fd9c6c331fe3ab811000d8f229e3cff07b8e2e540e"
+    },
+    "Feedback": {
+      "path": "Feedback.schema.json",
+      "sha256": "ce71cd015174b8a063657d146d4fe67cf9cc0150b86cc19c3a66f33af8fe32b7"
+    },
+    "FilesystemPolicy": {
+      "path": "FilesystemPolicy.schema.json",
+      "sha256": "07ad0011a9b5a4c78fbd4d389c73ea96f44cc6ccefe046b03b512c9845706376"
+    },
+    "GenerationEntry": {
+      "path": "GenerationEntry.schema.json",
+      "sha256": "8a2ff32ce9ffb755c0c68e4ad5f855b62858c8751fd088483f30f11cb5591057"
+    },
+    "GitCheckpointEvent": {
+      "path": "GitCheckpointEvent.schema.json",
+      "sha256": "7d4e103a70afc883a9346804579331177374966b5d8746e4a2dfb8b7985662b1"
+    },
+    "GraphEdgeView": {
+      "path": "GraphEdgeView.schema.json",
+      "sha256": "fdedb949a142b2655f895a45f3ad252972394a5cc6b75632a41f29c5682e77d9"
+    },
+    "GraphNodeView": {
+      "path": "GraphNodeView.schema.json",
+      "sha256": "a94ae3b31880b8fecc35113e6167bcad19a12d2bbbfcec97d6d773f99f08e707"
+    },
+    "GraphPolicy": {
+      "path": "GraphPolicy.schema.json",
+      "sha256": "18d951305962b5bc85e42d26e8df2d332a4ce68b7e4957eeb636ab6570871965"
+    },
+    "GraphSnapshot": {
+      "path": "GraphSnapshot.schema.json",
+      "sha256": "c62a993cd34e7a8c64c17614686e6559d888ce75c7a9ff081b8cd8e1e276c096"
+    },
+    "HeartbeatPolicy": {
+      "path": "HeartbeatPolicy.schema.json",
+      "sha256": "34601175d823f1f340747adabe7690e37668dc895625f51192991c10cfaea245"
+    },
+    "InstructionDocument": {
+      "path": "InstructionDocument.schema.json",
+      "sha256": "ac3e8cf48391b5c571be81fb09ca0badd5dbb8f4f0d2d405986b40564784805f"
+    },
+    "KeyProviderStatus": {
+      "path": "KeyProviderStatus.schema.json",
+      "sha256": "d54ceb7237982bf50e3c2db0786791b0b2e9fd37a901ea3f9fbbaaa228d22025"
+    },
+    "Lease": {
+      "path": "Lease.schema.json",
+      "sha256": "c1ad65a272f3123b24fae89a9429f139ee0dfc93412b747defbb978f61769bd3"
+    },
+    "LedgerGeneration": {
+      "path": "LedgerGeneration.schema.json",
+      "sha256": "a4c74fc2e0b6fe3cd0565749f43a8e241a7dfb2efc648467f92f858808571567"
+    },
+    "McpConnection": {
+      "path": "McpConnection.schema.json",
+      "sha256": "af75ea8ff3ca1cab34058f199b01d3e22879e4dbc8a4ff432a74195eedc663c8"
+    },
+    "McpHealth": {
+      "path": "McpHealth.schema.json",
+      "sha256": "aa98fce3c1a1329c241e8de542b668e793ecbae90ed9dbad015d0b170a6bfe9c"
+    },
+    "McpInvocation": {
+      "path": "McpInvocation.schema.json",
+      "sha256": "d768d70ba85e94261b9f234a19f71d070b5c3edc0d7c02ed43c2be33f2156470"
+    },
+    "McpPolicy": {
+      "path": "McpPolicy.schema.json",
+      "sha256": "799545a349980307a8584180a1eed7ae225c5dc15cc6eb8ea3dd32ff16d98a2d"
+    },
+    "McpPromptDefinition": {
+      "path": "McpPromptDefinition.schema.json",
+      "sha256": "4b3bbe8781e1129ca60a43c32de71ef7be5f91d981b4c5f0f60a1f91e4d9b31f"
+    },
+    "McpResourceDefinition": {
+      "path": "McpResourceDefinition.schema.json",
+      "sha256": "a1386de0fb2177132f831d4a2cb862eaad83b96caadce1e909e7c817e76d0191"
+    },
+    "McpServerDefinition": {
+      "path": "McpServerDefinition.schema.json",
+      "sha256": "fac1818ac9645251a75454770e718fb4d2afcd34794936167653e12d138ea667"
+    },
+    "McpServerRevision": {
+      "path": "McpServerRevision.schema.json",
+      "sha256": "3ab2a8d8ee192cd7b087054694b4732a6de8d3043904bb8ca30ae534876187de"
+    },
+    "McpToolDefinition": {
+      "path": "McpToolDefinition.schema.json",
+      "sha256": "bcbb7189b5f9baafd2e3c99ebd14b235edee26d533ac6c09a55d49605b8635ef"
+    },
+    "MigrationPlan": {
+      "path": "MigrationPlan.schema.json",
+      "sha256": "01e47feb20a81351657023137e57e4f9f6f0cd3313717c4d3fb0b63154fd8176"
+    },
+    "MigrationRecord": {
+      "path": "MigrationRecord.schema.json",
+      "sha256": "700da8c701f81297560dac06014696e95b1a760267004cb94673d1c1d55385c8"
+    },
+    "Normalization": {
+      "path": "Normalization.schema.json",
+      "sha256": "c725501923f4c1f1e03087afaee655a48007edb0179235e11265001f1c023623"
+    },
+    "Notification": {
+      "path": "Notification.schema.json",
+      "sha256": "7e03a41ddb05a049534fd6592dba62a8911dd4a8fcd1eedf50d8c637315cafc0"
+    },
+    "NotificationOutbox": {
+      "path": "NotificationOutbox.schema.json",
+      "sha256": "c186f46c1e2eeed231896606e8e3d198cc86ac2580807d2b5b33602e35acdfdd"
+    },
+    "OutboxAction": {
+      "path": "OutboxAction.schema.json",
+      "sha256": "52a9dbf2d856ff657b9152fc0f0bd1de9b840fc437935fc263c8196a6feaf278"
+    },
+    "PackManifest": {
+      "path": "PackManifest.schema.json",
+      "sha256": "c515c70c91c9dbe7617efdc4f1dab279e4196e479e621f055bcc4e6b413dd930"
+    },
+    "PackageManifest": {
+      "path": "PackageManifest.schema.json",
+      "sha256": "8a2c0b3a6b078f8c02251f584dc3586becc958b9ef480fe7d06d8615d97fa2bc"
+    },
+    "PackageRevision": {
+      "path": "PackageRevision.schema.json",
+      "sha256": "55dd6aece1495a00d9db6067367cc418a48ae41cee7f3e13c9dbd11ae2e442a5"
+    },
+    "PolicyDecision": {
+      "path": "PolicyDecision.schema.json",
+      "sha256": "a94ae96e254808a5b37d63132c5d1863573e5e5a7da5161824a9d71e45571fb0"
+    },
+    "PolicySimulation": {
+      "path": "PolicySimulation.schema.json",
+      "sha256": "3a15096536fe51b8e5ebc3fa1aeecccb5c872bad0cb9b66c59220375c8fbc931"
+    },
+    "PromotionEvent": {
+      "path": "PromotionEvent.schema.json",
+      "sha256": "15854b64e24d95aef712615805b8228845943fa8ec3db60a0cca5de2a21b82b8"
+    },
+    "PromotionTxn": {
+      "path": "PromotionTxn.schema.json",
+      "sha256": "ce1b21708648e710157714a6d9524248d1907b1418851a2cf4e34241c4434ae4"
+    },
+    "ProposalRequest": {
+      "path": "ProposalRequest.schema.json",
+      "sha256": "8c21c90ecf12a4b6b88e67a7cbdbfd53f9238c1c90e22b86beb023f116d53f02"
+    },
+    "ProposalResponse": {
+      "path": "ProposalResponse.schema.json",
+      "sha256": "2cce4ca7f269b5dda682e143f5d4327948e2bdc6270defb0fe3801d0e96cf96e"
+    },
+    "QueryCitation": {
+      "path": "QueryCitation.schema.json",
+      "sha256": "e0d041a4c7b024d7c49a72fdd17f8aa9d6ceec562a6fe5b9e69a5f344e372084"
+    },
+    "RecordedSideEffectResult": {
+      "path": "RecordedSideEffectResult.schema.json",
+      "sha256": "b1636b1a00c820eb2d2face46e92677497b9ae6d4c03952d8c66c6e413ad977b"
+    },
+    "Relation": {
+      "path": "Relation.schema.json",
+      "sha256": "83a90a3450e0578a92523dbacb20a1259b4074d7cabb1a7371805f5a64ecd82a"
+    },
+    "ReplayPlan": {
+      "path": "ReplayPlan.schema.json",
+      "sha256": "59d6a7396c54f953a39bd0439f4e5ea745f08c9ad18d60643a034e8679714f45"
+    },
+    "RestorePlan": {
+      "path": "RestorePlan.schema.json",
+      "sha256": "56b9c692e67878449bb0ad6c235544ae2c65d0b54dcd607189de40bf52d41d01"
+    },
+    "RestoreReport": {
+      "path": "RestoreReport.schema.json",
+      "sha256": "34146795c3e1f7d922e86b16ce296af7c17563a2153da12381493d40d139fa6d"
+    },
+    "Review": {
+      "path": "Review.schema.json",
+      "sha256": "fad0802c98f3042b4318ce94fdfa9932abd92555d3d64f48f2681274079fbb7f"
+    },
+    "Run": {
+      "path": "Run.schema.json",
+      "sha256": "6d98a42024443060ba924e49eea2869f4a046531db65d2bf76a56af4282e0cdf"
+    },
+    "RunComparison": {
+      "path": "RunComparison.schema.json",
+      "sha256": "6b053edd8496b521ad2816333f4e5d08e48ed0c1218e6d19e23fe939fb25e1ff"
+    },
+    "RunSummary": {
+      "path": "RunSummary.schema.json",
+      "sha256": "4c727f57a869c801e72ad302531f6168b3051fbd5935c948059664cc9df6b788"
+    },
+    "RuntimeAdapterDefinition": {
+      "path": "RuntimeAdapterDefinition.schema.json",
+      "sha256": "6233ad5ff8d5daddb4d8a90529e45916d27be76d86d854bee115f72bc532b996"
+    },
+    "RuntimeHealth": {
+      "path": "RuntimeHealth.schema.json",
+      "sha256": "2dc9b7de5b47d9afb9198813d96199192e7ea03fc7fd16da2fcf2350b0498d95"
+    },
+    "Segment": {
+      "path": "Segment.schema.json",
+      "sha256": "eda79a7fcc6179adad47f69bc9f86bbbbec8819cae9d38e378e87f4d1e1523ef"
+    },
+    "SensitivityDecision": {
+      "path": "SensitivityDecision.schema.json",
+      "sha256": "eafe41a4c874df40715f8e0179fc71b99c95419161176e4150c2e1f5fa71e19f"
+    },
+    "SkillDefinition": {
+      "path": "SkillDefinition.schema.json",
+      "sha256": "69f022d42889d67e790fe6e81708aeec50dbc1101584966138fcfe3a6a70e39a"
+    },
+    "Source": {
+      "path": "Source.schema.json",
+      "sha256": "c1e839817b12975bc28df9a57a0be9ecb961c7a8a85dc9f05907e604634235bf"
+    },
+    "SourceRevision": {
+      "path": "SourceRevision.schema.json",
+      "sha256": "3e1709172f11cf1703e49d12d5a00135e43eb9ce76436906e0902e53f672e354"
+    },
+    "TaskAssignment": {
+      "path": "TaskAssignment.schema.json",
+      "sha256": "45ad484b21c70fdfede12971790e694a5cfa1ffe3aa829248e1f6acb600b0e29"
+    },
+    "TaskBoardGeneration": {
+      "path": "TaskBoardGeneration.schema.json",
+      "sha256": "b0583fec0c580eb17d1a5f4e72eea3221d56602a2e2608d091acd2dbda8d8d5d"
+    },
+    "TaskEvent": {
+      "path": "TaskEvent.schema.json",
+      "sha256": "b30b0eb3ef6bb9d702160cc3043684323c13056f5a31d3a68c1d641f8b69fa28"
+    },
+    "TaskGraphScope": {
+      "path": "TaskGraphScope.schema.json",
+      "sha256": "dd2fb07968d7bdec857f21f3521991ad9ea10c30ff30b51d1dafc63259cddd87"
+    },
+    "TaskLease": {
+      "path": "TaskLease.schema.json",
+      "sha256": "baa54197f29a2fb24762d1ac6e9e4c30a4211ddfa2d2355677681a61653ac267"
+    },
+    "TaskWorkspace": {
+      "path": "TaskWorkspace.schema.json",
+      "sha256": "ac966fb2de3ee60b30a78cafc9ec7185adec868d84ef870776cf8a339a74fdc2"
+    },
+    "TestResult": {
+      "path": "TestResult.schema.json",
+      "sha256": "7561a2ba9303e270b4a7d52e8ddfb17f04fc343c4e72ff30167eeb506ed11ba4"
+    },
+    "TokenBudget": {
+      "path": "TokenBudget.schema.json",
+      "sha256": "4a508ed0a88c480e7babee860c62cdeb445ce2279094e92df0889e6ace0da428"
+    },
+    "TraceRecord": {
+      "path": "TraceRecord.schema.json",
+      "sha256": "a43685d05ab73dab694fe37810bc7430d606d3da97bd70a7a3523624d485ec6a"
+    },
+    "TraceSpan": {
+      "path": "TraceSpan.schema.json",
+      "sha256": "3dbdde4d926ee52b496ff6dc01c2c22c09015621b22c18dbc26daf79f9a07ef3"
+    },
+    "TranscriptEvent": {
+      "path": "TranscriptEvent.schema.json",
+      "sha256": "f876e2709a2061fdfab207a8efe43cf68ce03367d3ee15d7ad826093a42a4b1c"
+    },
+    "WorkflowApprovalGate": {
+      "path": "WorkflowApprovalGate.schema.json",
+      "sha256": "60417a2ddcbcf5a8f0ad868a1610682c0d173787a5b2f153059d0c2632eff14f"
+    },
+    "WorkflowArtifactBinding": {
+      "path": "WorkflowArtifactBinding.schema.json",
+      "sha256": "05334fd606d377543c11b814209a15074a07f5b4ad2b25e0d91eb4414d7f92a0"
+    },
+    "WorkflowCondition": {
+      "path": "WorkflowCondition.schema.json",
+      "sha256": "bee5e0e35030f08f6101df4c084dc8bfc5fd942af3435ade77d0fa1f4a2d1882"
+    },
+    "WorkflowDefinition": {
+      "path": "WorkflowDefinition.schema.json",
+      "sha256": "98a5745636444c4603beef85845963092ee20b3d19af278a6af2ddfedf1825d4"
+    },
+    "WorkflowEdge": {
+      "path": "WorkflowEdge.schema.json",
+      "sha256": "06ae9b63e9133aee6de088df254512b2362078fb41cd5d3e9af1c434f2a03c50"
+    },
+    "WorkflowNode": {
+      "path": "WorkflowNode.schema.json",
+      "sha256": "6746e9bafea2bf5eaa568e693c35644ed247eeec4b952c5b2f12bdb97ce1a883"
+    },
+    "WorkflowRetryPolicy": {
+      "path": "WorkflowRetryPolicy.schema.json",
+      "sha256": "01365364a35db49476ff4293eb1e8eaec954819620bdb5aa4c448c9ec190516e"
+    },
+    "WorkflowRevision": {
+      "path": "WorkflowRevision.schema.json",
+      "sha256": "86209933063ecff0de49c6950480c534cdac2d3be4a1ea0c36e3a41f30a495eb"
+    },
+    "WorkflowRun": {
+      "path": "WorkflowRun.schema.json",
+      "sha256": "2f0b8b76502e99695e8004ca4102387f53f9ba0e1665bb96b938418381cc7920"
+    },
+    "WorkflowStepRun": {
+      "path": "WorkflowStepRun.schema.json",
+      "sha256": "7560c9b5938c87e2b9345d76c2efe3c7c96ea0ce4108fe29ca28d72e38a58917"
+    },
+    "WorkflowTrigger": {
+      "path": "WorkflowTrigger.schema.json",
+      "sha256": "5f7006e8f507254be1e96bcdda336908f7d348edd44e248f3d4bf1c9a9d584a4"
+    },
+    "WorkspaceInitPlan": {
+      "path": "WorkspaceInitPlan.schema.json",
+      "sha256": "8623d45f8a781c72d79d254df8fdcbea205d5483e1316dc8db2cc857abd7c837"
+    },
+    "WorkspaceTemplate": {
+      "path": "WorkspaceTemplate.schema.json",
+      "sha256": "4eb7599fa40bec4a849f3d4b568c6dc7e6f7e589905ea3f0d6888ee876bd0f2f"
+    },
+    "YouTubeBrief": {
+      "path": "YouTubeBrief.schema.json",
+      "sha256": "603f1dc75e0d724306a2cbc9a7c817d5a84f2387e2e737f1c067f7ea23f2bd00"
+    },
+    "YouTubeMasterProjection": {
+      "path": "YouTubeMasterProjection.schema.json",
+      "sha256": "82ddf7a1cccc6e12f4f047ac859f5783f3a05546d86cce5fa992ac0eba5912cf"
+    },
+    "YouTubePackageReview": {
+      "path": "YouTubePackageReview.schema.json",
+      "sha256": "6c19d704110dff0febfce6d171cc841b689dcfe21f186a988b6505ba4fd0a7c6"
+    },
+    "YouTubePackaging": {
+      "path": "YouTubePackaging.schema.json",
+      "sha256": "8ddc17f2c27f1e38dd9393887673e781fc18fd1dcdad3d3b73a55d443ebc358c"
+    },
+    "YouTubePresentation": {
+      "path": "YouTubePresentation.schema.json",
+      "sha256": "5aeff180838ffaa3b6b7b736abeb754d03e30e53a1983bf009e2e06be28ff335"
+    },
+    "YouTubeProjectManifest": {
+      "path": "YouTubeProjectManifest.schema.json",
+      "sha256": "27e83516a710c96c79c59d5f0f8f4789e12d36d98afe010159de7ca7da38959f"
+    },
+    "YouTubeResearch": {
+      "path": "YouTubeResearch.schema.json",
+      "sha256": "8cedadba6bf120b9062b064edc357b9befbf9fa566b89482eee50c00a3afe67c"
+    },
+    "YouTubeResearchSeed": {
+      "path": "YouTubeResearchSeed.schema.json",
+      "sha256": "2b5c7b12e21799fef386682d4d3a40e946b473e6f95aab09e638b6af50202582"
+    },
+    "YouTubeScript": {
+      "path": "YouTubeScript.schema.json",
+      "sha256": "67580c2c64b5dbdec6b2c684c21db3956160b51d33b5a6a62b86bf86424fef3d"
+    },
+    "YouTubeStageRecord": {
+      "path": "YouTubeStageRecord.schema.json",
+      "sha256": "0b1da4d6dd541b251911b1186b0fd2e46f28162b44843c47b2ed1a23e37cbf11"
+    },
+    "YouTubeThumbnailPack": {
+      "path": "YouTubeThumbnailPack.schema.json",
+      "sha256": "b12807539bc8593647017b5236a4f8ce14afd0e25d807d8f9311250eb71ea83b"
+    },
+    "YouTubeTitlePack": {
+      "path": "YouTubeTitlePack.schema.json",
+      "sha256": "94a239dd2ad3e889535bb1184521529527d2ab5ba6ab31347a0f586e567708f5"
+    },
+    "YouTubeVerdict": {
+      "path": "YouTubeVerdict.schema.json",
+      "sha256": "c092aa585269581b16792fe6a221226412b2ba549b0ddf8f4a7def20e1d839ea"
+    },
+    "YouTubeWarmup": {
+      "path": "YouTubeWarmup.schema.json",
+      "sha256": "360c45027f495778cec13067717bbbeda9725ac487f862d6d55b4d41492435f3"
+    }
+  },
+  "registry_sha256": "797d5eefd3094c8e0282488cc8b147dda0e017497c28e9637b9e0f03495274ef",
+  "schema_version": "1.4.0"
+}

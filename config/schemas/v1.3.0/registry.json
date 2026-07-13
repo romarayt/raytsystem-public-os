@@ -1,0 +1,222 @@
+{
+  "entries": {
+    "AgentDefinition": {
+      "path": "AgentDefinition.schema.json",
+      "sha256": "a5ef6dc1fc96e6ead7a45f8061f5cccc4caef72cedcbb5ce36e8f1aa5d592d26"
+    },
+    "AgentInvocation": {
+      "path": "AgentInvocation.schema.json",
+      "sha256": "83d1e907b33c15a1ea4b9065569fdcfd830aff98de5037cb4b918ef0c490bc0d"
+    },
+    "AgentTask": {
+      "path": "AgentTask.schema.json",
+      "sha256": "366fc040f29d22dc2cb57b2a16676ec9cb1c81574ffc15d3615963a11aa5021d"
+    },
+    "AnswerProposal": {
+      "path": "AnswerProposal.schema.json",
+      "sha256": "0bd97412fcbb80d552a1c10ce2897b961247a583823358439e9a6875c86c4c06"
+    },
+    "ApprovalRecord": {
+      "path": "ApprovalRecord.schema.json",
+      "sha256": "5db0cd9d2f882672fb46dfc2463f5b2d4cf846c4356387550ad41cf7cd2cca4a"
+    },
+    "Artifact": {
+      "path": "Artifact.schema.json",
+      "sha256": "49aa5d3ebfe93b0842742dc797a4d3ae0204cead45fbc67d359ae39e54bc7b2d"
+    },
+    "Claim": {
+      "path": "Claim.schema.json",
+      "sha256": "43d9606b99cf72cbe0fd215d14c4acbcdee22f01984e14849103434246a08d4b"
+    },
+    "ContextSnapshot": {
+      "path": "ContextSnapshot.schema.json",
+      "sha256": "3b76aee563dce1146a2b9f8bc73ddab568a23b910ccb767cd84e22640649d7d0"
+    },
+    "Entity": {
+      "path": "Entity.schema.json",
+      "sha256": "4acb80b995e2c80af0f8bddac756d2d9558d8eccd186d8a4cece0fc88062e472"
+    },
+    "EvidencePack": {
+      "path": "EvidencePack.schema.json",
+      "sha256": "18da2778023aa7114dd750047a57a91a9b9530c744488325540ee17b2188dc3e"
+    },
+    "Feedback": {
+      "path": "Feedback.schema.json",
+      "sha256": "10159c7d288efaec75445ea8fced48fb0997c0954bc28b8c2089a5315c65f100"
+    },
+    "GenerationEntry": {
+      "path": "GenerationEntry.schema.json",
+      "sha256": "4987a6052caedf7f833d137a3731a3c0e74586c748c698404618c2b790079f1f"
+    },
+    "GitCheckpointEvent": {
+      "path": "GitCheckpointEvent.schema.json",
+      "sha256": "ec933818ee228ca53ea39481d42375c5d328ed2528402a3133911a52d7b53279"
+    },
+    "GraphEdgeView": {
+      "path": "GraphEdgeView.schema.json",
+      "sha256": "8a70d58f823d76db549c87cb56810715d5ee44294114b17d8a753cea29388408"
+    },
+    "GraphNodeView": {
+      "path": "GraphNodeView.schema.json",
+      "sha256": "1cb57f90c5a722ac0026979338c64f86a3ef878ad20e8307a99ea955ddddf314"
+    },
+    "GraphSnapshot": {
+      "path": "GraphSnapshot.schema.json",
+      "sha256": "8ebbb5cf7127a8edcb6ad46b240f55e465842e5cef9ff67b08c3aef36db81872"
+    },
+    "InstructionDocument": {
+      "path": "InstructionDocument.schema.json",
+      "sha256": "ced9ff6bc8828101abd32403fb0f8b4d4adfc9a4cb715cf4aa51556c195cbd0f"
+    },
+    "Lease": {
+      "path": "Lease.schema.json",
+      "sha256": "8461ebd1f757ecd57c1b122bf37f2245b8c86aecd882e8b25dbe0eab6040289a"
+    },
+    "LedgerGeneration": {
+      "path": "LedgerGeneration.schema.json",
+      "sha256": "3a97c0cadeadb7acb47ca99f6dc94afeb736097e26d406b79af68db25e9cc356"
+    },
+    "Normalization": {
+      "path": "Normalization.schema.json",
+      "sha256": "a2add93f53ee187dae01f49bba46613d9ec54843e785b2dee57f8d295a2d8356"
+    },
+    "OutboxAction": {
+      "path": "OutboxAction.schema.json",
+      "sha256": "7c3cbacd917ba5cf8b4cc9de6f9be59e0b9eace421dd8a8ad151454df3185337"
+    },
+    "PackManifest": {
+      "path": "PackManifest.schema.json",
+      "sha256": "0d098eaf1336926db529d1cbf27f0aec5d555a70ba2027ffc24a381d1fcee9d1"
+    },
+    "PolicyDecision": {
+      "path": "PolicyDecision.schema.json",
+      "sha256": "230f5c9b0f72447cc4cc4d175707782b23f53a403f7311b89a5026e4fe220589"
+    },
+    "PromotionEvent": {
+      "path": "PromotionEvent.schema.json",
+      "sha256": "15ae4b095cbaf40fef131f0a12a5145ee698197fc1fbe9e9621644bc51b2fffb"
+    },
+    "PromotionTxn": {
+      "path": "PromotionTxn.schema.json",
+      "sha256": "ca94154a29da886b7e5503852a6448c08c17d4bb401977d776812e8363720642"
+    },
+    "ProposalRequest": {
+      "path": "ProposalRequest.schema.json",
+      "sha256": "be90b045ba5fdfb0590c92bf606ec27f6ccb9561ec1931292b7a87bd544a05f0"
+    },
+    "ProposalResponse": {
+      "path": "ProposalResponse.schema.json",
+      "sha256": "d781e43e1270151943338d495fa0770c07f5b0d940352bc524c65d48778a7faf"
+    },
+    "QueryCitation": {
+      "path": "QueryCitation.schema.json",
+      "sha256": "71662b66c42b9bd416f08fd4f5cd0a5274dc80a8af29030933bc9e090e9ec508"
+    },
+    "Relation": {
+      "path": "Relation.schema.json",
+      "sha256": "90358028f8365c263c5cd38888169de8209c0c5a2822b109668bc5f5710870ab"
+    },
+    "Review": {
+      "path": "Review.schema.json",
+      "sha256": "705a1abbb75dc191448d1f8a81f146b08d3a60b340702cd6e31e0fc2faacb7f0"
+    },
+    "Run": {
+      "path": "Run.schema.json",
+      "sha256": "bfde6df39231e343363a82c5775e3a220760c0e3fd6fd0eda456d81ea7356b8c"
+    },
+    "RunSummary": {
+      "path": "RunSummary.schema.json",
+      "sha256": "c0701ec2687a74186a56b9eea0b281e8db08ce39e15fb66431db3d40734d622e"
+    },
+    "RuntimeAdapterDefinition": {
+      "path": "RuntimeAdapterDefinition.schema.json",
+      "sha256": "11db2fbf692bf7ba787f977fb78642b46c33f03f7ed7c6cd4da4a0744c03a18f"
+    },
+    "Segment": {
+      "path": "Segment.schema.json",
+      "sha256": "d41956a3d5a5753c4e31d79ae9ba98221bad5ca02518bdd1b7339f3276a5ad54"
+    },
+    "SensitivityDecision": {
+      "path": "SensitivityDecision.schema.json",
+      "sha256": "a8aeb01dee7cf587bcf65599292b8bb3aa1938e10e71699a83af4035587cb7d2"
+    },
+    "SkillDefinition": {
+      "path": "SkillDefinition.schema.json",
+      "sha256": "cb413423364a150be28f631ebd19c2abf8519155d1b8828ad08d3cc5f2c0d7c5"
+    },
+    "Source": {
+      "path": "Source.schema.json",
+      "sha256": "562c727492d9ff8143f76945140b69692c5814bc59b0e510c058c4e7b744c021"
+    },
+    "SourceRevision": {
+      "path": "SourceRevision.schema.json",
+      "sha256": "01387a7a6b0a38a5cc424b7119cac723d417930f68183dc43cdd2bdc3b2cd002"
+    },
+    "TaskBoardGeneration": {
+      "path": "TaskBoardGeneration.schema.json",
+      "sha256": "96479f77dc0d55a80b9c37a3fce7e4094fd1dde4d360998b31e6a355f42ceb80"
+    },
+    "TaskEvent": {
+      "path": "TaskEvent.schema.json",
+      "sha256": "69b51280f435b9b4b2a99dbb7053c2d3cf33ac252a4e9225f3b9bece883532d8"
+    },
+    "YouTubeBrief": {
+      "path": "YouTubeBrief.schema.json",
+      "sha256": "70ee5939722dfe5acf2e4c888da9df80d27024134ab2f304d7c7b75feaedce81"
+    },
+    "YouTubeMasterProjection": {
+      "path": "YouTubeMasterProjection.schema.json",
+      "sha256": "fd04977b58c3abb5842e1f400b07204f869167e60e2eb1c2cae34bd1dd276117"
+    },
+    "YouTubePackageReview": {
+      "path": "YouTubePackageReview.schema.json",
+      "sha256": "33441b6739b53a78285de106c5bdd1539b385918ce8ad0d56ad80f9ef9d45e80"
+    },
+    "YouTubePackaging": {
+      "path": "YouTubePackaging.schema.json",
+      "sha256": "11299ef2433a22914024a0f6fc3ec62de6973cdfe8412eaeb766963c0990a820"
+    },
+    "YouTubePresentation": {
+      "path": "YouTubePresentation.schema.json",
+      "sha256": "23309b00c4b9ac02cb914a4bae5f60f624b50a2f142390904a712f0e07ce2969"
+    },
+    "YouTubeProjectManifest": {
+      "path": "YouTubeProjectManifest.schema.json",
+      "sha256": "171f861c7841546c48bef96da667515bbbee4a045ab4a8422734c610ad591ed0"
+    },
+    "YouTubeResearch": {
+      "path": "YouTubeResearch.schema.json",
+      "sha256": "87dfbbf4716c3ac9bd53152a36dfe5a2e6d761866bb54bbd6ec011d3b6540aeb"
+    },
+    "YouTubeResearchSeed": {
+      "path": "YouTubeResearchSeed.schema.json",
+      "sha256": "5e02557062b453a749a08c9f2cdf9077ff7b700f4abb9410897870df5c10c5a7"
+    },
+    "YouTubeScript": {
+      "path": "YouTubeScript.schema.json",
+      "sha256": "d0ba0706e8949a512a9bca968ba056a442f4995068d09d253508682c2a380bcb"
+    },
+    "YouTubeStageRecord": {
+      "path": "YouTubeStageRecord.schema.json",
+      "sha256": "1e367ebdf441bdf76f6afdfe2028d3e528537fae0dd445ba792ab76b18487696"
+    },
+    "YouTubeThumbnailPack": {
+      "path": "YouTubeThumbnailPack.schema.json",
+      "sha256": "bf9a7cbe3a659ab9f83f3ee79485d30e1987c0ea157fe207cf4152fbc4179f7a"
+    },
+    "YouTubeTitlePack": {
+      "path": "YouTubeTitlePack.schema.json",
+      "sha256": "5eaaa3eb2d8a95265e45bbbebb812da33f32b7d6ac049f13b9e4fdd18e151ed0"
+    },
+    "YouTubeVerdict": {
+      "path": "YouTubeVerdict.schema.json",
+      "sha256": "0a01542b3f3c6cbeda14dfa3ad025d2626385df118a70684d846269bf43bd7c2"
+    },
+    "YouTubeWarmup": {
+      "path": "YouTubeWarmup.schema.json",
+      "sha256": "2e0e730a29978769d269f0d4afa6a8bbe7c5744205342b424568ae98cae48836"
+    }
+  },
+  "registry_sha256": "69ea8063ed47cf7b8ece3d7e8fb4bbb8c1735ce8ad6d8209c333a959c582ba85",
+  "schema_version": "1.3.0"
+}

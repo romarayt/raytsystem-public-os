@@ -1,0 +1,103 @@
+{
+  "$defs": {
+    "KeyProviderState": {
+      "enum": [
+        "available",
+        "unavailable",
+        "degraded"
+      ],
+      "title": "KeyProviderState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "algorithm": {
+      "anyOf": [
+        {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Algorithm"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "external": {
+      "default": false,
+      "title": "External",
+      "type": "boolean"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "key_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Key Id"
+    },
+    "kind": {
+      "enum": [
+        "os_keychain",
+        "environment",
+        "age_identity",
+        "external_kms"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "provider_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Provider Id",
+      "type": "string"
+    },
+    "reason_codes": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Reason Codes",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "KeyProviderStatusV1",
+      "default": "KeyProviderStatusV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state": {
+      "$ref": "#/$defs/KeyProviderState"
+    }
+  },
+  "required": [
+    "provider_id",
+    "kind",
+    "state"
+  ],
+  "title": "KeyProviderStatus",
+  "type": "object"
+}

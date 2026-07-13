@@ -1,0 +1,380 @@
+{
+  "$defs": {
+    "WorkflowEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "condition_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Condition Id"
+        },
+        "edge_id": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Edge Id",
+          "type": "string"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "WorkflowEdgeV1",
+          "default": "WorkflowEdgeV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_node_id": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Source Node Id",
+          "type": "string"
+        },
+        "source_output": {
+          "default": "result",
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Source Output",
+          "type": "string"
+        },
+        "target_input": {
+          "default": "input",
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Target Input",
+          "type": "string"
+        },
+        "target_node_id": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Target Node Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "edge_id",
+        "source_node_id",
+        "target_node_id"
+      ],
+      "title": "WorkflowEdge",
+      "type": "object"
+    },
+    "WorkflowNode": {
+      "additionalProperties": false,
+      "properties": {
+        "agent_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Agent Id"
+        },
+        "approval_gate_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Approval Gate Id"
+        },
+        "condition_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Condition Id"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "idempotency_scope": {
+          "default": "workflow_run",
+          "enum": [
+            "workflow_run",
+            "task",
+            "global"
+          ],
+          "title": "Idempotency Scope",
+          "type": "string"
+        },
+        "input_schema_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Input Schema Sha256",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "node_id": {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "node_type": {
+          "$ref": "#/$defs/WorkflowNodeType"
+        },
+        "operation_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Operation Id"
+        },
+        "output_schema_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Output Schema Sha256",
+          "type": "string"
+        },
+        "retry_policy_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Retry Policy Id"
+        },
+        "schema_name": {
+          "const": "WorkflowNodeV1",
+          "default": "WorkflowNodeV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "subworkflow_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Subworkflow Id"
+        },
+        "timeout_seconds": {
+          "default": 300,
+          "maximum": 86400,
+          "minimum": 1,
+          "title": "Timeout Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "node_id",
+        "node_type",
+        "name",
+        "input_schema_sha256",
+        "output_schema_sha256"
+      ],
+      "title": "WorkflowNode",
+      "type": "object"
+    },
+    "WorkflowNodeType": {
+      "enum": [
+        "task",
+        "agent",
+        "deterministic_command",
+        "review",
+        "approval",
+        "condition",
+        "wait",
+        "artifact",
+        "notification",
+        "subworkflow"
+      ],
+      "title": "WorkflowNodeType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "approval_gate_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Approval Gate Ids",
+      "type": "array"
+    },
+    "artifact_binding_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Artifact Binding Ids",
+      "type": "array"
+    },
+    "condition_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Condition Ids",
+      "type": "array"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/WorkflowEdge"
+      },
+      "title": "Edges",
+      "type": "array"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Manifest Sha256",
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/WorkflowNode"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "previous_revision_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Previous Revision Id"
+    },
+    "retry_policy_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Retry Policy Ids",
+      "type": "array"
+    },
+    "revision_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Revision Id",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "WorkflowRevisionV1",
+      "default": "WorkflowRevisionV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "trigger_ids": {
+      "items": {
+        "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+        "type": "string"
+      },
+      "title": "Trigger Ids",
+      "type": "array"
+    },
+    "version": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Version",
+      "type": "string"
+    },
+    "workflow_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Workflow Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "revision_id",
+    "workflow_id",
+    "version",
+    "trigger_ids",
+    "nodes",
+    "edges",
+    "manifest_sha256",
+    "created_at"
+  ],
+  "title": "WorkflowRevision",
+  "type": "object"
+}

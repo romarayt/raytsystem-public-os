@@ -1,0 +1,104 @@
+{
+  "$defs": {
+    "EvalAssertionType": {
+      "enum": [
+        "exact_match",
+        "contains",
+        "regex",
+        "json_schema",
+        "file_exists",
+        "file_hash",
+        "artifact_type",
+        "test_result",
+        "command_exit_status",
+        "citation_exists",
+        "source_location_exists",
+        "task_transition",
+        "approval_compliance",
+        "forbidden_action_absent",
+        "budget_not_exceeded",
+        "no_secret_leak",
+        "no_protected_path_modification"
+      ],
+      "title": "EvalAssertionType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "assertion_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Assertion Id",
+      "type": "string"
+    },
+    "assertion_type": {
+      "$ref": "#/$defs/EvalAssertionType"
+    },
+    "configuration": {
+      "additionalProperties": true,
+      "title": "Configuration",
+      "type": "object"
+    },
+    "deterministic": {
+      "default": true,
+      "title": "Deterministic",
+      "type": "boolean"
+    },
+    "expected": {
+      "default": null,
+      "title": "Expected"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "required": {
+      "default": true,
+      "title": "Required",
+      "type": "boolean"
+    },
+    "schema_name": {
+      "const": "EvalAssertionV1",
+      "default": "EvalAssertionV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "target": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Target",
+      "type": "string"
+    },
+    "weight": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "default": "1",
+      "title": "Weight"
+    }
+  },
+  "required": [
+    "assertion_id",
+    "assertion_type",
+    "target"
+  ],
+  "title": "EvalAssertion",
+  "type": "object"
+}

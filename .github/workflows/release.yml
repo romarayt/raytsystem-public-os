@@ -1,0 +1,102 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Release — version and quality gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      - uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
+        with:
+          python-version: "3.12"
+          enable-cache: true
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Verify tag matches pyproject version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python3 scripts/release/verify_tag.py "$RELEASE_TAG"
+      - name: Install locked dependencies
+        run: uv sync --dev --locked
+      - name: Materialize the empty public projection
+        run: uv run raytsystem rebuild-index --json
+      - name: Python release gates
+        run: |
+          uv run pytest
+          uv run ruff check .
+          uv run ruff format --check .
+          uv run mypy
+      - name: Frontend release gates
+        run: |
+          npm --prefix web ci
+          npm --prefix web run browser:install
+          npm --prefix web run typecheck
+          npm --prefix web run lint
+          npm --prefix web run test
+          npm --prefix web run build
+      - name: Public hygiene
+        run: python3 scripts/public_hygiene.py
+
+  publish:
+    name: Release — build, SBOM, attest, publish
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      - uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
+        with:
+          python-version: "3.12"
+          enable-cache: true
+      - name: Build wheel and source distribution
+        run: uv build
+      - name: Export GitHub dependency graph SBOM
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api "repos/${GITHUB_REPOSITORY}/dependency-graph/sbom" --jq .sbom > dist/sbom.spdx.json
+      - name: Create SHA-256 checksums
+        working-directory: dist
+        run: for file in *.whl *.tar.gz *.json; do shasum -a 256 "$file"; done > SHA256SUMS
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: raytsystem-${{ github.ref_name }}
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
+            dist/sbom.spdx.json
+            dist/SHA256SUMS
+          if-no-files-found: error
+      - name: Attest release artifacts
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+        with:
+          subject-path: |
+            dist/*.whl
+            dist/*.tar.gz
+            dist/sbom.spdx.json
+            dist/SHA256SUMS
+      - name: Create prerelease with generated notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create "${{ github.ref_name }}" dist/*.whl dist/*.tar.gz
+          dist/sbom.spdx.json dist/SHA256SUMS --verify-tag --prerelease
+          --title "raytsystem ${{ github.ref_name }} (pre-1.0)" --generate-notes

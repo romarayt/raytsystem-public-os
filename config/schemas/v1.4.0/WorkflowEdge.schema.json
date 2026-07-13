@@ -1,0 +1,73 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "condition_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Condition Id"
+    },
+    "edge_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Edge Id",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "WorkflowEdgeV1",
+      "default": "WorkflowEdgeV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_node_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Source Node Id",
+      "type": "string"
+    },
+    "source_output": {
+      "default": "result",
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Source Output",
+      "type": "string"
+    },
+    "target_input": {
+      "default": "input",
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Target Input",
+      "type": "string"
+    },
+    "target_node_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Target Node Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "edge_id",
+    "source_node_id",
+    "target_node_id"
+  ],
+  "title": "WorkflowEdge",
+  "type": "object"
+}

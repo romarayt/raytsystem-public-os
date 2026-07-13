@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use raytsystem in research or published work, cite the release and exact commit."
+title: "raytsystem"
+type: software
+version: 0.1.0
+authors:
+  - family-names: "Rayt"
+    given-names: "Roma"
+repository-code: "https://github.com/romarayt/raytsystem-public-os"
+url: "https://romarayt.github.io/raytsystem-public-os/"
+license: Apache-2.0
+abstract: >-
+  A local-first, self-hosted workspace for agent-assisted knowledge, tasks, documents, and
+  verifiable workflows. raytsystem is pre-1.0; cite the exact release tag or commit SHA.

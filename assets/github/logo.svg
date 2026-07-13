@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 116" role="img" aria-labelledby="title description">
+  <title id="title">Система Райта</title>
+  <desc id="description">Логотип агентной системы Райта</desc>
+  <g transform="translate(4 14)">
+    <path d="M0 8v14l39 18-39 18v14l54-26V34L0 8Z" fill="#DC8C45"/>
+    <path d="M58 68h50v10H58z" fill="#DC8C45"/>
+  </g>
+  <text x="132" y="52" fill="#DC8C45" font-family="IBM Plex Mono, JetBrains Mono, Menlo, monospace" font-size="39" font-weight="600" letter-spacing="1.2">система райта</text>
+  <text x="134" y="88" fill="#717A86" font-family="IBM Plex Mono, JetBrains Mono, Menlo, monospace" font-size="19" font-weight="600" letter-spacing="6">АГЕНТНАЯ СИСТЕМА</text>
+</svg>

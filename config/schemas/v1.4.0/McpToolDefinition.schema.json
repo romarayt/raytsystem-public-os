@@ -1,0 +1,112 @@
+{
+  "$defs": {
+    "McpToolPolicy": {
+      "enum": [
+        "blocked",
+        "catalog_only",
+        "read_only",
+        "approval_required",
+        "enabled"
+      ],
+      "title": "McpToolPolicy",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "description": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Description",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "input_schema_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Input Schema Sha256",
+      "type": "string"
+    },
+    "max_input_bytes": {
+      "default": 65536,
+      "maximum": 1048576,
+      "minimum": 1,
+      "title": "Max Input Bytes",
+      "type": "integer"
+    },
+    "max_output_bytes": {
+      "default": 262144,
+      "maximum": 4194304,
+      "minimum": 1,
+      "title": "Max Output Bytes",
+      "type": "integer"
+    },
+    "name": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Name",
+      "type": "string"
+    },
+    "output_schema_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Output Schema Sha256"
+    },
+    "policy": {
+      "$ref": "#/$defs/McpToolPolicy",
+      "default": "catalog_only"
+    },
+    "schema_name": {
+      "const": "McpToolDefinitionV1",
+      "default": "McpToolDefinitionV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "server_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Server Id",
+      "type": "string"
+    },
+    "timeout_ms": {
+      "default": 10000,
+      "maximum": 300000,
+      "minimum": 1,
+      "title": "Timeout Ms",
+      "type": "integer"
+    },
+    "tool_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Tool Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "tool_id",
+    "server_id",
+    "name",
+    "description",
+    "input_schema_sha256"
+  ],
+  "title": "McpToolDefinition",
+  "type": "object"
+}

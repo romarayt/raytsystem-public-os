@@ -1,0 +1,166 @@
+{
+  "entries": {
+    "AnswerProposal": {
+      "path": "AnswerProposal.schema.json",
+      "sha256": "61c18d74b88843d38535fad61fe7b4425bdd11d5768808e1b16c30725a68e205"
+    },
+    "ApprovalRecord": {
+      "path": "ApprovalRecord.schema.json",
+      "sha256": "6e8db3e89b540da614083ff2bba362e1757e4a1b3ea1d54d06eb3e4559a303e5"
+    },
+    "Artifact": {
+      "path": "Artifact.schema.json",
+      "sha256": "79869daf40886772ae171ee2eb8044f5978c0d3771c94886215d0768bdf5f14c"
+    },
+    "Claim": {
+      "path": "Claim.schema.json",
+      "sha256": "ce0a80587216eed05cb8f2c0e27174f7bb1f58e8613c9489529919b8bb16ddec"
+    },
+    "Entity": {
+      "path": "Entity.schema.json",
+      "sha256": "145506f1a47446d41d261b84cdbe01f809270e550fa1212728c42f3d490f951c"
+    },
+    "EvidencePack": {
+      "path": "EvidencePack.schema.json",
+      "sha256": "7eb51da4f7c35159af82048ddac3d723f7e319a8199f961a899c689ea72b302b"
+    },
+    "Feedback": {
+      "path": "Feedback.schema.json",
+      "sha256": "56cbe48137b3e144ab5c7973301a01bf6eff99f870c3595e49e81b3c5eb36680"
+    },
+    "GenerationEntry": {
+      "path": "GenerationEntry.schema.json",
+      "sha256": "8cf3da2cc9d0746e6567a50b448d5fe6288ec6b922414a253442a23a45a8e9ca"
+    },
+    "GitCheckpointEvent": {
+      "path": "GitCheckpointEvent.schema.json",
+      "sha256": "fb9d2e7f771904599d2cc867c98f4600128dd9f0c9e91750f081cad0bb42cc2f"
+    },
+    "Lease": {
+      "path": "Lease.schema.json",
+      "sha256": "e5e084665dd9f23a9fc04cf6cc0ca00445f5d6d3873d3d114e690f83c3b8bfc0"
+    },
+    "LedgerGeneration": {
+      "path": "LedgerGeneration.schema.json",
+      "sha256": "d4550316bd09b690f159806b6e973228ee8ad8664546fe603b82795cdc2ff3b2"
+    },
+    "Normalization": {
+      "path": "Normalization.schema.json",
+      "sha256": "a3e59fdf18e91206c8229c7e82b437a63507c9e2e19007cd4f53ce081072ccde"
+    },
+    "OutboxAction": {
+      "path": "OutboxAction.schema.json",
+      "sha256": "65c51e2b27dd2be8737d92903808effbed8362e498519a5cdc69403c5613dcd8"
+    },
+    "PolicyDecision": {
+      "path": "PolicyDecision.schema.json",
+      "sha256": "c010de11806cca62650e9783043913044b0eefe4e79930ec320a9d258a988619"
+    },
+    "PromotionEvent": {
+      "path": "PromotionEvent.schema.json",
+      "sha256": "06240eb1c1964d112863dbdb1df0b51e6cd4d1deb0859b5310321d5efba5f6c8"
+    },
+    "PromotionTxn": {
+      "path": "PromotionTxn.schema.json",
+      "sha256": "81608fee60ff2a315ce83c37e9fb15eeb3efed63d58bff48328c1ddaa0eb7949"
+    },
+    "ProposalRequest": {
+      "path": "ProposalRequest.schema.json",
+      "sha256": "192d865224e5b15d9643bf90f78d52305ae9317d09f2e711e22c6d880ee641dc"
+    },
+    "ProposalResponse": {
+      "path": "ProposalResponse.schema.json",
+      "sha256": "741afa40202cd9bbee9cd3978df4116dd9c63ce795dcd87e54ea236aaa7694e8"
+    },
+    "QueryCitation": {
+      "path": "QueryCitation.schema.json",
+      "sha256": "f37a2c031b70f6631c4edcd4a69c2438e9a122a5ad8d9912e8e38617cf167b5c"
+    },
+    "Relation": {
+      "path": "Relation.schema.json",
+      "sha256": "31809be07e8cdd870bfe9e0862db6d010d07cd20106331c1e38b9728ba183283"
+    },
+    "Review": {
+      "path": "Review.schema.json",
+      "sha256": "4be5a95c50c7e4aa7b287d161882d5ca97b475688fe6e9772b2694faa638d431"
+    },
+    "Run": {
+      "path": "Run.schema.json",
+      "sha256": "4443a45a3d691c7b4c2f007640a8809406cfce74778fba8531ff14c7d883d1c8"
+    },
+    "Segment": {
+      "path": "Segment.schema.json",
+      "sha256": "c68cb3df2c0b185e7d6a7e4cbb9e29a52e4a60b74532b4e723fda50bf7738387"
+    },
+    "SensitivityDecision": {
+      "path": "SensitivityDecision.schema.json",
+      "sha256": "ef764cc17a6e50a25cfc8f1e15b83fca30797796394efd9528afd41e3b9b6f5b"
+    },
+    "Source": {
+      "path": "Source.schema.json",
+      "sha256": "1cc788041509a98207de862b098e348f8f317dc70bae65e6debd2d22d152bd23"
+    },
+    "SourceRevision": {
+      "path": "SourceRevision.schema.json",
+      "sha256": "91cc26225ec93bfec8e96d69dce299124a48e4a6803c6d7725815ea5a847e52f"
+    },
+    "YouTubeBrief": {
+      "path": "YouTubeBrief.schema.json",
+      "sha256": "eb083fa9ff6b5bd1764bdd693ef29bfd5c6a725b4f7a5a206c1d80bb41f872d8"
+    },
+    "YouTubeMasterProjection": {
+      "path": "YouTubeMasterProjection.schema.json",
+      "sha256": "d4d583d42849f71869b2cb0ad13cf6818bd080a2864e42d9d28a0e313926b180"
+    },
+    "YouTubePackageReview": {
+      "path": "YouTubePackageReview.schema.json",
+      "sha256": "3a29c866bd708686221b9d1a9bd491b7ceb9d35f61fe611c5e7f3970fe9ed67c"
+    },
+    "YouTubePackaging": {
+      "path": "YouTubePackaging.schema.json",
+      "sha256": "44ebca4bbf65a8129101f81ce30ea85db198770bbb6844e1c46c705a7a3e9358"
+    },
+    "YouTubePresentation": {
+      "path": "YouTubePresentation.schema.json",
+      "sha256": "05a9b8db0fab545727b1c85186325ffe870c10924381b1bd42772e0e01138346"
+    },
+    "YouTubeProjectManifest": {
+      "path": "YouTubeProjectManifest.schema.json",
+      "sha256": "7288d01bb5cd933757d3ea233ee4889782eccb9cc3faaf28103b0e3ad1a953a2"
+    },
+    "YouTubeResearch": {
+      "path": "YouTubeResearch.schema.json",
+      "sha256": "5c5065daf0b5cbd0371d903ab0c67b803d179fe0572dad996bb462200e222058"
+    },
+    "YouTubeResearchSeed": {
+      "path": "YouTubeResearchSeed.schema.json",
+      "sha256": "64520ca2363d93ea1fcaa95493359e615b5d5de659d95984019b9c276153d6fc"
+    },
+    "YouTubeScript": {
+      "path": "YouTubeScript.schema.json",
+      "sha256": "1a01f17170d10a0ff3074165d5cd4f69b996ae1ed6091285a576165589d77753"
+    },
+    "YouTubeStageRecord": {
+      "path": "YouTubeStageRecord.schema.json",
+      "sha256": "6f7f3c82a51d075ec0258904eba760d41c482360978452ca63df74f2c7b48dda"
+    },
+    "YouTubeThumbnailPack": {
+      "path": "YouTubeThumbnailPack.schema.json",
+      "sha256": "4374190a2cd5ef6db3decf294d81d19be103ea9f38f68cf77326a8f43a09204d"
+    },
+    "YouTubeTitlePack": {
+      "path": "YouTubeTitlePack.schema.json",
+      "sha256": "5532a600032705aba2982148f1ac743d5d3f1d9bef4c35581d56a3d0df62bcc4"
+    },
+    "YouTubeVerdict": {
+      "path": "YouTubeVerdict.schema.json",
+      "sha256": "8ef182bae5656d1a98abea55914577c3a4dddc9e86b2cc20bcd9fd78e65f4987"
+    },
+    "YouTubeWarmup": {
+      "path": "YouTubeWarmup.schema.json",
+      "sha256": "58e3a83d9a86384c17d1e37c04681cecc9386406528a02d72c7680f2e0a2217c"
+    }
+  },
+  "registry_sha256": "4fb242b805379ac32d816cb773b90ad99b456a8595486c213c081dab9f0029a0",
+  "schema_version": "1.2.0"
+}

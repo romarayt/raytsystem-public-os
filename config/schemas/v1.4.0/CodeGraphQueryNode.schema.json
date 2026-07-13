@@ -1,0 +1,191 @@
+{
+  "$defs": {
+    "CodeNodeKind": {
+      "enum": [
+        "repository",
+        "directory",
+        "file",
+        "module",
+        "package",
+        "class",
+        "function",
+        "method",
+        "api_endpoint",
+        "database_table",
+        "database_schema",
+        "configuration",
+        "test",
+        "adr",
+        "rationale",
+        "dependency"
+      ],
+      "title": "CodeNodeKind",
+      "type": "string"
+    },
+    "CodeSourceLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "end_column": {
+          "default": 0,
+          "maximum": 10000000,
+          "minimum": 0,
+          "title": "End Column",
+          "type": "integer"
+        },
+        "end_line": {
+          "maximum": 10000000,
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "id_scheme_version": {
+          "default": "1",
+          "title": "Id Scheme Version",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "CodeSourceLocationV1",
+          "default": "CodeSourceLocationV1",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.4.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "start_column": {
+          "default": 0,
+          "maximum": 10000000,
+          "minimum": 0,
+          "title": "Start Column",
+          "type": "integer"
+        },
+        "start_line": {
+          "maximum": 10000000,
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start_line",
+        "end_line"
+      ],
+      "title": "CodeSourceLocation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Compact context slice of one CodeNode; full provenance stays in the snapshot.",
+  "properties": {
+    "community_id": {
+      "anyOf": [
+        {
+          "maximum": 1000000,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Community Id"
+    },
+    "depth": {
+      "default": 0,
+      "maximum": 16,
+      "minimum": 0,
+      "title": "Depth",
+      "type": "integer"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "is_bridge": {
+      "default": false,
+      "title": "Is Bridge",
+      "type": "boolean"
+    },
+    "is_god": {
+      "default": false,
+      "title": "Is God",
+      "type": "boolean"
+    },
+    "kind": {
+      "$ref": "#/$defs/CodeNodeKind"
+    },
+    "label": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Label",
+      "type": "string"
+    },
+    "location": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CodeSourceLocation"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "node_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Node Id",
+      "type": "string"
+    },
+    "path": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Path"
+    },
+    "qualified_name": {
+      "default": "",
+      "maxLength": 1024,
+      "title": "Qualified Name",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "GraphQueryNodeV1",
+      "default": "GraphQueryNodeV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "node_id",
+    "kind",
+    "label"
+  ],
+  "title": "CodeGraphQueryNode",
+  "type": "object"
+}

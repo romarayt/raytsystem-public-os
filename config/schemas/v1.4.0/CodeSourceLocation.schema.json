@@ -1,0 +1,58 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "end_column": {
+      "default": 0,
+      "maximum": 10000000,
+      "minimum": 0,
+      "title": "End Column",
+      "type": "integer"
+    },
+    "end_line": {
+      "maximum": 10000000,
+      "minimum": 1,
+      "title": "End Line",
+      "type": "integer"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "CodeSourceLocationV1",
+      "default": "CodeSourceLocationV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "start_column": {
+      "default": 0,
+      "maximum": 10000000,
+      "minimum": 0,
+      "title": "Start Column",
+      "type": "integer"
+    },
+    "start_line": {
+      "maximum": 10000000,
+      "minimum": 1,
+      "title": "Start Line",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "start_line",
+    "end_line"
+  ],
+  "title": "CodeSourceLocation",
+  "type": "object"
+}

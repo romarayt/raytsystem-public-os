@@ -1,0 +1,79 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "deterministic": {
+      "title": "Deterministic",
+      "type": "boolean"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "maximum": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "Maximum"
+    },
+    "name": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Name",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "EvalScoreV1",
+      "default": "EvalScoreV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "score_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Score Id",
+      "type": "string"
+    },
+    "unit": {
+      "default": "ratio",
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Unit",
+      "type": "string"
+    },
+    "value": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "Value"
+    }
+  },
+  "required": [
+    "score_id",
+    "name",
+    "value",
+    "maximum",
+    "deterministic"
+  ],
+  "title": "EvalScore",
+  "type": "object"
+}

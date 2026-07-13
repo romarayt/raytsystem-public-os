@@ -1,0 +1,61 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Action",
+      "type": "string"
+    },
+    "approval_gate_id": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Approval Gate Id",
+      "type": "string"
+    },
+    "expires_after_seconds": {
+      "maximum": 604800,
+      "minimum": 1,
+      "title": "Expires After Seconds",
+      "type": "integer"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id_scheme_version": {
+      "default": "1",
+      "title": "Id Scheme Version",
+      "type": "string"
+    },
+    "required_role": {
+      "pattern": "^[a-z][a-z0-9_:.@/-]{1,255}$",
+      "title": "Required Role",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "WorkflowApprovalGateV1",
+      "default": "WorkflowApprovalGateV1",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Scope Sha256",
+      "type": "string"
+    }
+  },
+  "required": [
+    "approval_gate_id",
+    "action",
+    "scope_sha256",
+    "required_role",
+    "expires_after_seconds"
+  ],
+  "title": "WorkflowApprovalGate",
+  "type": "object"
+}

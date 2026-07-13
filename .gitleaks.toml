@@ -1,0 +1,13 @@
+title = "raytsystem public secret scanning"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Deterministic content hashes and idempotency keys are not credentials"
+regexTarget = "match"
+regexes = [
+  '''identity_key_sha256["']?\s*[:=]''',
+  '''proposition_key["']?\s*[:=]''',
+  '''operation_key["']?\s*[:=]''',
+]

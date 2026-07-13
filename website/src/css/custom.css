@@ -1,0 +1,76 @@
+/* raytsystem knowledge base theme. Neutral, accessible in light and dark. */
+
+:root {
+  --ifm-color-primary: #2a7d74;
+  --ifm-color-primary-dark: #266f67;
+  --ifm-color-primary-darker: #24695f;
+  --ifm-color-primary-darkest: #1d564f;
+  --ifm-color-primary-light: #2e8b81;
+  --ifm-color-primary-lighter: #309389;
+  --ifm-color-primary-lightest: #37a99d;
+  --ifm-code-font-size: 92%;
+  --ifm-font-family-base:
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] {
+  --ifm-color-primary: #63d8d2;
+  --ifm-color-primary-dark: #4bcfc8;
+  --ifm-color-primary-darker: #3fcbc3;
+  --ifm-color-primary-darkest: #2ba59e;
+  --ifm-color-primary-light: #7bdfda;
+  --ifm-color-primary-lighter: #87e2dd;
+  --ifm-color-primary-lightest: #a6eae6;
+  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.12);
+}
+
+/* Status badges used by the article template macro. */
+.status-badge {
+  display: inline-block;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.status-badge.status-stable {
+  background: color-mix(in srgb, var(--ifm-color-primary) 22%, transparent);
+  color: var(--ifm-color-primary-darkest);
+}
+[data-theme="dark"] .status-badge.status-stable {
+  color: var(--ifm-color-primary-lightest);
+}
+.status-badge.status-experimental {
+  background: rgba(221, 187, 101, 0.2);
+  color: #8a6d18;
+}
+[data-theme="dark"] .status-badge.status-experimental {
+  color: #e6c765;
+}
+.status-badge.status-disabled {
+  background: rgba(150, 150, 150, 0.22);
+  color: #5c636b;
+}
+[data-theme="dark"] .status-badge.status-disabled {
+  color: #b8bfc7;
+}
+.status-badge.status-draft {
+  background: rgba(120, 140, 220, 0.2);
+  color: #45507f;
+}
+[data-theme="dark"] .status-badge.status-draft {
+  color: #aeb9ec;
+}
+
+/* "Generated — do not edit" banner for reference pages. */
+.generated-banner {
+  border: 1px solid rgba(221, 187, 101, 0.4);
+  background: rgba(221, 187, 101, 0.08);
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.85rem;
+}
