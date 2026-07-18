@@ -74,7 +74,7 @@ class NativeTextExtractor:
         spans: list[ExtractedSpan] = []
         character_offset = 0
         for line_number, line_with_ending in enumerate(text.splitlines(keepends=True), 1):
-            excerpt = line_with_ending.rstrip("\n")
+            excerpt = line_with_ending.splitlines()[0] if line_with_ending else ""
             if excerpt.strip():
                 spans.append(
                     ExtractedSpan(
