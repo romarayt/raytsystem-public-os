@@ -18,6 +18,7 @@ from raytsystem.ingestion import IngestPipeline
         ("after_current_swap", True),
     ],
 )
+@pytest.mark.skipif(not hasattr(os, "fork"), reason="requires POSIX fork and SIGKILL semantics")
 def test_sigkill_resume_converges_to_one_generation(
     project_root: Path,
     checkpoint: str,

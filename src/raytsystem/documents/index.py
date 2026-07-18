@@ -10,12 +10,14 @@ import sqlite3
 import stat
 import tempfile
 import time
+from contextlib import closing
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from pathlib import Path, PurePosixPath
 from typing import Any, Literal
 
+from raytsystem.security import osfd
 from raytsystem.contracts import canonical_json_bytes, derive_id, sha256_hex
 from raytsystem.derived import assert_safe_sqlite_family
 from raytsystem.documents.config import load_document_config
@@ -246,7 +248,7 @@ class DocumentIndex:
                 "roots": self.roots(),
             }
         try:
-            with self._read_connection() as connection:
+            with closing(self._read_connection()) as connection, connection:
                 metadata = self._metadata(connection)
                 count_row = connection.execute("SELECT COUNT(*) FROM documents").fetchone()
         except (OSError, sqlite3.Error, DocumentIndexError, UnsafeWritePath):
@@ -294,7 +296,7 @@ class DocumentIndex:
         descriptor, temporary_name = tempfile.mkstemp(
             prefix=f".{self.path.name}.", suffix=".tmp", dir=self.path.parent
         )
-        os.close(descriptor)
+        osfd.close(descriptor)
         temporary = Path(temporary_name)
         os.chmod(temporary, 0o600)
         connection: sqlite3.Connection | None = None
@@ -347,10 +349,12 @@ class DocumentIndex:
                 raise DocumentIndexError("Document index integrity check failed")
             connection.close()
             connection = None
-            with temporary.open("rb") as handle:
-                os.fsync(handle.fileno())
+            # "rb+" instead of "rb": Windows FlushFileBuffers requires a
+            # writable handle, while POSIX fsync accepts either.
+            with temporary.open("rb+") as handle:
+                osfd.fsync(handle.fileno())
             assert_safe_sqlite_family(self.path)
-            os.replace(temporary, self.path)
+            osfd.replace(temporary, self.path)
             fsync_directory(self.path.parent)
         except (OSError, sqlite3.Error, UnsafeWritePath) as error:
             raise DocumentIndexError("Document index rebuild failed") from error
@@ -373,7 +377,7 @@ class DocumentIndex:
         normalized = tuple(dict.fromkeys(self.policy.decide(path).relative_path for path in paths))
         git = self._git_status_map()
         identities = self._identity_map()
-        with self._write_connection() as connection:
+        with closing(self._write_connection()) as connection, connection:
             connection.execute("BEGIN IMMEDIATE")
             try:
                 for relative in normalized:
@@ -511,7 +515,7 @@ class DocumentIndex:
         where = "" if not clauses else " WHERE " + " AND ".join(clauses)
         sql = self._document_select() + where + f" ORDER BY {order} LIMIT ? OFFSET ?"
         values.extend((page_size + 1, offset))
-        with self._read_connection() as connection:
+        with closing(self._read_connection()) as connection, connection:
             snapshot = self._require_current(connection)
             rows = connection.execute(sql, values).fetchall()
             index_status, folders = self._envelope_context(connection, snapshot)
@@ -631,7 +635,7 @@ class DocumentIndex:
         values.extend((page_size + 1, offset))
         deadline = time.monotonic_ns() + self.config.search_timeout_ms * 1_000_000
         try:
-            with self._read_connection() as connection:
+            with closing(self._read_connection()) as connection, connection:
                 snapshot = self._require_current(connection)
                 connection.set_progress_handler(
                     lambda: 1 if time.monotonic_ns() > deadline else 0,
@@ -710,7 +714,7 @@ class DocumentIndex:
             content = None
             line_ending = None
             final_newline = None
-        with self._read_connection() as connection:
+        with closing(self._read_connection()) as connection, connection:
             asset_rows = connection.execute(
                 "SELECT l.raw_target,l.target_document_id,d.extension,d.sensitivity "
                 "FROM document_links l JOIN documents d ON d.document_id=l.target_document_id "
@@ -808,7 +812,7 @@ class DocumentIndex:
         else:
             where = "l.source_document_id=?"
             join_id = "l.target_document_id"
-        with self._read_connection() as connection:
+        with closing(self._read_connection()) as connection, connection:
             rows = connection.execute(
                 "SELECT l.*, d.relative_path AS related_path, d.title AS related_title, "
                 "d.policy_mode AS related_mode FROM document_links l "
@@ -890,7 +894,7 @@ class DocumentIndex:
         if not 1 <= max_nodes <= 500 or not 1 <= max_edges <= 2_000:
             raise DocumentIndexError("Focused graph budget is invalid")
         focus_row, snapshot = self._document_row(document_id)
-        with self._read_connection() as connection:
+        with closing(self._read_connection()) as connection, connection:
             link_rows = connection.execute(
                 "SELECT * FROM document_links WHERE "
                 "(source_document_id=? OR target_document_id=?) AND target_document_id IS NOT NULL "
@@ -954,7 +958,7 @@ class DocumentIndex:
 
     def row_for_path(self, relative_path: str) -> dict[str, Any] | None:
         decision = self.policy.require_visible(relative_path)
-        with self._read_connection() as connection:
+        with closing(self._read_connection()) as connection, connection:
             snapshot = self._require_current(connection)
             row = connection.execute(
                 "SELECT * FROM documents WHERE relative_path=?", (decision.relative_path,)
@@ -1036,7 +1040,7 @@ class DocumentIndex:
             clauses.append("parent_path=?")
             values.append(safe_parent)
         where = " WHERE " + " AND ".join(clauses)
-        with self._read_connection() as connection:
+        with closing(self._read_connection()) as connection, connection:
             snapshot = self._require_current(connection)
             rows = connection.execute(
                 "SELECT * FROM folders"
@@ -1293,13 +1297,13 @@ class DocumentIndex:
         nofollow = getattr(os, "O_NOFOLLOW", 0)
         directory = getattr(os, "O_DIRECTORY", 0)
         cloexec = getattr(os, "O_CLOEXEC", 0)
-        root_fd = os.open(self.root, os.O_RDONLY | directory | cloexec)
+        root_fd = osfd.open(self.root, os.O_RDONLY | directory | cloexec)
         current = root_fd
         opened: list[int] = []
         try:
             for component in pure.parts:
                 try:
-                    descriptor = os.open(
+                    descriptor = osfd.open(
                         component,
                         os.O_RDONLY | directory | nofollow | cloexec,
                         dir_fd=current,
@@ -1311,8 +1315,8 @@ class DocumentIndex:
             return True
         finally:
             for descriptor in reversed(opened):
-                os.close(descriptor)
-            os.close(root_fd)
+                osfd.close(descriptor)
+            osfd.close(root_fd)
 
     def _scan_file(
         self,
@@ -1764,7 +1768,7 @@ class DocumentIndex:
 
     def _previous_projection(self) -> dict[str, tuple[str, str, int, str]]:
         try:
-            with self._read_connection() as connection:
+            with closing(self._read_connection()) as connection, connection:
                 return {
                     str(row["relative_path"]): (
                         str(row["first_seen_at"]),
@@ -2008,7 +2012,7 @@ class DocumentIndex:
     def _document_row(self, document_id: str) -> tuple[sqlite3.Row, str]:
         if _PUBLIC_ID.fullmatch(document_id) is None:
             raise DocumentNotFound("Document was not found")
-        with self._read_connection() as connection:
+        with closing(self._read_connection()) as connection, connection:
             snapshot = self._require_current(connection)
             row = connection.execute(
                 "SELECT * FROM documents WHERE document_id=?", (document_id,)

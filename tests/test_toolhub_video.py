@@ -311,6 +311,7 @@ def test_missing_ffmpeg_preserves_completed_probe_stage(tmp_path: Path) -> None:
     assert all(call.executable != "ffmpeg" for call in runner.calls)
 
 
+@pytest.mark.skipif(os.name == "nt", reason="fake pinned ffprobe is a POSIX shell script")
 def test_allowlisted_runner_enforces_timeout_without_shell(tmp_path: Path) -> None:
     sleeper = tmp_path / "ffprobe-fixture"
     sleeper.write_text(
@@ -677,6 +678,7 @@ def test_network_approval_lifetime_is_bounded() -> None:
         )
 
 
+@pytest.mark.skipif(os.name == "nt", reason="fake pinned ffprobe is a POSIX shell script")
 def test_pinned_runner_ignores_path_shadow_and_detects_binary_mutation(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

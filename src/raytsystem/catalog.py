@@ -399,6 +399,10 @@ class CatalogService:
 
     @classmethod
     def _frontmatter(cls, data: bytes) -> dict[str, Any]:
+        # Normalize Windows text-mode line endings before structural checks;
+        # frontmatter semantics are line-based, so this is lossless.
+        if data.startswith(b"---\r\n"):
+            data = data.replace(b"\r\n", b"\n")
         if not data.startswith(b"---\n"):
             raise CatalogError("Skill must start with YAML frontmatter")
         boundary = data.find(b"\n---\n", 4)

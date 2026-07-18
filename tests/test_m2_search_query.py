@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from contextlib import closing
+
 import json
 import os
 import socket
@@ -139,7 +141,7 @@ def test_index_logical_tamper_is_detected_and_rebuilt_from_canonical_records(
 ) -> None:
     _ingest_claim(project_root, "tamper.md", "Canonical statement survives index tampering")
     adapter = FTS5SearchAdapter(project_root)
-    with sqlite3.connect(adapter.path) as connection:
+    with closing(sqlite3.connect(adapter.path)) as connection, connection:
         connection.execute(
             "UPDATE documents SET title = ?, body = ? WHERE kind = 'claim'",
             ("FORGED INDEX FACT", "FORGED INDEX FACT"),
@@ -159,7 +161,7 @@ def test_fts_shadow_table_tamper_is_detected_before_a_false_gap_can_escape(
 ) -> None:
     _ingest_claim(project_root, "fts-shadow.md", "FTS shadow rows remain closed")
     adapter = FTS5SearchAdapter(project_root)
-    with sqlite3.connect(adapter.path) as connection:
+    with closing(sqlite3.connect(adapter.path)) as connection, connection:
         connection.execute("DELETE FROM documents_fts")
         connection.commit()
 

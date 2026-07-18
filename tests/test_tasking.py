@@ -658,10 +658,11 @@ def test_task_ledger_objects_are_private(project_root: Path) -> None:
     )
 
     ledger_root = project_root / "ops" / "task-ledger"
-    assert stat.S_IMODE(ledger_root.stat().st_mode) == 0o700
-    assert stat.S_IMODE((ledger_root / "CURRENT").stat().st_mode) == 0o600
-    for path in ledger_root.rglob("*.json"):
-        assert stat.S_IMODE(path.stat().st_mode) == 0o600
+    if os.name != "nt":  # Windows has ACLs instead of POSIX mode bits
+        assert stat.S_IMODE(ledger_root.stat().st_mode) == 0o700
+        assert stat.S_IMODE((ledger_root / "CURRENT").stat().st_mode) == 0o600
+        for path in ledger_root.rglob("*.json"):
+            assert stat.S_IMODE(path.stat().st_mode) == 0o600
 
 
 @pytest.mark.skipif(not hasattr(os, "symlink"), reason="symlinks unavailable")

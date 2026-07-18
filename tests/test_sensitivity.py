@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -92,8 +93,9 @@ def test_common_secret_shapes_are_quarantined(project_root: Path, planted: str) 
 
     restricted = next((project_root / "_raw" / "restricted").glob("*/raw.bin"))
     assert planted.encode() in restricted.read_bytes()
-    assert restricted.stat().st_mode & 0o777 == 0o600
-    assert restricted.parent.stat().st_mode & 0o777 == 0o700
+    if os.name != "nt":  # Windows has ACLs instead of POSIX mode bits
+        assert restricted.stat().st_mode & 0o777 == 0o600
+        assert restricted.parent.stat().st_mode & 0o777 == 0o700
     assert not (project_root / "normalized").exists()
 
 

@@ -8,6 +8,7 @@ import tempfile
 import time
 import tomllib
 import unicodedata
+from contextlib import closing
 from collections.abc import Iterable
 from dataclasses import dataclass
 from fractions import Fraction
@@ -198,7 +199,9 @@ class FTS5SearchAdapter:
                 raise SearchUnavailable("FTS5 index integrity check failed")
             connection.close()
             connection = None
-            with temporary.open("rb") as handle:
+            # "rb+" instead of "rb": Windows FlushFileBuffers requires a
+            # writable handle, while POSIX fsync accepts either.
+            with temporary.open("rb+") as handle:
                 os.fsync(handle.fileno())
             if self.fail_at == "before_replace":
                 raise RuntimeError("injected index failure before atomic replace")
@@ -408,7 +411,7 @@ class FTS5SearchAdapter:
 
     def metadata(self) -> dict[str, str]:
         try:
-            with self._read_connection() as connection:
+            with closing(self._read_connection()) as connection, connection:
                 return self._metadata(connection)
         except sqlite3.Error as error:
             raise SearchUnavailable("FTS5 index metadata is unreadable") from error
@@ -417,7 +420,7 @@ class FTS5SearchAdapter:
         """Hash document and FTS rows instead of unstable SQLite file bytes."""
 
         try:
-            with self._read_connection() as connection:
+            with closing(self._read_connection()) as connection, connection:
                 return self._logical_fingerprint(connection)
         except sqlite3.Error as error:
             raise SearchUnavailable("FTS5 logical index is unreadable") from error
@@ -465,7 +468,7 @@ class FTS5SearchAdapter:
         )
         deadline = time.monotonic_ns() + 200_000_000
         try:
-            with self._read_connection() as connection:
+            with closing(self._read_connection()) as connection, connection:
                 metadata = self._metadata(connection)
                 if metadata.get("logical_index_sha256") != self._logical_fingerprint(connection):
                     raise StaleIndexError("FTS5 logical index fingerprint changed")
@@ -505,7 +508,7 @@ class FTS5SearchAdapter:
 
     def schema_fingerprint(self) -> str:
         try:
-            with self._read_connection() as connection:
+            with closing(self._read_connection()) as connection, connection:
                 rows = [
                     {"type": row[0], "name": row[1], "sql": row[2]}
                     for row in connection.execute(

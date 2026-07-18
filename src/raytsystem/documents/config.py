@@ -5,6 +5,7 @@ import tomllib
 from pathlib import Path
 from typing import Any
 
+from raytsystem.security import osfd
 from raytsystem.contracts import canonical_json_bytes, derive_id, sha256_hex
 from raytsystem.documents.contracts import (
     DocumentConfig,
@@ -178,13 +179,13 @@ def _directory_identity(root: Path, relative_path: str) -> tuple[int, int] | Non
     nofollow = getattr(os, "O_NOFOLLOW", 0)
     directory = getattr(os, "O_DIRECTORY", 0)
     cloexec = getattr(os, "O_CLOEXEC", 0)
-    root_fd = os.open(root, os.O_RDONLY | directory | cloexec)
+    root_fd = osfd.open(root, os.O_RDONLY | directory | cloexec)
     current = root_fd
     opened: list[int] = []
     try:
         for component in Path(relative_path).parts:
             try:
-                descriptor = os.open(
+                descriptor = osfd.open(
                     component,
                     os.O_RDONLY | directory | nofollow | cloexec,
                     dir_fd=current,
@@ -199,5 +200,5 @@ def _directory_identity(root: Path, relative_path: str) -> tuple[int, int] | Non
         return metadata.st_dev, metadata.st_ino
     finally:
         for descriptor in reversed(opened):
-            os.close(descriptor)
-        os.close(root_fd)
+            osfd.close(descriptor)
+        osfd.close(root_fd)

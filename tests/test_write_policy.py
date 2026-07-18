@@ -14,7 +14,7 @@ def test_absolute_control_db_config_is_rejected(project_root: Path, tmp_path: Pa
     config.write_text(
         config.read_text().replace(
             'control_db = "ops/control.sqlite"',
-            f'control_db = "{outside}"',
+            f'control_db = "{outside.as_posix()}"',
         ),
         encoding="utf-8",
     )

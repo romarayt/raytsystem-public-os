@@ -434,7 +434,8 @@ class TaskService:
         except (UnicodeDecodeError, OSError, PathPolicyError) as error:
             raise TaskLedgerError("Task board pointer is unsafe or invalid") from error
         generation_id = pointer.strip()
-        if pointer != f"{generation_id}\n" or not generation_id.startswith("tgen_"):
+        # Accept \r\n as the single trailing newline for Windows text-mode writers.
+        if pointer not in (f"{generation_id}\n", f"{generation_id}\r\n") or not generation_id.startswith("tgen_"):
             raise TaskLedgerError("Task board pointer is malformed")
         generation = self._read_generation(generation_id)
         self._validate_generation_closure(generation)
@@ -835,7 +836,10 @@ class TaskService:
     @staticmethod
     def _ensure_private_directory(path: Path) -> None:
         ensure_safe_directory(path, mode=0o700)
-        os.chmod(path, 0o700, follow_symlinks=False)
+        if os.chmod in os.supports_follow_symlinks:
+            os.chmod(path, 0o700, follow_symlinks=False)
+        else:
+            os.chmod(path, 0o700)
 
     def _publish_private(self, path: Path, data: bytes) -> None:
         try:

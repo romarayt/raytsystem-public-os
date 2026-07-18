@@ -321,7 +321,9 @@ class BackupService:
                             shutil.copyfileobj(source, target, length=1024 * 1024)
                     archive.writestr(_zip_info("META/manifest.json"), manifest_json)
                     archive.writestr(_zip_info("META/redaction-report.json"), redaction_json)
-                with temporary_path.open("rb") as handle:
+                # "rb+" instead of "rb": Windows FlushFileBuffers requires a
+                # writable handle, while POSIX fsync accepts either.
+                with temporary_path.open("rb+") as handle:
                     os.fsync(handle.fileno())
                 temporary_metadata = os.lstat(temporary_path)
                 published_identity = (temporary_metadata.st_dev, temporary_metadata.st_ino)

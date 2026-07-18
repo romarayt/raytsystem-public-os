@@ -13,6 +13,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from raytsystem.security import osfd
 from raytsystem.io import ensure_safe_directory, write_bytes_atomic
 from raytsystem.security.paths import PathPolicyError, read_regular_file
 
@@ -284,7 +285,7 @@ def _create_backup(
     try:
         flags = os.O_RDWR | os.O_CREAT | os.O_EXCL | getattr(os, "O_CLOEXEC", 0)
         flags |= getattr(os, "O_NOFOLLOW", 0)
-        file_fd = os.open(name, flags, 0o600, dir_fd=backup_fd)
+        file_fd = osfd.open(name, flags, 0o600, dir_fd=backup_fd)
         with os.fdopen(file_fd, "w+b", closefd=True) as handle:
             file_fd = None
             with zipfile.ZipFile(handle, "w", compression=zipfile.ZIP_DEFLATED) as archive:
@@ -302,9 +303,9 @@ def _create_backup(
                         )
                     )
             handle.flush()
-            os.fsync(handle.fileno())
+            osfd.fsync(handle.fileno())
             created_identity = _PathIdentity.from_stat(os.fstat(handle.fileno()))
-        created = os.stat(name, dir_fd=backup_fd, follow_symlinks=False)
+        created = osfd.stat(name, dir_fd=backup_fd, follow_symlinks=False)
         if not stat.S_ISREG(created.st_mode) or created.st_nlink != 1:
             raise BrandMigrationError("Backup artifact is unsafe")
         if created_identity is None or (
@@ -317,13 +318,13 @@ def _create_backup(
             created_identity.size,
         ):
             raise BrandMigrationError("Backup artifact changed after creation")
-        os.fsync(backup_fd)
+        osfd.fsync(backup_fd)
     except (OSError, PathPolicyError, zipfile.BadZipFile) as error:
         raise BrandMigrationError("Brand migration backup failed") from error
     finally:
         if file_fd is not None:
-            os.close(file_fd)
-        os.close(backup_fd)
+            osfd.close(file_fd)
+        osfd.close(backup_fd)
     verification_fd = _open_relative_directory(root, Path("ops") / "backups")
     try:
         verified_directory = _PathIdentity.from_stat(os.fstat(verification_fd))
@@ -332,14 +333,14 @@ def _create_backup(
             backup_directory_identity.inode,
         ):
             raise BrandMigrationError("Backup directory changed during creation")
-        verified_file = os.stat(name, dir_fd=verification_fd, follow_symlinks=False)
+        verified_file = osfd.stat(name, dir_fd=verification_fd, follow_symlinks=False)
         if created_identity is None or (verified_file.st_dev, verified_file.st_ino) != (
             created_identity.device,
             created_identity.inode,
         ):
             raise BrandMigrationError("Backup path no longer identifies the created archive")
     finally:
-        os.close(verification_fd)
+        osfd.close(verification_fd)
     return backup_dir / name, tuple(captured)
 
 
@@ -347,21 +348,21 @@ def _open_relative_directory(root: Path, relative: Path) -> int:
     flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_CLOEXEC", 0)
     flags |= getattr(os, "O_NOFOLLOW", 0)
     try:
-        descriptor = os.open(root, flags)
+        descriptor = osfd.open(root, flags)
     except OSError as error:
         raise BrandMigrationError("Workspace root could not be opened safely") from error
     for component in relative.parts:
         try:
-            next_descriptor = os.open(component, flags, dir_fd=descriptor)
+            next_descriptor = osfd.open(component, flags, dir_fd=descriptor)
         except OSError as error:
-            os.close(descriptor)
+            osfd.close(descriptor)
             raise BrandMigrationError("Directory component is missing or unsafe") from error
         opened = os.fstat(next_descriptor)
         if not stat.S_ISDIR(opened.st_mode):
-            os.close(next_descriptor)
-            os.close(descriptor)
+            osfd.close(next_descriptor)
+            osfd.close(descriptor)
             raise BrandMigrationError("Directory component is not a real directory")
-        os.close(descriptor)
+        osfd.close(descriptor)
         descriptor = next_descriptor
     return descriptor
 
@@ -437,7 +438,7 @@ def _move_verified(
         moved.append(record)
         _verify_identity_at(parent_fd, destination_relative.name, identity, kind=kind)
     finally:
-        os.close(parent_fd)
+        osfd.close(parent_fd)
 
 
 def _rollback_namespace(root: Path, moved: list[_Move]) -> list[BaseException]:
@@ -470,7 +471,7 @@ def _rollback_namespace(root: Path, moved: list[_Move]) -> list[BaseException]:
                     kind=kind,
                 )
             finally:
-                os.close(parent_fd)
+                osfd.close(parent_fd)
         except BaseException as error:
             errors.append(error)
     return errors
@@ -484,7 +485,7 @@ def _verify_identity_at(
     kind: str,
 ) -> None:
     try:
-        metadata = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
+        metadata = osfd.stat(name, dir_fd=directory_fd, follow_symlinks=False)
     except OSError as error:
         raise BrandMigrationError("Migration namespace entry is unavailable") from error
     if stat.S_ISLNK(metadata.st_mode):
@@ -556,7 +557,7 @@ def _rename_no_replace_at(
         )
     elif os.name == "nt":  # pragma: no cover - exercised on Windows CI
         try:
-            os.rename(
+            osfd.rename(
                 source_name,
                 destination_name,
                 src_dir_fd=source_fd,

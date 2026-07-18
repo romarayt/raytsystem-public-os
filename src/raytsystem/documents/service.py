@@ -17,6 +17,7 @@ from typing import Any, ClassVar
 
 import yaml
 
+from raytsystem.security import osfd
 from raytsystem.contracts import canonical_json_bytes, derive_id, sha256_hex
 from raytsystem.documents.contracts import (
     DocumentConflict,
@@ -43,9 +44,35 @@ def _now() -> str:
     return datetime.now(UTC).isoformat(timespec="milliseconds").replace("+00:00", "Z")
 
 
+def _exchange_names_windows(parent_fd: int, left: str, right: str) -> None:
+    # Windows exposes no renameat2/RENAME_EXCHANGE equivalent; emulate the
+    # swap with a temporary name and best-effort rollback. Each step is a
+    # no-replace rename inside one directory (os.rename never clobbers on
+    # Windows) and the caller's recovery markers cover a crash mid-sequence.
+    base = osfd.registered_path(parent_fd)
+    left_path = base / left
+    right_path = base / right
+    temporary = base / f".{left}.xchg-{os.getpid()}"
+    os.rename(left_path, temporary)
+    try:
+        os.rename(right_path, left_path)
+    except BaseException:
+        os.rename(temporary, left_path)
+        raise
+    try:
+        os.rename(temporary, right_path)
+    except BaseException:
+        os.rename(left_path, right_path)
+        os.rename(temporary, left_path)
+        raise
+
+
 def _exchange_names(parent_fd: int, left: str, right: str) -> None:
     """Atomically swap two directory entries or fail closed on unsupported kernels/filesystems."""
 
+    if os.name == "nt":
+        _exchange_names_windows(parent_fd, left, right)
+        return
     library = ctypes.CDLL(None, use_errno=True)
     left_bytes = os.fsencode(left)
     right_bytes = os.fsencode(right)
@@ -987,7 +1014,7 @@ class DocumentService:
     def _read_optional(self, relative: str) -> bytes | None:
         with self._parent_fd(relative) as (parent_fd, name):
             try:
-                os.stat(name, dir_fd=parent_fd, follow_symlinks=False)
+                osfd.stat(name, dir_fd=parent_fd, follow_symlinks=False)
             except FileNotFoundError:
                 return None
         return self._read_current(relative)
@@ -1209,13 +1236,13 @@ class DocumentService:
         nofollow = getattr(os, "O_NOFOLLOW", 0)
         directory = getattr(os, "O_DIRECTORY", 0)
         cloexec = getattr(os, "O_CLOEXEC", 0)
-        root_fd = os.open(self.root, os.O_RDONLY | directory | cloexec)
+        root_fd = osfd.open(self.root, os.O_RDONLY | directory | cloexec)
         opened: list[int] = []
         parent = root_fd
         try:
             for component in pure.parts[:-1]:
                 try:
-                    descriptor = os.open(
+                    descriptor = osfd.open(
                         component,
                         os.O_RDONLY | directory | nofollow | cloexec,
                         dir_fd=parent,
@@ -1229,8 +1256,8 @@ class DocumentService:
             yield parent, pure.name
         finally:
             for descriptor in reversed(opened):
-                os.close(descriptor)
-            os.close(root_fd)
+                osfd.close(descriptor)
+            osfd.close(root_fd)
 
     @staticmethod
     def _write_all(descriptor: int, data: bytes) -> None:
@@ -1242,7 +1269,7 @@ class DocumentService:
             offset += written
 
     def _read_name(self, parent_fd: int, name: str) -> bytes:
-        descriptor = os.open(
+        descriptor = osfd.open(
             name,
             os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_CLOEXEC", 0),
             dir_fd=parent_fd,
@@ -1263,14 +1290,14 @@ class DocumentService:
                     raise DocumentPolicyError("Document exchange entry exceeds size limit")
             return b"".join(chunks)
         finally:
-            os.close(descriptor)
+            osfd.close(descriptor)
 
     def _atomic_create(self, relative: str, data: bytes) -> None:
         with self._parent_fd(relative) as (parent_fd, name):
             temporary = f".{name}.{secrets.token_hex(12)}.tmp"
             descriptor: int | None = None
             try:
-                descriptor = os.open(
+                descriptor = osfd.open(
                     temporary,
                     os.O_WRONLY
                     | os.O_CREAT
@@ -1281,18 +1308,18 @@ class DocumentService:
                     dir_fd=parent_fd,
                 )
                 self._write_all(descriptor, data)
-                os.fsync(descriptor)
-                os.close(descriptor)
+                osfd.fsync(descriptor)
+                osfd.close(descriptor)
                 descriptor = None
-                os.link(
+                osfd.link(
                     temporary,
                     name,
                     src_dir_fd=parent_fd,
                     dst_dir_fd=parent_fd,
                     follow_symlinks=False,
                 )
-                os.unlink(temporary, dir_fd=parent_fd)
-                os.fsync(parent_fd)
+                osfd.unlink(temporary, dir_fd=parent_fd)
+                osfd.fsync(parent_fd)
             except FileExistsError as error:
                 raise DocumentConflict(
                     "A document already exists at the destination",
@@ -1300,9 +1327,9 @@ class DocumentService:
                 ) from error
             finally:
                 if descriptor is not None:
-                    os.close(descriptor)
+                    osfd.close(descriptor)
                 with suppress(OSError):
-                    os.unlink(temporary, dir_fd=parent_fd)
+                    osfd.unlink(temporary, dir_fd=parent_fd)
 
     def _atomic_replace(
         self,
@@ -1317,7 +1344,7 @@ class DocumentService:
         with self._parent_fd(relative) as (parent_fd, name):
             flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_CLOEXEC", 0)
             try:
-                target_fd = os.open(name, flags, dir_fd=parent_fd)
+                target_fd = osfd.open(name, flags, dir_fd=parent_fd)
             except OSError as error:
                 raise DocumentConflict(
                     "Document changed or became unsafe",
@@ -1340,7 +1367,7 @@ class DocumentService:
                         )
                 current = b"".join(chunks)
             finally:
-                os.close(target_fd)
+                osfd.close(target_fd)
             current_sha256 = sha256_hex(current)
             if current_sha256 != expected_sha256:
                 raise self._conflict(
@@ -1355,7 +1382,7 @@ class DocumentService:
             descriptor: int | None = None
             exchanged = False
             try:
-                descriptor = os.open(
+                descriptor = osfd.open(
                     temporary,
                     os.O_WRONLY
                     | os.O_CREAT
@@ -1366,10 +1393,10 @@ class DocumentService:
                     dir_fd=parent_fd,
                 )
                 self._write_all(descriptor, data)
-                os.fsync(descriptor)
-                os.close(descriptor)
+                osfd.fsync(descriptor)
+                osfd.close(descriptor)
                 descriptor = None
-                final = os.stat(name, dir_fd=parent_fd, follow_symlinks=False)
+                final = osfd.stat(name, dir_fd=parent_fd, follow_symlinks=False)
                 stable = ("st_dev", "st_ino", "st_size", "st_mtime_ns")
                 if any(getattr(before, field) != getattr(final, field) for field in stable):
                     latest = self._read_current(relative)
@@ -1400,15 +1427,15 @@ class DocumentService:
                         current=displaced,
                         snapshot_id=snapshot_id,
                     )
-                os.unlink(temporary, dir_fd=parent_fd)
+                osfd.unlink(temporary, dir_fd=parent_fd)
                 exchanged = False
-                os.fsync(parent_fd)
+                osfd.fsync(parent_fd)
             except BaseException:
                 if exchanged:
                     try:
                         _exchange_names(parent_fd, temporary, name)
                         exchanged = False
-                        os.fsync(parent_fd)
+                        osfd.fsync(parent_fd)
                     except BaseException as rollback_error:
                         raise DocumentPolicyError(
                             "Atomic document exchange rollback failed; recovery is required"
@@ -1416,10 +1443,10 @@ class DocumentService:
                 raise
             finally:
                 if descriptor is not None:
-                    os.close(descriptor)
+                    osfd.close(descriptor)
                 if not exchanged:
                     with suppress(OSError):
-                        os.unlink(temporary, dir_fd=parent_fd)
+                        osfd.unlink(temporary, dir_fd=parent_fd)
 
     def _atomic_move(
         self,
@@ -1435,7 +1462,7 @@ class DocumentService:
             self._parent_fd(destination) as (destination_parent, destination_name),
         ):
             flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_CLOEXEC", 0)
-            source_fd = os.open(source_name, flags, dir_fd=source_parent)
+            source_fd = osfd.open(source_name, flags, dir_fd=source_parent)
             try:
                 before = os.fstat(source_fd)
                 if not stat.S_ISREG(before.st_mode) or before.st_nlink != 1:
@@ -1469,7 +1496,7 @@ class DocumentService:
                         details={"document_id": document_id},
                     )
                 try:
-                    os.link(
+                    osfd.link(
                         source_name,
                         destination_name,
                         src_dir_fd=source_parent,
@@ -1482,8 +1509,8 @@ class DocumentService:
                         details={"path": destination},
                     ) from error
                 try:
-                    source_meta = os.stat(source_name, dir_fd=source_parent, follow_symlinks=False)
-                    destination_meta = os.stat(
+                    source_meta = osfd.stat(source_name, dir_fd=source_parent, follow_symlinks=False)
+                    destination_meta = osfd.stat(
                         destination_name,
                         dir_fd=destination_parent,
                         follow_symlinks=False,
@@ -1504,16 +1531,16 @@ class DocumentService:
                             "Document changed during move",
                             details={"document_id": document_id},
                         )
-                    os.unlink(source_name, dir_fd=source_parent)
+                    osfd.unlink(source_name, dir_fd=source_parent)
                 except BaseException:
                     with suppress(OSError):
-                        os.unlink(destination_name, dir_fd=destination_parent)
+                        osfd.unlink(destination_name, dir_fd=destination_parent)
                     raise
             finally:
-                os.close(source_fd)
-            os.fsync(source_parent)
+                osfd.close(source_fd)
+            osfd.fsync(source_parent)
             if destination_parent != source_parent:
-                os.fsync(destination_parent)
+                osfd.fsync(destination_parent)
 
     def _recover_link_move(self, source: str, destination: str) -> None:
         with (
@@ -1521,7 +1548,7 @@ class DocumentService:
             self._parent_fd(destination) as (destination_parent, destination_name),
         ):
             try:
-                source_meta = os.stat(
+                source_meta = osfd.stat(
                     source_name,
                     dir_fd=source_parent,
                     follow_symlinks=False,
@@ -1529,7 +1556,7 @@ class DocumentService:
             except FileNotFoundError:
                 source_meta = None
             try:
-                destination_meta = os.stat(
+                destination_meta = osfd.stat(
                     destination_name,
                     dir_fd=destination_parent,
                     follow_symlinks=False,
@@ -1550,16 +1577,16 @@ class DocumentService:
                     "Document move recovery encountered conflicting paths",
                     details={"old_path": source, "new_path": destination},
                 )
-            os.unlink(source_name, dir_fd=source_parent)
-            os.fsync(source_parent)
+            osfd.unlink(source_name, dir_fd=source_parent)
+            osfd.fsync(source_parent)
             if destination_parent != source_parent:
-                os.fsync(destination_parent)
+                osfd.fsync(destination_parent)
 
     def _mkdir(self, relative: str) -> None:
         with self._parent_fd(relative) as (parent_fd, name):
             try:
-                os.mkdir(name, mode=0o700, dir_fd=parent_fd)
-                os.fsync(parent_fd)
+                osfd.mkdir(name, mode=0o700, dir_fd=parent_fd)
+                osfd.fsync(parent_fd)
             except FileExistsError as error:
                 raise DocumentConflict(
                     "A file or folder already exists at the destination",
@@ -1569,7 +1596,7 @@ class DocumentService:
     def _directory_exists(self, relative: str) -> bool:
         with self._parent_fd(relative) as (parent_fd, name):
             try:
-                metadata = os.stat(name, dir_fd=parent_fd, follow_symlinks=False)
+                metadata = osfd.stat(name, dir_fd=parent_fd, follow_symlinks=False)
             except FileNotFoundError:
                 return False
             if stat.S_ISLNK(metadata.st_mode) or not stat.S_ISDIR(metadata.st_mode):

@@ -187,7 +187,7 @@ class IngestPipeline:
             self.hard_fail_at == checkpoint
             and os.environ.get("RAYTSYSTEM_ENABLE_TEST_HARD_FAULTS") == "1"
         ):
-            os.kill(os.getpid(), signal.SIGKILL)
+            os.kill(os.getpid(), getattr(signal, "SIGKILL", 9))
 
     def ingest(
         self,

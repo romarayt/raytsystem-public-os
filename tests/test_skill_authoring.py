@@ -988,6 +988,7 @@ def test_save_crash_restart_recovers_filesystem_before_uncommitted_store_write(
         assert store.head("skill_authoring_revision", "local-skill") is None
 
 
+@pytest.mark.skipif(os.name == "nt", reason="fault-injection harness relies on POSIX process exit semantics")
 def test_startup_recovers_crash_after_original_is_renamed_to_displaced(
     workspace: Path,
 ) -> None:
