@@ -4,7 +4,6 @@ import csv
 import io
 import json
 import os
-import resource
 import subprocess
 import sys
 import tempfile
@@ -24,6 +23,11 @@ from raytsystem.contracts import (
     sha256_hex,
 )
 from raytsystem.contracts.evidence import SegmentLocator
+
+try:
+    import resource
+except ImportError:  # Windows: POSIX rlimits are unavailable; workers rely on timeout/size caps.
+    resource = None  # type: ignore[assignment]
 
 
 class ExtractionError(RuntimeError):
@@ -464,6 +468,8 @@ class PdfExtractor:
 
     @staticmethod
     def _limit_worker() -> None:
+        if resource is None:
+            return
         limits = (
             (resource.RLIMIT_CPU, 8),
             (resource.RLIMIT_AS, 768 * 1024 * 1024),
@@ -503,7 +509,7 @@ class PdfExtractor:
                     env=environment,
                     timeout=15,
                     check=False,
-                    preexec_fn=self._limit_worker,
+                    preexec_fn=self._limit_worker if os.name == "posix" else None,
                 )
             except (OSError, subprocess.TimeoutExpired) as error:
                 raise ExtractionError("PDF parser worker failed safely") from error

@@ -48,6 +48,14 @@ _RUNTIME_ENV_ALLOWLIST = (
     "LC_ALL",
     "PATH",
     "SSL_CERT_FILE",
+    # Windows equivalents: without SYSTEMROOT the child cannot resolve
+    # system DLLs (Winsock), and the CLIs read their state from the profile
+    # directories. Absent variables are simply not copied on POSIX.
+    "SYSTEMROOT",
+    "USERPROFILE",
+    "APPDATA",
+    "LOCALAPPDATA",
+    "PATHEXT",
 )
 
 ExecutableResolver = Callable[[str], str | None]
@@ -827,12 +835,14 @@ class ProcessSupervisor:
             return
         except TimeoutError:
             pass
-        self._signal(process, signal.SIGKILL)
+        self._signal(process, getattr(signal, "SIGKILL", None))
         with contextlib.suppress(ProcessLookupError):
             await process.wait()
 
     @staticmethod
-    def _signal(process: asyncio.subprocess.Process, requested: signal.Signals) -> None:
+    def _signal(
+        process: asyncio.subprocess.Process, requested: signal.Signals | None
+    ) -> None:
         process_id = getattr(process, "pid", None)
         if os.name == "posix" and isinstance(process_id, int) and process_id > 0:
             with contextlib.suppress(ProcessLookupError):

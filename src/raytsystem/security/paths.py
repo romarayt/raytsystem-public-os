@@ -5,6 +5,8 @@ import stat
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 
+from raytsystem.security import osfd
+
 
 class PathPolicyError(ValueError):
     """Raised when an input path violates the workspace read policy."""
@@ -21,10 +23,13 @@ class ReadResult:
 
 def _lexical_relative(root: Path, candidate: str | Path) -> PurePosixPath:
     raw = os.fspath(candidate)
-    if not raw or "\x00" in raw or "\\" in raw:
-        raise PathPolicyError("Input path is malformed or non-POSIX")
-    if len(raw) >= 2 and raw[1] == ":":
-        raise PathPolicyError("Windows drive paths are forbidden")
+    if not raw or "\x00" in raw:
+        raise PathPolicyError("Input path is malformed")
+    if os.name != "nt":
+        if "\\" in raw:
+            raise PathPolicyError("Input path is malformed or non-POSIX")
+        if len(raw) >= 2 and raw[1] == ":":
+            raise PathPolicyError("Windows drive paths are forbidden")
 
     root_abs = Path(os.path.abspath(root))
     candidate_path = Path(raw)
@@ -50,17 +55,17 @@ def read_regular_file(root: Path, candidate: str | Path, *, max_bytes: int) -> R
         raise ValueError("max_bytes must be positive")
     root = Path(os.path.abspath(root))
     relative = _lexical_relative(root, candidate)
-    nofollow = getattr(os, "O_NOFOLLOW", 0)
-    directory_flag = getattr(os, "O_DIRECTORY", 0)
-    cloexec = getattr(os, "O_CLOEXEC", 0)
-    root_fd = os.open(root, os.O_RDONLY | directory_flag | cloexec)
+    nofollow = osfd.O_NOFOLLOW
+    directory_flag = osfd.O_DIRECTORY
+    cloexec = osfd.O_CLOEXEC
+    root_fd = osfd.open(root, os.O_RDONLY | directory_flag | cloexec)
     parent_fd = root_fd
     opened_parents: list[int] = []
     file_fd: int | None = None
     try:
         for component in relative.parts[:-1]:
             try:
-                next_fd = os.open(
+                next_fd = osfd.open(
                     component,
                     os.O_RDONLY | directory_flag | nofollow | cloexec,
                     dir_fd=parent_fd,
@@ -73,7 +78,7 @@ def read_regular_file(root: Path, candidate: str | Path, *, max_bytes: int) -> R
             parent_fd = next_fd
 
         try:
-            file_fd = os.open(
+            file_fd = osfd.open(
                 relative.parts[-1],
                 os.O_RDONLY | nofollow | cloexec,
                 dir_fd=parent_fd,
@@ -115,5 +120,5 @@ def read_regular_file(root: Path, candidate: str | Path, *, max_bytes: int) -> R
         if file_fd is not None:
             os.close(file_fd)
         for descriptor in reversed(opened_parents):
-            os.close(descriptor)
-        os.close(root_fd)
+            osfd.close(descriptor)
+        osfd.close(root_fd)

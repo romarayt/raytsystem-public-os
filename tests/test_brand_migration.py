@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 import raytsystem.brand_migration as brand_migration_module
+from raytsystem.security import osfd
 from raytsystem.brand_migration import BrandMigrationError, migrate_legacy_workspace
 
 
@@ -227,7 +228,7 @@ def test_brand_migration_does_not_replace_concurrent_destination(
         nonlocal injected
         if destination_name == "raytsystem.toml" and not injected:
             injected = True
-            descriptor = os.open(
+            descriptor = osfd.open(
                 destination_name,
                 os.O_WRONLY | os.O_CREAT | os.O_EXCL,
                 0o600,
@@ -274,13 +275,13 @@ def test_brand_migration_does_not_replace_concurrent_rollback_source(
         nonlocal state_failure_injected
         if destination_name == ".raytsystem" and not state_failure_injected:
             state_failure_injected = True
-            os.mkdir(destination_name, mode=0o700, dir_fd=destination_fd)
-            config_descriptor = os.open(
+            osfd.mkdir(destination_name, mode=0o700, dir_fd=destination_fd)
+            config_descriptor = osfd.open(
                 tmp_path / "config",
-                os.O_RDONLY | getattr(os, "O_DIRECTORY", 0),
+                os.O_RDONLY | osfd.O_DIRECTORY,
             )
             try:
-                descriptor = os.open(
+                descriptor = osfd.open(
                     "agentos.toml",
                     os.O_WRONLY | os.O_CREAT | os.O_EXCL,
                     0o600,
@@ -292,7 +293,7 @@ def test_brand_migration_does_not_replace_concurrent_rollback_source(
                 finally:
                     os.close(descriptor)
             finally:
-                os.close(config_descriptor)
+                osfd.close(config_descriptor)
         real_rename(source_fd, source_name, destination_fd, destination_name)
 
     monkeypatch.setattr(

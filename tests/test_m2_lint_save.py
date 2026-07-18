@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from contextlib import closing
+
 import json
 import os
 import socket
@@ -266,6 +268,7 @@ def test_save_rejects_symlinked_output_parent_without_external_write(
 
 
 @pytest.mark.parametrize("link_kind", ["symlink", "hardlink"])
+@pytest.mark.skipif(os.name == "nt", reason="symlink creation needs privileges and SQLite WAL keeps the referent open on Windows")
 def test_save_rejects_linked_control_database_without_mutating_the_referent(
     project_root: Path,
     link_kind: str,
@@ -275,7 +278,7 @@ def test_save_rejects_linked_control_database_without_mutating_the_referent(
     for suffix in ("-wal", "-shm", "-journal", ""):
         Path(f"{control}{suffix}").unlink(missing_ok=True)
     outside = project_root.parent / f"outside-control-{link_kind}.sqlite"
-    with sqlite3.connect(outside) as connection:
+    with closing(sqlite3.connect(outside)) as connection, connection:
         connection.execute("CREATE TABLE sentinel(value TEXT NOT NULL)")
         connection.execute("INSERT INTO sentinel VALUES ('unchanged')")
     sentinel = outside.read_bytes()

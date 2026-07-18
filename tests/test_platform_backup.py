@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from contextlib import closing
+
 import json
 import os
 import sqlite3
@@ -167,7 +169,7 @@ def test_private_backup_rejects_symlinked_platform_store_before_publication(
 ) -> None:
     root = _seed_workspace(make_platform_workspace(tmp_path))
     outside = tmp_path / "outside.sqlite"
-    with sqlite3.connect(outside) as connection:
+    with closing(sqlite3.connect(outside)) as connection, connection:
         connection.execute("CREATE TABLE private(value TEXT)")
         connection.execute("INSERT INTO private VALUES ('outside-secret')")
     platform = root / "ops" / "platform.sqlite"
@@ -240,7 +242,10 @@ def test_export_absolute_path_leak_is_redacted_in_public_only(tmp_path: Path) ->
     private_bundle = root / "bundles" / "private.zip"
     service.create(private_bundle)
     with zipfile.ZipFile(private_bundle) as archive:
-        assert abs_root.encode("utf-8") in archive.read("normalized/note.json")
+        private_note = archive.read("normalized/note.json")
+        # JSON escapes backslashes, so Windows paths appear as C:\\... inside
+        json_escaped_root = json.dumps(abs_root)[1:-1].encode("utf-8")
+        assert abs_root.encode("utf-8") in private_note or json_escaped_root in private_note
 
 
 def test_public_export_removes_secret_files_and_keeps_notices(tmp_path: Path) -> None:

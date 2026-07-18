@@ -2,9 +2,13 @@ from __future__ import annotations
 
 import base64
 import json
-import resource
 import sys
 from typing import Any
+
+try:
+    import resource
+except ImportError:  # Windows: POSIX rlimits are unavailable; caller enforces timeout/size caps.
+    resource = None  # type: ignore[assignment]
 
 from raytsystem.codegraph.detect import DetectedFile
 from raytsystem.codegraph.extract import extract_file, validate_file_extraction
@@ -19,6 +23,8 @@ def _positive_int(payload: dict[str, Any], key: str, maximum: int) -> int:
 
 
 def _apply_limits(timeout_seconds: int) -> None:
+    if resource is None:
+        return
     limits = (
         (resource.RLIMIT_CPU, timeout_seconds + 1),
         (resource.RLIMIT_FSIZE, 64 * 1024 * 1024),

@@ -93,12 +93,19 @@ class CliRunner(Protocol):
 
 
 def _controlled_environment(path: str) -> dict[str, str]:
-    return {
+    environment = {
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8",
         "NO_COLOR": "1",
         "PATH": path,
     }
+    if os.name == "nt":
+        # Without SystemRoot, Winsock provider DLLs cannot be resolved and
+        # every networked pinned tool fails immediately.
+        system_root = os.environ.get("SYSTEMROOT")
+        if system_root:
+            environment["SYSTEMROOT"] = system_root
+    return environment
 
 
 class AllowlistedCliRunner:

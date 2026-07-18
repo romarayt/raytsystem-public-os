@@ -219,7 +219,7 @@ def test_skill_list_and_details_are_snapshot_bound_without_body_n_plus_one(
     assert "ghp_" not in restricted_detail.text
     assert local_detail.status_code == 200
     local_payload = local_detail.json()
-    assert local_payload["content"].startswith("---\n")
+    assert local_payload["content"].startswith(("---\n", "---\r\n"))
     assert local_payload["format"] == "text"
     assert local_payload["content_format"] == "markdown"
     assert local_payload["source"]["path"] == "skills/local-skill/SKILL.md"

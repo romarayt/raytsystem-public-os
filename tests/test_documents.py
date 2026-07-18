@@ -168,6 +168,7 @@ kind = "notes"
     assert result["document"]["path"] == "notes/Generated.md"
 
 
+@pytest.mark.skipif(os.name == "nt", reason="NTFS rejects control characters in file names at the OS level")
 def test_controls_and_bidi_are_rejected_from_config_scan_and_writes(tmp_path: Path) -> None:
     root = _workspace(tmp_path)
     (root / "knowledge" / "manual" / "bad\nname.md").write_text("# hidden\n", encoding="utf-8")

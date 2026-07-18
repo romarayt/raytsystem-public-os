@@ -28,11 +28,20 @@ def validate_generation_id(value: str, *, allow_genesis: bool = True) -> str:
 
 
 def fsync_directory(path: Path) -> None:
+    if os.name == "nt":
+        # Windows cannot open directories via os.open and NTFS journals
+        # metadata updates; durability relies on file-level fsync instead.
+        return
     descriptor = os.open(path, os.O_RDONLY)
     try:
         os.fsync(descriptor)
     finally:
         os.close(descriptor)
+
+
+def fchmod_if_supported(fd: int, mode: int) -> None:
+    if hasattr(os, "fchmod"):
+        os.fchmod(fd, mode)
 
 
 def _recover_owned_temp_links(path: Path, metadata: os.stat_result) -> None:
@@ -63,7 +72,7 @@ def publish_immutable(path: Path, data: bytes, *, mode: int = 0o644) -> bool:
     fd, temp_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
     temp_path = Path(temp_name)
     try:
-        os.fchmod(fd, mode)
+        fchmod_if_supported(fd, mode)
         with os.fdopen(fd, "wb", closefd=True) as handle:
             handle.write(data)
             handle.flush()
@@ -71,7 +80,12 @@ def publish_immutable(path: Path, data: bytes, *, mode: int = 0o644) -> bool:
         try:
             os.link(temp_path, path)
         except FileExistsError:
-            flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_CLOEXEC", 0)
+            flags = (
+                os.O_RDONLY
+                | getattr(os, "O_NOFOLLOW", 0)
+                | getattr(os, "O_CLOEXEC", 0)
+                | getattr(os, "O_BINARY", 0)
+            )
             try:
                 existing_fd = os.open(path, flags)
             except OSError as error:
@@ -149,7 +163,9 @@ def read_current_generation(root: Path) -> str:
     except (OSError, PathPolicyError, UnicodeDecodeError) as error:
         raise IntegrityError("Missing ledger/CURRENT") from error
     value = pointer.strip()
-    if pointer != f"{value}\n":
+    # A single trailing newline is required; Windows text-mode writers
+    # produce \r\n, which is accepted as the same single newline.
+    if pointer not in (f"{value}\n", f"{value}\r\n"):
         raise IntegrityError("Malformed ledger/CURRENT")
     if not value or any(character.isspace() for character in value):
         raise IntegrityError("Malformed ledger/CURRENT")

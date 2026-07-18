@@ -59,3 +59,6 @@ website/build/
 # These stay on the author's machine but must never ship in the open-source tree.
 CHATGPT_WORK_PROMPT.md
 ops/donors/
+
+# runtime artifacts
+ops/skill-authoring-recovery/writer.lock

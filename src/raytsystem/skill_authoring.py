@@ -17,6 +17,7 @@ from typing import Any, ClassVar
 
 import yaml
 
+from raytsystem.security import osfd
 from raytsystem.catalog import CatalogError, CatalogService, CatalogSnapshot
 from raytsystem.contracts import (
     Sensitivity,
@@ -927,8 +928,13 @@ class SkillAuthoringService:
         )
 
     def _fork_content(self, context: _SkillContext, new_skill_id: str) -> _ValidationResult:
+        source_data = context.data
+        # Keep the boundary search below consistent with the CRLF
+        # normalization CatalogService._frontmatter applies.
+        if source_data.startswith(b"---\r\n"):
+            source_data = source_data.replace(b"\r\n", b"\n")
         try:
-            metadata = CatalogService._frontmatter(context.data)
+            metadata = CatalogService._frontmatter(source_data)
         except CatalogError as error:
             raise SkillValidationError(
                 [
@@ -949,12 +955,12 @@ class SkillAuthoringService:
                 "test_status": "pending",
             }
         )
-        boundary = context.data.find(b"\n---\n", 4)
+        boundary = source_data.find(b"\n---\n", 4)
         if boundary < 0:  # pragma: no cover - parser above enforces this
             raise SkillValidationError(
                 [{"field": "frontmatter", "code": "invalid_source_frontmatter"}]
             )
-        body = context.data[boundary + len(b"\n---\n") :].decode("utf-8", errors="strict")
+        body = source_data[boundary + len(b"\n---\n") :].decode("utf-8", errors="strict")
         rendered = yaml.safe_dump(
             metadata,
             allow_unicode=True,
@@ -1277,7 +1283,7 @@ class SkillAuthoringService:
                 raise _SourceChangedDuringWrite(current)
             flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_CLOEXEC", 0)
             flags |= getattr(os, "O_NOFOLLOW", 0)
-            temp_fd = os.open(
+            temp_fd = osfd.open(
                 temp_name,
                 flags,
                 stat.S_IMODE(before.st_mode),
@@ -1287,9 +1293,9 @@ class SkillAuthoringService:
             temp_metadata = os.fstat(temp_fd)
             if not stat.S_ISREG(temp_metadata.st_mode) or temp_metadata.st_nlink != 1:
                 raise SkillPathError("Temporary skill file is unsafe")
-            os.close(temp_fd)
+            osfd.close(temp_fd)
             temp_fd = None
-            os.fsync(skill_fd)
+            osfd.fsync(skill_fd)
 
             self._link_no_replace(skill_fd, "SKILL.md", guard_name)
             guard, guard_data = self._read_recovery_file_at(
@@ -1300,17 +1306,17 @@ class SkillAuthoringService:
             if (before.st_dev, before.st_ino) != (guard.st_dev, guard.st_ino) or sha256_hex(
                 guard_data
             ) != expected_source_sha256:
-                os.unlink(guard_name, dir_fd=skill_fd)
+                osfd.unlink(guard_name, dir_fd=skill_fd)
                 raise _SourceChangedDuringWrite(guard_data)
-            os.fsync(skill_fd)
+            osfd.fsync(skill_fd)
 
-            os.rename(
+            osfd.rename(
                 "SKILL.md",
                 displaced_name,
                 src_dir_fd=skill_fd,
                 dst_dir_fd=skill_fd,
             )
-            os.fsync(skill_fd)
+            osfd.fsync(skill_fd)
             displaced, displaced_data = self._read_recovery_file_at(
                 skill_fd,
                 displaced_name,
@@ -1322,7 +1328,7 @@ class SkillAuthoringService:
                     displaced_name=displaced_name,
                 )
                 raise _SourceChangedDuringWrite(displaced_data)
-            os.unlink(displaced_name, dir_fd=skill_fd)
+            osfd.unlink(displaced_name, dir_fd=skill_fd)
 
             try:
                 self._link_no_replace(skill_fd, temp_name, "SKILL.md")
@@ -1333,9 +1339,9 @@ class SkillAuthoringService:
                     allowed_links={1},
                 )[1]
                 raise _SourceChangedDuringWrite(concurrent) from None
-            os.fsync(skill_fd)
-            installed = os.stat("SKILL.md", dir_fd=skill_fd, follow_symlinks=False)
-            temp_metadata = os.stat(temp_name, dir_fd=skill_fd, follow_symlinks=False)
+            osfd.fsync(skill_fd)
+            installed = osfd.stat("SKILL.md", dir_fd=skill_fd, follow_symlinks=False)
+            temp_metadata = osfd.stat(temp_name, dir_fd=skill_fd, follow_symlinks=False)
             if (installed.st_dev, installed.st_ino) != (
                 temp_metadata.st_dev,
                 temp_metadata.st_ino,
@@ -1352,8 +1358,8 @@ class SkillAuthoringService:
                 installed_ino=installed.st_ino,
             )
             self._write_recovery_intent(applied)
-            os.unlink(temp_name, dir_fd=skill_fd)
-            os.fsync(skill_fd)
+            osfd.unlink(temp_name, dir_fd=skill_fd)
+            osfd.fsync(skill_fd)
             return applied
         except _SourceChangedDuringWrite:
             raise
@@ -1366,11 +1372,11 @@ class SkillAuthoringService:
             ) from error
         finally:
             if target_fd is not None:
-                os.close(target_fd)
+                osfd.close(target_fd)
             if temp_fd is not None:
-                os.close(temp_fd)
-            os.close(skill_fd)
-            os.close(skills_fd)
+                osfd.close(temp_fd)
+            osfd.close(skill_fd)
+            osfd.close(skills_fd)
 
     def _create_skill_file(
         self,
@@ -1389,18 +1395,18 @@ class SkillAuthoringService:
         marker_name = self._fork_marker_name(intent.transaction_id)
         try:
             try:
-                os.mkdir(skill_id, mode=0o755, dir_fd=skills_fd)
+                osfd.mkdir(skill_id, mode=0o755, dir_fd=skills_fd)
             except FileExistsError as error:
                 raise SkillConflictError(
                     "Fork destination already exists",
                     details={"skill_id": skill_id, "kind": "destination_exists"},
                 ) from error
             directory_created = True
-            created_metadata = os.stat(skill_id, dir_fd=skills_fd, follow_symlinks=False)
+            created_metadata = osfd.stat(skill_id, dir_fd=skills_fd, follow_symlinks=False)
             if stat.S_ISLNK(created_metadata.st_mode) or not stat.S_ISDIR(created_metadata.st_mode):
                 raise SkillPathError("Fork destination is not a real directory")
             created_identity = (created_metadata.st_dev, created_metadata.st_ino)
-            skill_fd = os.open(
+            skill_fd = osfd.open(
                 skill_id,
                 os.O_RDONLY
                 | getattr(os, "O_DIRECTORY", 0)
@@ -1413,31 +1419,31 @@ class SkillAuthoringService:
                 not stat.S_ISDIR(directory_metadata.st_mode)
                 or (directory_metadata.st_dev, directory_metadata.st_ino) != created_identity
             ):
-                os.close(skill_fd)
+                osfd.close(skill_fd)
                 skill_fd = None
                 raise SkillPathError("Fork destination is not a real directory")
             marker_flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
             marker_flags |= getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_NOFOLLOW", 0)
-            marker_fd = os.open(marker_name, marker_flags, 0o600, dir_fd=skill_fd)
+            marker_fd = osfd.open(marker_name, marker_flags, 0o600, dir_fd=skill_fd)
             self._write_fd(marker_fd, self._fork_marker_data(intent.transaction_id))
             marker_metadata = os.fstat(marker_fd)
             if not stat.S_ISREG(marker_metadata.st_mode) or marker_metadata.st_nlink != 1:
                 raise SkillPathError("Fork recovery marker is unsafe")
-            os.close(marker_fd)
+            osfd.close(marker_fd)
             marker_fd = None
-            os.fsync(skill_fd)
+            osfd.fsync(skill_fd)
             flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_CLOEXEC", 0)
             flags |= getattr(os, "O_NOFOLLOW", 0)
-            file_fd = os.open("SKILL.md", flags, 0o644, dir_fd=skill_fd)
+            file_fd = osfd.open("SKILL.md", flags, 0o644, dir_fd=skill_fd)
             self._write_fd(file_fd, data)
             file_metadata = os.fstat(file_fd)
             if not stat.S_ISREG(file_metadata.st_mode) or file_metadata.st_nlink != 1:
                 raise SkillPathError("Forked skill file is unsafe")
             created_file_identity = (file_metadata.st_dev, file_metadata.st_ino)
-            os.close(file_fd)
+            osfd.close(file_fd)
             file_fd = None
-            os.fsync(skill_fd)
-            os.fsync(skills_fd)
+            osfd.fsync(skill_fd)
+            osfd.fsync(skills_fd)
             applied = replace(
                 intent,
                 installed_dev=file_metadata.st_dev,
@@ -1470,12 +1476,12 @@ class SkillAuthoringService:
             ) from error
         finally:
             if file_fd is not None:
-                os.close(file_fd)
+                osfd.close(file_fd)
             if marker_fd is not None:
-                os.close(marker_fd)
+                osfd.close(marker_fd)
             if skill_fd is not None:
-                os.close(skill_fd)
-            os.close(skills_fd)
+                osfd.close(skill_fd)
+            osfd.close(skills_fd)
 
     @staticmethod
     def _cleanup_partial_create(
@@ -1489,7 +1495,7 @@ class SkillAuthoringService:
         if created_identity is None:
             return
         try:
-            current = os.stat(skill_id, dir_fd=skills_fd, follow_symlinks=False)
+            current = osfd.stat(skill_id, dir_fd=skills_fd, follow_symlinks=False)
         except OSError:
             return
         if (
@@ -1505,17 +1511,17 @@ class SkillAuthoringService:
                 opened.st_ino,
             ) == created_identity and created_file_identity is not None:
                 with suppress(OSError):
-                    skill = os.stat("SKILL.md", dir_fd=skill_fd, follow_symlinks=False)
+                    skill = osfd.stat("SKILL.md", dir_fd=skill_fd, follow_symlinks=False)
                     if (
                         stat.S_ISREG(skill.st_mode)
                         and skill.st_nlink == 1
                         and (skill.st_dev, skill.st_ino) == created_file_identity
                     ):
-                        os.unlink("SKILL.md", dir_fd=skill_fd)
+                        osfd.unlink("SKILL.md", dir_fd=skill_fd)
         with suppress(OSError):
-            os.rmdir(skill_id, dir_fd=skills_fd)
+            osfd.rmdir(skill_id, dir_fd=skills_fd)
         with suppress(OSError):
-            os.fsync(skills_fd)
+            osfd.fsync(skills_fd)
 
     @contextmanager
     def _exclusive_authoring_lock(self) -> Iterator[None]:
@@ -1529,13 +1535,13 @@ class SkillAuthoringService:
         try:
             flags = os.O_RDWR | os.O_CREAT | getattr(os, "O_CLOEXEC", 0)
             flags |= getattr(os, "O_NOFOLLOW", 0)
-            lock_fd = os.open("writer.lock", flags, 0o600, dir_fd=state_fd)
+            lock_fd = osfd.open("writer.lock", flags, 0o600, dir_fd=state_fd)
             metadata = os.fstat(lock_fd)
             if not stat.S_ISREG(metadata.st_mode) or metadata.st_nlink != 1:
                 raise SkillPersistenceError("Skill authoring lock is unsafe")
             if metadata.st_size == 0:
                 os.write(lock_fd, b"0")
-                os.fsync(lock_fd)
+                osfd.fsync(lock_fd)
             os.lseek(lock_fd, 0, os.SEEK_SET)
             if os.name == "nt":  # pragma: no cover - exercised on Windows CI
                 import msvcrt
@@ -1566,14 +1572,14 @@ class SkillAuthoringService:
             raise SkillPersistenceError("Skill authoring lock is unavailable") from error
         finally:
             if lock_fd is not None:
-                os.close(lock_fd)
-            os.close(state_fd)
+                osfd.close(lock_fd)
+            osfd.close(state_fd)
 
     def _has_pending_recovery(self) -> bool:
         state_fd = self._open_recovery_directory()
         try:
             pending = False
-            for name in os.listdir(state_fd):
+            for name in osfd.listdir(state_fd):
                 if name == "writer.lock":
                     continue
                 if _RECOVERY_FILE.fullmatch(name) is None:
@@ -1581,10 +1587,10 @@ class SkillAuthoringService:
                 pending = True
             return pending
         finally:
-            os.close(state_fd)
+            osfd.close(state_fd)
 
     def _open_recovery_directory(self) -> int:
-        root_fd = os.open(
+        root_fd = osfd.open(
             self.root,
             os.O_RDONLY
             | getattr(os, "O_DIRECTORY", 0)
@@ -1599,29 +1605,29 @@ class SkillAuthoringService:
                 _RECOVERY_DIRECTORY,
                 mode=0o700,
             )
-            os.fsync(ops_fd)
+            osfd.fsync(ops_fd)
             return state_fd
         except BaseException:
             if ops_fd is not None:
-                os.close(ops_fd)
+                osfd.close(ops_fd)
             raise
         finally:
-            os.close(root_fd)
+            osfd.close(root_fd)
             if ops_fd is not None:
                 with suppress(OSError):
-                    os.close(ops_fd)
+                    osfd.close(ops_fd)
 
     @staticmethod
     def _open_or_create_directory_at(parent_fd: int, name: str, *, mode: int) -> int:
         try:
-            before = os.stat(name, dir_fd=parent_fd, follow_symlinks=False)
+            before = osfd.stat(name, dir_fd=parent_fd, follow_symlinks=False)
         except FileNotFoundError:
-            os.mkdir(name, mode=mode, dir_fd=parent_fd)
-            os.fsync(parent_fd)
-            before = os.stat(name, dir_fd=parent_fd, follow_symlinks=False)
+            osfd.mkdir(name, mode=mode, dir_fd=parent_fd)
+            osfd.fsync(parent_fd)
+            before = osfd.stat(name, dir_fd=parent_fd, follow_symlinks=False)
         if stat.S_ISLNK(before.st_mode) or not stat.S_ISDIR(before.st_mode):
             raise SkillPersistenceError("Skill authoring state directory is unsafe")
-        descriptor = os.open(
+        descriptor = osfd.open(
             name,
             os.O_RDONLY
             | getattr(os, "O_DIRECTORY", 0)
@@ -1631,7 +1637,7 @@ class SkillAuthoringService:
         )
         opened = os.fstat(descriptor)
         if (opened.st_dev, opened.st_ino) != (before.st_dev, before.st_ino):
-            os.close(descriptor)
+            osfd.close(descriptor)
             raise SkillPersistenceError("Skill authoring state directory changed")
         return descriptor
 
@@ -1672,27 +1678,27 @@ class SkillAuthoringService:
         descriptor: int | None = None
         try:
             with suppress(FileNotFoundError):
-                os.unlink(next_name, dir_fd=state_fd)
+                osfd.unlink(next_name, dir_fd=state_fd)
             flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_CLOEXEC", 0)
             flags |= getattr(os, "O_NOFOLLOW", 0)
-            descriptor = os.open(next_name, flags, 0o600, dir_fd=state_fd)
+            descriptor = osfd.open(next_name, flags, 0o600, dir_fd=state_fd)
             self._write_fd(descriptor, data)
-            os.close(descriptor)
+            osfd.close(descriptor)
             descriptor = None
-            os.replace(next_name, final_name, src_dir_fd=state_fd, dst_dir_fd=state_fd)
-            os.fsync(state_fd)
+            osfd.replace(next_name, final_name, src_dir_fd=state_fd, dst_dir_fd=state_fd)
+            osfd.fsync(state_fd)
         except OSError as error:
             raise SkillPersistenceError("Skill recovery intent could not be persisted") from error
         finally:
             if descriptor is not None:
-                os.close(descriptor)
-            os.close(state_fd)
+                osfd.close(descriptor)
+            osfd.close(state_fd)
 
     def _recover_pending_journals(self) -> int:
         state_fd = self._open_recovery_directory()
         try:
             grouped: dict[str, list[str]] = {}
-            for name in os.listdir(state_fd):
+            for name in osfd.listdir(state_fd):
                 if name == "writer.lock":
                     continue
                 matched = _RECOVERY_FILE.fullmatch(name)
@@ -1702,7 +1708,7 @@ class SkillAuthoringService:
             if len(grouped) > _RECOVERY_MAX_PENDING:
                 raise SkillPersistenceError("Too many pending skill recovery intents")
         finally:
-            os.close(state_fd)
+            osfd.close(state_fd)
         recovered = 0
         for transaction_id, names in sorted(grouped.items()):
             intent = self._read_latest_recovery_intent(transaction_id, set(names))
@@ -1730,9 +1736,9 @@ class SkillAuthoringService:
         if entries is None:
             state_fd = self._open_recovery_directory()
             try:
-                entries = set(os.listdir(state_fd))
+                entries = set(osfd.listdir(state_fd))
             finally:
-                os.close(state_fd)
+                osfd.close(state_fd)
         next_name = f"txn-{transaction_id}.json.next"
         final_name = f"txn-{transaction_id}.json"
         invalid_next: _InvalidRecoveryIntent | None = None
@@ -1757,9 +1763,9 @@ class SkillAuthoringService:
                     raise _InvalidRecoveryIntent("Skill recovery intent is invalid")
                 data = self._read_fd(descriptor, before, max_bytes=_RECOVERY_MAX_BYTES)
             finally:
-                os.close(descriptor)
+                osfd.close(descriptor)
         finally:
-            os.close(state_fd)
+            osfd.close(state_fd)
         try:
             payload = json.loads(data.decode("utf-8", errors="strict"))
             if not isinstance(payload, dict):
@@ -1913,13 +1919,13 @@ class SkillAuthoringService:
                 if target is None:
                     self._link_no_replace(skill_fd, displaced_name, "SKILL.md")
                     # Persist the restored name before removing its displaced witness.
-                    os.fsync(skill_fd)
-                    os.unlink(displaced_name, dir_fd=skill_fd)
+                    osfd.fsync(skill_fd)
+                    osfd.unlink(displaced_name, dir_fd=skill_fd)
                 elif self._same_identity(displaced[0], target[0]):
-                    os.unlink(displaced_name, dir_fd=skill_fd)
+                    osfd.unlink(displaced_name, dir_fd=skill_fd)
                 else:
                     raise self._manual_recovery_error(intent)
-                os.fsync(skill_fd)
+                osfd.fsync(skill_fd)
 
             target = self._optional_recovery_file_at(
                 skill_fd,
@@ -1958,7 +1964,7 @@ class SkillAuthoringService:
                 if not guard_is_original:
                     raise self._manual_recovery_error(intent)
                 assert target is not None
-                os.rename(
+                osfd.rename(
                     "SKILL.md",
                     displaced_name,
                     src_dir_fd=skill_fd,
@@ -1976,13 +1982,13 @@ class SkillAuthoringService:
                     )
                     raise self._manual_recovery_error(intent)
                 self._link_no_replace(skill_fd, guard_name, "SKILL.md")
-                os.unlink(displaced_name, dir_fd=skill_fd)
-                os.fsync(skill_fd)
+                osfd.unlink(displaced_name, dir_fd=skill_fd)
+                osfd.fsync(skill_fd)
             elif target is None:
                 if not guard_is_original:
                     raise self._manual_recovery_error(intent)
                 self._link_no_replace(skill_fd, guard_name, "SKILL.md")
-                os.fsync(skill_fd)
+                osfd.fsync(skill_fd)
             elif not target_is_original and intent.installed_dev is not None:
                 raise self._manual_recovery_error(intent)
 
@@ -2005,10 +2011,10 @@ class SkillAuthoringService:
                 is not None
             ):
                 raise self._manual_recovery_error(intent)
-            os.fsync(skill_fd)
+            osfd.fsync(skill_fd)
         finally:
-            os.close(skill_fd)
-            os.close(skills_fd)
+            osfd.close(skill_fd)
+            osfd.close(skills_fd)
 
     def _cleanup_save_artifacts(self, intent: _RecoveryIntent) -> None:
         skills_fd, skill_fd = self._open_skill_directory(intent.target_skill_id)
@@ -2033,17 +2039,17 @@ class SkillAuthoringService:
                 temp_name,
                 expected_sha256=intent.proposed_source_sha256,
             )
-            os.fsync(skill_fd)
+            osfd.fsync(skill_fd)
         finally:
-            os.close(skill_fd)
-            os.close(skills_fd)
+            osfd.close(skill_fd)
+            osfd.close(skills_fd)
 
     def _cleanup_fork_marker(self, intent: _RecoveryIntent, *, committed: bool) -> None:
         skills_fd = self._open_skills_directory()
         marker_name = self._fork_marker_name(intent.transaction_id)
         try:
             try:
-                before = os.stat(
+                before = osfd.stat(
                     intent.target_skill_id,
                     dir_fd=skills_fd,
                     follow_symlinks=False,
@@ -2054,7 +2060,7 @@ class SkillAuthoringService:
                 return
             if stat.S_ISLNK(before.st_mode) or not stat.S_ISDIR(before.st_mode):
                 raise self._manual_recovery_error(intent)
-            skill_fd = os.open(
+            skill_fd = osfd.open(
                 intent.target_skill_id,
                 os.O_RDONLY
                 | getattr(os, "O_DIRECTORY", 0)
@@ -2072,16 +2078,16 @@ class SkillAuthoringService:
                     allowed_links={1},
                 )
                 if marker is None:
-                    if committed and "SKILL.md" in os.listdir(skill_fd):
+                    if committed and "SKILL.md" in osfd.listdir(skill_fd):
                         return
                     raise self._manual_recovery_error(intent)
                 if marker[1] != self._fork_marker_data(intent.transaction_id):
                     raise self._manual_recovery_error(intent)
                 if committed:
-                    os.unlink(marker_name, dir_fd=skill_fd)
-                    os.fsync(skill_fd)
+                    osfd.unlink(marker_name, dir_fd=skill_fd)
+                    osfd.fsync(skill_fd)
                     return
-                entries = set(os.listdir(skill_fd))
+                entries = set(osfd.listdir(skill_fd))
                 if not entries.issubset({marker_name, "SKILL.md"}):
                     raise self._manual_recovery_error(intent)
                 skill = self._optional_recovery_file_at(
@@ -2098,15 +2104,15 @@ class SkillAuthoringService:
                         != (intent.installed_dev, intent.installed_ino)
                     ):
                         raise self._manual_recovery_error(intent)
-                    os.unlink("SKILL.md", dir_fd=skill_fd)
-                os.unlink(marker_name, dir_fd=skill_fd)
-                os.fsync(skill_fd)
-                os.rmdir(intent.target_skill_id, dir_fd=skills_fd)
-                os.fsync(skills_fd)
+                    osfd.unlink("SKILL.md", dir_fd=skill_fd)
+                osfd.unlink(marker_name, dir_fd=skill_fd)
+                osfd.fsync(skill_fd)
+                osfd.rmdir(intent.target_skill_id, dir_fd=skills_fd)
+                osfd.fsync(skills_fd)
             finally:
-                os.close(skill_fd)
+                osfd.close(skill_fd)
         finally:
-            os.close(skills_fd)
+            osfd.close(skills_fd)
 
     def _delete_recovery_intent(self, transaction_id: str) -> None:
         if _RECOVERY_TXN.fullmatch(transaction_id) is None:
@@ -2115,10 +2121,10 @@ class SkillAuthoringService:
         try:
             for suffix in (".json", ".json.next"):
                 with suppress(FileNotFoundError):
-                    os.unlink(f"txn-{transaction_id}{suffix}", dir_fd=state_fd)
-            os.fsync(state_fd)
+                    osfd.unlink(f"txn-{transaction_id}{suffix}", dir_fd=state_fd)
+            osfd.fsync(state_fd)
         finally:
-            os.close(state_fd)
+            osfd.close(state_fd)
 
     @staticmethod
     def _save_recovery_names(transaction_id: str) -> tuple[str, str, str]:
@@ -2141,7 +2147,7 @@ class SkillAuthoringService:
 
     @staticmethod
     def _link_no_replace(directory_fd: int, source_name: str, target_name: str) -> None:
-        os.link(
+        osfd.link(
             source_name,
             target_name,
             src_dir_fd=directory_fd,
@@ -2162,8 +2168,8 @@ class SkillAuthoringService:
                 "Concurrent skill version was preserved; recovery needs manual review",
                 details={"manual_recovery_required": True},
             ) from None
-        os.unlink(displaced_name, dir_fd=directory_fd)
-        os.fsync(directory_fd)
+        osfd.unlink(displaced_name, dir_fd=directory_fd)
+        osfd.fsync(directory_fd)
 
     def _optional_recovery_file_at(
         self,
@@ -2188,7 +2194,7 @@ class SkillAuthoringService:
         *,
         allowed_links: set[int],
     ) -> tuple[os.stat_result, bytes]:
-        before = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
+        before = osfd.stat(name, dir_fd=directory_fd, follow_symlinks=False)
         if (
             stat.S_ISLNK(before.st_mode)
             or not stat.S_ISREG(before.st_mode)
@@ -2196,7 +2202,7 @@ class SkillAuthoringService:
         ):
             raise SkillPersistenceError("Skill recovery witness is unsafe")
         flags = os.O_RDONLY | getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_NOFOLLOW", 0)
-        descriptor = os.open(name, flags, dir_fd=directory_fd)
+        descriptor = osfd.open(name, flags, dir_fd=directory_fd)
         try:
             opened = os.fstat(descriptor)
             if not self._same_identity(before, opened):
@@ -2209,7 +2215,7 @@ class SkillAuthoringService:
             )
             return opened, data
         finally:
-            os.close(descriptor)
+            osfd.close(descriptor)
 
     def _cleanup_named_recovery_file(
         self,
@@ -2230,7 +2236,7 @@ class SkillAuthoringService:
                 "Skill recovery witness changed",
                 details={"manual_recovery_required": True},
             )
-        os.unlink(name, dir_fd=directory_fd)
+        osfd.unlink(name, dir_fd=directory_fd)
 
     @staticmethod
     def _same_identity(left: os.stat_result, right: os.stat_result) -> bool:
@@ -2242,7 +2248,7 @@ class SkillAuthoringService:
             before = os.lstat(path)
             if stat.S_ISLNK(before.st_mode) or not stat.S_ISDIR(before.st_mode):
                 raise SkillPathError("Skills root is not a real directory")
-            descriptor = os.open(
+            descriptor = osfd.open(
                 path,
                 os.O_RDONLY
                 | getattr(os, "O_DIRECTORY", 0)
@@ -2256,18 +2262,18 @@ class SkillAuthoringService:
             before.st_dev,
             before.st_ino,
         ):
-            os.close(descriptor)
+            osfd.close(descriptor)
             raise SkillPathError("Skills root is not a real directory")
         return descriptor
 
     def _open_skill_directory(self, skill_id: str) -> tuple[int, int]:
         skills_fd = self._open_skills_directory()
         try:
-            before = os.stat(skill_id, dir_fd=skills_fd, follow_symlinks=False)
+            before = osfd.stat(skill_id, dir_fd=skills_fd, follow_symlinks=False)
             if stat.S_ISLNK(before.st_mode) or not stat.S_ISDIR(before.st_mode):
-                os.close(skills_fd)
+                osfd.close(skills_fd)
                 raise SkillPathError("Skill directory is missing or unsafe")
-            skill_fd = os.open(
+            skill_fd = osfd.open(
                 skill_id,
                 os.O_RDONLY
                 | getattr(os, "O_DIRECTORY", 0)
@@ -2276,7 +2282,7 @@ class SkillAuthoringService:
                 dir_fd=skills_fd,
             )
         except OSError as error:
-            os.close(skills_fd)
+            osfd.close(skills_fd)
             raise SkillPathError(
                 "Skill directory is missing or unsafe",
                 details={"skill_id": skill_id},
@@ -2286,25 +2292,25 @@ class SkillAuthoringService:
             before.st_dev,
             before.st_ino,
         ):
-            os.close(skill_fd)
-            os.close(skills_fd)
+            osfd.close(skill_fd)
+            osfd.close(skills_fd)
             raise SkillPathError("Skill directory is not a real directory")
         return skills_fd, skill_fd
 
     def _open_regular_at(self, directory_fd: int, name: str, *, writable: bool) -> int:
-        before = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
+        before = osfd.stat(name, dir_fd=directory_fd, follow_symlinks=False)
         if stat.S_ISLNK(before.st_mode) or not stat.S_ISREG(before.st_mode) or before.st_nlink != 1:
             raise SkillPathError("Skill source must be one regular, non-hard-linked file")
         flags = (os.O_RDWR if writable else os.O_RDONLY) | getattr(os, "O_CLOEXEC", 0)
         flags |= getattr(os, "O_NOFOLLOW", 0)
-        descriptor = os.open(name, flags, dir_fd=directory_fd)
+        descriptor = osfd.open(name, flags, dir_fd=directory_fd)
         metadata = os.fstat(descriptor)
         if (
             not stat.S_ISREG(metadata.st_mode)
             or metadata.st_nlink != 1
             or (metadata.st_dev, metadata.st_ino) != (before.st_dev, before.st_ino)
         ):
-            os.close(descriptor)
+            osfd.close(descriptor)
             raise SkillPathError("Skill source must be one regular, non-hard-linked file")
         return descriptor
 
@@ -2347,7 +2353,7 @@ class SkillAuthoringService:
             if written <= 0:  # pragma: no cover - os.write either writes or raises
                 raise OSError("short write")
             view = view[written:]
-        os.fsync(descriptor)
+        osfd.fsync(descriptor)
 
     def _read_source(self, skill_id: str) -> bytes:
         relative = self._relative_path(skill_id)
