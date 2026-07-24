@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { shortId } from "../api";
 import { EmptyState, ErrorState, LoadingState, StatusPill } from "../components/StatePanel";
 import { catalogDescription, localizedCatalogLabel, roleLabel, statusLabel } from "../presentation";
+import { useRegistryProjection } from "../registryProjectionHooks";
 import { useSkills } from "../skillHooks";
 import type { SkillWriteResult } from "../types";
 import { SkillDetailView } from "./SkillDetailView";
@@ -11,8 +12,24 @@ function skillFromLocation(): string | null {
   return new URLSearchParams(window.location.search).get("skill");
 }
 
+function skillCheckStatus(testStatus: string): { status: string; label: string } {
+  if (testStatus === "pass") return { status: "verified", label: "Проверен каталогом" };
+  if (testStatus === "pending") return { status: "awaiting_review", label: "Ждёт проверки" };
+  return { status: testStatus, label: statusLabel(testStatus) };
+}
+
+function SkillLifecycle({ enabled }: { enabled: boolean }) {
+  return (
+    <div className="skill-lifecycle" aria-label="Статусы навыка">
+      <StatusPill status={enabled ? "catalog_present" : "restricted"} label={enabled ? "В каталоге" : "Ограничено"} />
+      <StatusPill status="manual_only" label="Не автозапуск" />
+    </div>
+  );
+}
+
 export function SkillsSurface() {
   const skillsQuery = useSkills();
+  const registryProjection = useRegistryProjection();
   const [query, setQuery] = useState("");
   const [selectedSkillId, setSelectedSkillId] = useState<string | null>(skillFromLocation);
   const [expectedOverride, setExpectedOverride] = useState<string | null>(null);
@@ -80,6 +97,8 @@ export function SkillsSurface() {
       ].join(" ").toLocaleLowerCase("ru-RU").includes(needle);
     });
   }, [query, skillsQuery.data?.skills]);
+  const projectSkills =
+    registryProjection.data?.state === "ready" ? registryProjection.data.project_skills : [];
 
   const expectedCatalogSha256 = expectedOverride ?? skillsQuery.data?.catalog_sha256 ?? null;
 
@@ -116,7 +135,7 @@ export function SkillsSurface() {
                   <header>
                     <span className="catalog-icon skill"><Wrench size={19} aria-hidden="true" /></span>
                     <span className="skill-card-title"><span className="eyebrow">{localizedCatalogLabel(skill.pack_id, skill.pack_id)} · {skill.version}</span><strong id={`skill-card-title-${skill.skill_id}`}>{skill.skill_id}</strong></span>
-                    <StatusPill status={skill.test_status} />
+                    <StatusPill {...skillCheckStatus(skill.test_status)} />
                   </header>
                   <p>{catalogDescription(skill.skill_id, skill.description)}</p>
                   <dl>
@@ -130,7 +149,7 @@ export function SkillsSurface() {
                     <span className={`skill-editability ${skill.policy.editable ? "editable" : "read-only"}`}>
                       {skill.policy.editable ? <><Pencil size={13} />Редактируемый</> : skill.policy.forkable ? <><Copy size={13} />Только чтение · можно копировать</> : <><FileText size={13} />Только чтение</>}
                     </span>
-                    <StatusPill status={skill.enabled ? "enabled" : "restricted"} />
+                    <SkillLifecycle enabled={skill.enabled} />
                   </footer>
                   <button className="skill-card-open" type="button" onClick={() => openSkill(skill.skill_id)} aria-label={`Открыть skill ${skill.skill_id}`} />
                 </article>
@@ -139,6 +158,32 @@ export function SkillsSurface() {
           ) : null}
 
           {skillsQuery.data ? <section className="skill-list-summary panel"><span><strong>{skillsQuery.data.skills.length}</strong> skills</span><span><strong>{skillsQuery.data.skills.filter((skill) => skill.policy.editable).length}</strong> редактируемых</span><span><strong>{skillsQuery.data.skills.filter((skill) => !skill.policy.editable).length}</strong> read-only</span><code>{shortId(skillsQuery.data.catalog_sha256, 12, 8)}</code></section> : null}
+          {projectSkills.length ? (
+            <section className="project-skill-evidence">
+              <header>
+                <span className="eyebrow">Project evidence</span>
+                <h3>JARVIS skills</h3>
+              </header>
+              <div className="skill-card-grid">
+                {projectSkills.map((skill) => (
+                  <article className="skill-card panel" key={skill.skill_id}>
+                    <header>
+                      <span className="skill-card-title">
+                        <span className="eyebrow">JARVIS evidence</span>
+                        <strong>{skill.skill_id}</strong>
+                      </span>
+                      <StatusPill status={skill.test_status ?? "verified"} />
+                    </header>
+                    <p>{skill.description ?? skill.name ?? skill.skill_id}</p>
+                    <footer>
+                      <span className="skill-editability read-only"><FileText size={13} />Evidence only</span>
+                      <code>{shortId(skill.source_hash, 8, 5)}</code>
+                    </footer>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ) : null}
         </>
       )}
     </section>

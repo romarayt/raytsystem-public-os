@@ -1792,6 +1792,7 @@ def create_app(
         initialize_document_module,
     )
     from raytsystem.webapp.feature_routes import create_feature_router
+    from raytsystem.webapp.registry_projection_readmodel import RegistryProjectionReadModel
 
     async def initialize_documents() -> None:
         # The disposable projection is built explicitly, but never blocks unrelated
@@ -1815,6 +1816,14 @@ def create_app(
     app.state.document_initialization = {"state": "pending"}
     app.state.document_initialization_task = None
     app.router.add_event_handler("startup", start_document_initialization)
+    registry_projection_reads = RegistryProjectionReadModel(resolved_root)
+
+    @app.get("/api/v1/registry-projection")
+    def registry_projection(
+        _session: Annotated[SessionRecord, Depends(require_session)],
+    ) -> dict[str, Any]:
+        return registry_projection_reads.snapshot()
+
     app.include_router(create_document_router(resolved_root, require_session=require_session))
 
     app.include_router(create_feature_router(resolved_root, require_session=require_session))

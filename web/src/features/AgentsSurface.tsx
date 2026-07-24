@@ -6,6 +6,7 @@ import { Surface } from "../components/SurfaceTabs";
 import { EmptyState, ErrorState, LoadingState, StatusPill } from "../components/StatePanel";
 import { useAgents } from "../executionHooks";
 import type { AgentReadiness, AgentViewModel } from "../executionTypes";
+import { useRegistryProjection } from "../registryProjectionHooks";
 import {
   canonicalAgentName,
   catalogDescription,
@@ -50,6 +51,7 @@ function readinessAccent(readiness: AgentReadiness): string {
 
 export function AgentsSurface({ onOpenSkill }: { onOpenSkill: (skillId: string) => void }) {
   const agents = useAgents();
+  const registryProjection = useRegistryProjection();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<AgentFilter>("all");
   const [selectedAgent, setSelectedAgent] = useState<string | null>(selectedAgentFromUrl);
@@ -79,6 +81,15 @@ export function AgentsSurface({ onOpenSkill }: { onOpenSkill: (skillId: string) 
       ].join(" ").toLocaleLowerCase("ru-RU").includes(needle);
     });
   }, [agents.data?.agents, filter, query]);
+  const evidenceByAgent = useMemo(() => {
+    if (registryProjection.data?.state !== "ready") return new Map<string, string>();
+    return new Map(
+      registryProjection.data.matched_agents.map((evidence) => [
+        evidence.agent_id,
+        evidence.status ?? "verified"
+      ])
+    );
+  }, [registryProjection.data]);
 
   const openAgent = (agentId: string) => {
     window.history.pushState({}, "", `/agents?agent=${encodeURIComponent(agentId)}`);
@@ -149,7 +160,9 @@ export function AgentsSurface({ onOpenSkill }: { onOpenSkill: (skillId: string) 
             </EmptyState>
           ) : (
             <div className="catalog-grid agent-grid" aria-label="Единый список агентов">
-              {filtered.map((agent, index) => (
+              {filtered.map((agent, index) => {
+                const evidenceStatus = evidenceByAgent.get(agent.agent_id);
+                return (
                 <article
                   className="agent-card unified-agent-card panel"
                   key={agent.agent_id}
@@ -173,11 +186,13 @@ export function AgentsSurface({ onOpenSkill }: { onOpenSkill: (skillId: string) 
                   </dl>
                   <footer>
                     <StatusPill status={agent.readiness} label={agentReadinessLabel(agent.readiness)} />
+                    {evidenceStatus ? <StatusPill status={evidenceStatus} label="Evidence" /> : null}
                     <span>{agentReasonLabel(agent.unavailable_reason)}</span>
                   </footer>
                   <button className="agent-card-open" type="button" aria-label={`Открыть агента ${canonicalAgentName(agent)}`} onClick={() => openAgent(agent.agent_id)} />
                 </article>
-              ))}
+                );
+              })}
             </div>
           )}
           <p className="route-footnote">

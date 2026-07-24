@@ -28,6 +28,7 @@ DEFAULT_FLAGS: dict[str, bool] = {
     "external_notifications_enabled": False,
     "restricted_encryption_enabled": False,
     "backup_enabled": True,
+    "registry_projection_enabled": False,
     "promptfoo_remote_generation_enabled": False,
     "external_mcp_execution_enabled": False,
     "a2a_network_exposure_enabled": False,
