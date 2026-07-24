@@ -1702,6 +1702,8 @@ class IngestPipeline:
         staged_claim: Claim,
         reextract_normalization_id: str | None,
     ) -> None:
+        evidence_index = self._segment_snapshot_index()
+        revision_index = self._source_revision_index()
         for key, entry in generation.records.items():
             if entry.tombstone:
                 continue
@@ -1743,37 +1745,53 @@ class IngestPipeline:
             self._validate_claim_evidence(
                 active_claim,
                 reextract_normalization_id=reextract_normalization_id,
+                evidence_index=evidence_index,
+                revision_index=revision_index,
             )
+
+    def _segment_snapshot_index(self) -> dict[str, list[Path]]:
+        """Map every segment_id to the snapshot directories that contain it.
+
+        Built by reading each ``normalized/*/*/segments.jsonl`` exactly once
+        per validation pass. The previous implementation re-read every
+        segments file for every evidence id of every active claim, which made
+        a single promotion cost O(claims x snapshots) reads and full-corpus
+        ingestion cubic in corpus size. Unreadable or non-canonical segment
+        files contribute nothing to the index, exactly as they previously
+        contributed no match.
+        """
+        index: dict[str, list[Path]] = {}
+        for segments_path in sorted(self.root.glob("normalized/*/*/segments.jsonl")):
+            relative = segments_path.relative_to(self.root).as_posix()
+            try:
+                segment_bytes = read_regular_file(
+                    self.root,
+                    relative,
+                    max_bytes=int(self.config["limits"]["max_input_bytes"]),
+                ).data
+            except PathPolicyError:
+                continue
+            try:
+                segments = [
+                    Segment.model_validate(json.loads(line))
+                    for line in segment_bytes.splitlines()
+                ]
+            except (json.JSONDecodeError, ValueError):
+                continue
+            for segment_id in {segment.segment_id for segment in segments}:
+                index.setdefault(segment_id, []).append(segments_path.parent)
+        return index
 
     def _validate_claim_evidence(
         self,
         claim: Claim,
         *,
         reextract_normalization_id: str | None,
+        evidence_index: dict[str, list[Path]],
+        revision_index: dict[str, list[SourceRevision]],
     ) -> None:
         for evidence_id in claim.evidence_ids:
-            matches: list[Path] = []
-            for segments_path in self.root.glob("normalized/*/*/segments.jsonl"):
-                relative = segments_path.relative_to(self.root).as_posix()
-                try:
-                    segment_bytes = read_regular_file(
-                        self.root,
-                        relative,
-                        max_bytes=int(self.config["limits"]["max_input_bytes"]),
-                    ).data
-                except PathPolicyError:
-                    continue
-                if evidence_id.encode() not in segment_bytes:
-                    continue
-                try:
-                    segments = [
-                        Segment.model_validate(json.loads(line))
-                        for line in segment_bytes.splitlines()
-                    ]
-                except (json.JSONDecodeError, ValueError):
-                    continue
-                if any(segment.segment_id == evidence_id for segment in segments):
-                    matches.append(segments_path.parent)
+            matches = evidence_index.get(evidence_id, [])
             if len(matches) != 1:
                 raise IntegrityError(
                     "Active claim evidence does not resolve to exactly one immutable span"
@@ -1782,6 +1800,7 @@ class IngestPipeline:
                 matches[0],
                 evidence_id,
                 reextract=matches[0].name == reextract_normalization_id,
+                revision_index=revision_index,
             )
 
     def _validate_evidence_snapshot(
@@ -1790,6 +1809,7 @@ class IngestPipeline:
         evidence_id: str,
         *,
         reextract: bool,
+        revision_index: dict[str, list[SourceRevision]],
     ) -> None:
         try:
             relative_snapshot = snapshot.relative_to(self.root)
@@ -1932,7 +1952,7 @@ class IngestPipeline:
                 target = segment
         if target is None:
             raise IntegrityError("Inherited evidence target disappeared")
-        revision = self._load_source_revision(source_revision_id)
+        revision = self._resolve_source_revision(revision_index, source_revision_id)
         raw = read_regular_file(
             self.root,
             revision.raw_path,
@@ -2034,10 +2054,19 @@ class IngestPipeline:
             raise IntegrityError("Source record is missing")
         return match
 
-    def _load_source_revision(self, source_revision_id: str) -> SourceRevision:
+    def _source_revision_index(self) -> dict[str, list[SourceRevision]]:
+        """Validated view of the immutable revision store, read once per pass.
+
+        Performs exactly the per-object checks ``_load_source_revision``
+        applies to every stored revision, but a single directory walk serves
+        every subsequent lookup. ``_load_source_revision`` previously re-read
+        and re-hashed the whole store for every resolved evidence id, which
+        dominated promotion cost once the store grew past a few dozen
+        revisions.
+        """
         root = self.root / "_raw" / "revisions" / "sha256"
-        match: SourceRevision | None = None
-        for path in root.glob("*/*.json"):
+        index: dict[str, list[SourceRevision]] = {}
+        for path in sorted(root.glob("*/*.json")):
             data = path.read_bytes()
             if path.stem != sha256_hex(data):
                 raise IntegrityError("Source revision object filename hash mismatch")
@@ -2058,15 +2087,26 @@ class IngestPipeline:
             )
             if revision.source_revision_id != expected.source_revision_id:
                 raise IntegrityError("Source revision logical ID mismatch")
-            if revision.source_revision_id == source_revision_id:
-                if match is not None:
-                    raise IntegrityError(
-                        "Logical source revision has multiple immutable definitions"
-                    )
-                match = revision
-        if match is None:
+            index.setdefault(revision.source_revision_id, []).append(revision)
+        return index
+
+    @staticmethod
+    def _resolve_source_revision(
+        index: dict[str, list[SourceRevision]],
+        source_revision_id: str,
+    ) -> SourceRevision:
+        matches = index.get(source_revision_id, [])
+        if len(matches) > 1:
+            raise IntegrityError("Logical source revision has multiple immutable definitions")
+        if not matches:
             raise IntegrityError("Source revision record is missing")
-        return match
+        return matches[0]
+
+    def _load_source_revision(self, source_revision_id: str) -> SourceRevision:
+        return self._resolve_source_revision(
+            self._source_revision_index(),
+            source_revision_id,
+        )
 
     def _load_or_create_source(
         self,

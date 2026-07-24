@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime, timedelta
@@ -123,6 +124,25 @@ def test_promoted_claim_resolves_to_exact_segment(project_root: Path) -> None:
 
     assert any(segment["segment_id"] == result.segment_id for segment in segments)
     assert any(key.startswith("claim:") for key in generation["records"])
+
+
+def test_claim_evidence_duplicated_across_snapshots_fails_closed(project_root: Path) -> None:
+    source = project_root / "inbox" / "cited.md"
+    source.write_text("# Uniquely cited line\n", encoding="utf-8")
+    pipeline = IngestPipeline(project_root)
+    first = pipeline.ingest(source, fixture=True)
+
+    # A copy of the snapshot under a foreign revision makes the promoted
+    # claim's evidence resolve to two immutable spans instead of one.
+    snapshot = project_root / first.normalized_path
+    duplicate = snapshot.parent.parent / f"srev_{'0' * 64}" / snapshot.name
+    duplicate.parent.mkdir(parents=True)
+    shutil.copytree(snapshot, duplicate)
+
+    other = project_root / "inbox" / "other.md"
+    other.write_text("# Unrelated line\n", encoding="utf-8")
+    with pytest.raises(IntegrityError, match="exactly one immutable span"):
+        pipeline.ingest(other, fixture=True)
 
 
 def test_fixture_flag_is_rejected_outside_configured_fixture_namespace(
