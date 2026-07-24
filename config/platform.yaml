@@ -18,6 +18,7 @@ features:
   external_notifications_enabled: false
   restricted_encryption_enabled: false
   backup_enabled: true
+  registry_projection_enabled: false
 
   # Separate exposure/provider gates remain fail-closed even if a parent feature changes.
   promptfoo_remote_generation_enabled: false

@@ -248,9 +248,10 @@ kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; 
 .danger-button { border: 1px solid rgba(255, 112, 133, .4); background: rgba(255, 112, 133, .12); color: var(--rose); }
 .status-pill { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; padding: 5px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font: 500 10px/1 var(--mono); white-space: nowrap; }
 .status-shape { width: 6px; height: 6px; border: 1px solid currentColor; border-radius: 50%; }
-.status-done, .status-succeeded, .status-pass, .status-verified, .status-enabled, .status-active, .status-supported, .status-confirmed { color: var(--mint); border-color: rgba(117,212,161,.18); background: rgba(117,212,161,.05); }
+.status-done, .status-succeeded, .status-pass, .status-verified, .status-enabled, .status-catalog-present, .status-active, .status-supported, .status-confirmed { color: var(--mint); border-color: rgba(117,212,161,.18); background: rgba(117,212,161,.05); }
 .status-running, .status-ready, .status-internal, .status-configured { color: var(--cyan); border-color: rgba(99,216,210,.18); background: rgba(99,216,210,.05); }
 .status-blocked, .status-terminal-failed, .status-quarantined, .status-restricted, .status-retracted { color: var(--rose); border-color: rgba(255,112,133,.18); background: rgba(255,112,133,.05); }
+.status-manual-only { color: var(--gold); border-color: rgba(221,187,101,.18); background: rgba(221,187,101,.05); }
 .status-review, .status-pending, .status-planned, .status-optional, .status-awaiting-review, .status-awaiting-approval { color: var(--gold); border-color: rgba(221,187,101,.18); background: rgba(221,187,101,.05); }
 .status-disabled, .status-declared, .status-inbox, .status-cancelled { color: var(--muted); }
 .status-superseded, .status-disputed { color: var(--periwinkle); }
@@ -600,8 +601,12 @@ button.table-row:hover { background: var(--surface-2); color: var(--bone); }
 .skill-card-relations { display: flex; min-width: 0; align-items: center; gap: 7px; margin-bottom: 13px; color: var(--muted-2); font-size: 10px; }
 .skill-card-relations svg { flex: 0 0 auto; }
 .skill-card-relations span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.skill-card > footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 13px; border-top: 1px solid var(--line-soft); }
+.skill-card > footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 13px; border-top: 1px solid var(--line-soft); }
+.skill-lifecycle { display: flex; flex: 1 1 230px; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
 .skill-editability { display: inline-flex; min-width: 0; align-items: center; gap: 6px; color: var(--muted-2); font-size: 10px; }
+.project-skill-evidence { display: grid; gap: 14px; margin-top: 18px; }
+.project-skill-evidence > header { display: flex; align-items: end; justify-content: space-between; gap: 12px; }
+.project-skill-evidence h3 { margin: 2px 0 0; font: 560 17px var(--display); }
 .skill-editability.editable { color: var(--mint); }
 .skill-editability svg { flex: 0 0 auto; }
 .skill-list-summary { display: flex; align-items: center; flex-wrap: wrap; gap: 18px; min-height: 52px; padding: 11px 15px; color: var(--muted-2); font-size: 11px; }
@@ -1023,6 +1028,7 @@ button.table-row:hover { background: var(--surface-2); color: var(--bone); }
   .history-row > span:last-child { grid-column: 1 / -1; }
   .skill-card { min-height: auto; }
   .skill-card > p { min-height: auto; }
+  .skill-lifecycle { justify-content: flex-start; }
   .skill-detail-hero { display: grid; grid-template-columns: auto minmax(0, 1fr); }
   .skill-detail-hero .detail-hero-state { grid-column: 1 / -1; }
   .detail-hero-actions { grid-column: 1 / -1; flex-wrap: wrap; }

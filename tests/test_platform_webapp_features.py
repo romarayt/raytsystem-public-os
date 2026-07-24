@@ -270,6 +270,35 @@ def test_get_endpoints_perform_no_platform_writes(project_root: Path) -> None:
     assert _store_fingerprint(root) == before
 
 
+def test_registry_projection_endpoint_is_disabled_by_default_and_write_free(
+    project_root: Path,
+) -> None:
+    root = make_platform_workspace(project_root)
+    _init_store(root)
+    before = _store_fingerprint(root)
+
+    with _web_session(root) as (client, _csrf):
+        response = client.get("/api/v1/registry-projection")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["protocol"] == "raytsystem-registry-projection"
+    assert body["enabled"] is False
+    assert body["state"] == "disabled"
+    assert body["catalog_sha256"] is None
+    assert body["matched_agents"] == []
+    assert body["project_skills"] == []
+    assert body["side_effects"] == {
+        "write": False,
+        "repair": False,
+        "sync": False,
+        "reindex": False,
+        "external_send": False,
+        "execution": False,
+    }
+    assert _store_fingerprint(root) == before
+
+
 def test_policy_simulation_happy_path_and_stale_policy_rejection(project_root: Path) -> None:
     root = make_platform_workspace(project_root)
     _init_store(root)

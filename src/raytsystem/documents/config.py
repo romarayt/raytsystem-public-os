@@ -175,6 +175,9 @@ def load_document_config(root: Path) -> DocumentConfig:
 
 
 def _directory_identity(root: Path, relative_path: str) -> tuple[int, int] | None:
+    if os.name == "nt":
+        return _directory_identity_windows(root, relative_path)
+
     nofollow = getattr(os, "O_NOFOLLOW", 0)
     directory = getattr(os, "O_DIRECTORY", 0)
     cloexec = getattr(os, "O_CLOEXEC", 0)
@@ -201,3 +204,23 @@ def _directory_identity(root: Path, relative_path: str) -> tuple[int, int] | Non
         for descriptor in reversed(opened):
             os.close(descriptor)
         os.close(root_fd)
+
+
+def _directory_identity_windows(root: Path, relative_path: str) -> tuple[int, int] | None:
+    path = root
+    try:
+        root_metadata = os.lstat(path)
+    except FileNotFoundError:
+        return None
+    if os.path.islink(path) or not os.path.isdir(path):
+        raise DocumentConfigError("Document root contains an unsafe component")
+    metadata = root_metadata
+    for component in Path(relative_path).parts:
+        path = path / component
+        try:
+            metadata = os.lstat(path)
+        except FileNotFoundError:
+            return None
+        if os.path.islink(path) or not os.path.isdir(path):
+            raise DocumentConfigError("Document root contains an unsafe component")
+    return metadata.st_dev, metadata.st_ino

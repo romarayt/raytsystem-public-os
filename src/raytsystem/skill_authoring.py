@@ -1524,6 +1524,11 @@ class SkillAuthoringService:
 
     @contextmanager
     def _authoring_lock(self, *, exclusive: bool) -> Iterator[None]:
+        if os.name == "nt":
+            with self._authoring_lock_windows(exclusive=exclusive):
+                yield
+            return
+
         state_fd = self._open_recovery_directory()
         lock_fd: int | None = None
         try:
@@ -1569,7 +1574,51 @@ class SkillAuthoringService:
                 os.close(lock_fd)
             os.close(state_fd)
 
+    @contextmanager
+    def _authoring_lock_windows(self, *, exclusive: bool) -> Iterator[None]:
+        _ = exclusive
+        state_path = self._recovery_directory_path_windows()
+        lock_path = state_path / "writer.lock"
+        lock_fd: int | None = None
+        try:
+            flags = os.O_RDWR | os.O_CREAT | getattr(os, "O_CLOEXEC", 0)
+            lock_fd = os.open(lock_path, flags, 0o600)
+            metadata = os.fstat(lock_fd)
+            if not stat.S_ISREG(metadata.st_mode) or metadata.st_nlink != 1:
+                raise SkillPersistenceError("Skill authoring lock is unsafe")
+            if metadata.st_size == 0:
+                os.write(lock_fd, b"0")
+                os.fsync(lock_fd)
+            os.lseek(lock_fd, 0, os.SEEK_SET)
+            import msvcrt
+
+            msvcrt_api: Any = msvcrt
+            msvcrt_api.locking(lock_fd, msvcrt_api.LK_LOCK, 1)
+            try:
+                yield
+            finally:
+                os.lseek(lock_fd, 0, os.SEEK_SET)
+                msvcrt_api.locking(lock_fd, msvcrt_api.LK_UNLCK, 1)
+        except SkillAuthoringError:
+            raise
+        except OSError as error:
+            raise SkillPersistenceError("Skill authoring lock is unavailable") from error
+        finally:
+            if lock_fd is not None:
+                os.close(lock_fd)
+
     def _has_pending_recovery(self) -> bool:
+        if os.name == "nt":
+            pending = False
+            for path in self._recovery_directory_path_windows().iterdir():
+                name = path.name
+                if name == "writer.lock":
+                    continue
+                if _RECOVERY_FILE.fullmatch(name) is None:
+                    raise SkillPersistenceError("Unexpected skill recovery state exists")
+                pending = True
+            return pending
+
         state_fd = self._open_recovery_directory()
         try:
             pending = False
@@ -1584,6 +1633,9 @@ class SkillAuthoringService:
             os.close(state_fd)
 
     def _open_recovery_directory(self) -> int:
+        if os.name == "nt":
+            raise SkillPersistenceError("POSIX-style skill recovery directory is unavailable")
+
         root_fd = os.open(
             self.root,
             os.O_RDONLY
@@ -1634,6 +1686,27 @@ class SkillAuthoringService:
             os.close(descriptor)
             raise SkillPersistenceError("Skill authoring state directory changed")
         return descriptor
+
+    def _recovery_directory_path_windows(self) -> Path:
+        root = self.root
+        root_metadata = os.lstat(root)
+        if stat.S_ISLNK(root_metadata.st_mode) or not stat.S_ISDIR(root_metadata.st_mode):
+            raise SkillPersistenceError("Skill authoring root directory is unsafe")
+        ops = root / "ops"
+        state = ops / _RECOVERY_DIRECTORY
+        self._ensure_windows_directory(ops, mode=0o700)
+        self._ensure_windows_directory(state, mode=0o700)
+        return state
+
+    @staticmethod
+    def _ensure_windows_directory(path: Path, *, mode: int) -> None:
+        try:
+            metadata = os.lstat(path)
+        except FileNotFoundError:
+            os.mkdir(path, mode=mode)
+            metadata = os.lstat(path)
+        if stat.S_ISLNK(metadata.st_mode) or not stat.S_ISDIR(metadata.st_mode):
+            raise SkillPersistenceError("Skill authoring state directory is unsafe")
 
     def _new_recovery_intent(
         self,
@@ -1689,6 +1762,25 @@ class SkillAuthoringService:
             os.close(state_fd)
 
     def _recover_pending_journals(self) -> int:
+        if os.name == "nt":
+            grouped: dict[str, list[str]] = {}
+            for path in self._recovery_directory_path_windows().iterdir():
+                name = path.name
+                if name == "writer.lock":
+                    continue
+                matched = _RECOVERY_FILE.fullmatch(name)
+                if matched is None:
+                    raise SkillPersistenceError("Unexpected skill recovery state exists")
+                grouped.setdefault(matched.group(1), []).append(name)
+            if len(grouped) > _RECOVERY_MAX_PENDING:
+                raise SkillPersistenceError("Too many pending skill recovery intents")
+            if grouped:
+                raise SkillPersistenceError(
+                    "Pending skill recovery requires a POSIX-compatible runtime",
+                    details={"manual_recovery_required": True},
+                )
+            return 0
+
         state_fd = self._open_recovery_directory()
         try:
             grouped: dict[str, list[str]] = {}

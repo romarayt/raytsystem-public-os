@@ -27,6 +27,7 @@ FEATURE_NAMES = (
     "external_notifications_enabled",
     "restricted_encryption_enabled",
     "backup_enabled",
+    "registry_projection_enabled",
     "promptfoo_remote_generation_enabled",
     "external_mcp_execution_enabled",
     "a2a_network_exposure_enabled",
