@@ -9,6 +9,8 @@ related_pages: [/getting-started/installation, /getting-started/first-run, /gett
 source_of_truth:
   - path: pyproject.toml
   - path: README.md
+  - path: src/raytsystem/cli.py
+  - path: src/raytsystem/security/paths.py
 last_verified_against: "schema v1.4.0"
 ---
 
@@ -22,6 +24,10 @@ last_verified_against: "schema v1.4.0"
 
 ## Предварительные условия
 
+- **macOS или Linux; Windows — только через WSL 2.** CLI сам проверяет это при
+  каждом запуске и завершается с ошибкой на нативном Windows, потому что
+  защищённое чтение файлов построено на POSIX-примитивах `dir_fd`/`O_NOFOLLOW`.
+  Источник: `README.md`, `src/raytsystem/cli.py`, `src/raytsystem/security/paths.py`.
 - **Python 3.12** (диапазон `>=3.12,<3.15`), устанавливается и управляется через
   [uv](https://docs.astral.sh/uv/). Источник: `pyproject.toml` (`requires-python`),
   `README.md`.
@@ -73,6 +79,9 @@ last_verified_against: "schema v1.4.0"
 
 ## Частые ошибки
 
+- **Запускать CLI на нативном Windows.** Любая команда, кроме `--help`, завершится
+  с `raytsystem requires a POSIX environment (Linux or macOS)...` и кодом `1`.
+  Используйте WSL 2. Источник: `src/raytsystem/cli.py`.
 - **Пытаться открыть панель по внешнему адресу.** Не выйдет: разрешён только
   `127.0.0.1`. Источник: `README.md`.
 - **Ставить Node.js ради обычного запуска.** Не требуется — бандл уже собран.

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import platform
 import sqlite3
 import sys
@@ -57,6 +58,23 @@ from raytsystem.tasking import TaskConflict, TaskLedgerError, TaskService, TaskT
 from raytsystem.toolhub.cli import register_toolhub_commands
 
 app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False)
+
+
+@app.callback()
+def _require_posix() -> None:
+    # ponytail: security/paths.py's read_regular_file relies on dir_fd/O_NOFOLLOW,
+    # which Windows' os module doesn't implement; fail loudly instead of the
+    # cryptic "Verified workspace snapshot is unavailable" from deep inside.
+    if os.name != "posix" and not ({"--help", "--install-completion", "--show-completion"} & set(sys.argv)):
+        typer.echo(
+            "raytsystem requires a POSIX environment (Linux or macOS). "
+            "Its hardened file-read security model depends on dir_fd/O_NOFOLLOW, "
+            "which Windows does not support. Run raytsystem under WSL2 instead.",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+
+
 schemas_app = typer.Typer(no_args_is_help=True)
 proposal_app = typer.Typer(no_args_is_help=True)
 agent_app = typer.Typer(no_args_is_help=True)
